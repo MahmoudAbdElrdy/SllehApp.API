@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using DAL.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -10,5 +11,6 @@ namespace DAL
         {
 
         }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     }
 }
