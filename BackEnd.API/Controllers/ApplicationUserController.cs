@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using BackEnd.Service.IServices;
+using BackEnd.Service.Models;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.API.Controllers
 {
@@ -14,82 +18,21 @@ namespace BackEnd.API.Controllers
     [ApiController]
     public class ApplicationUserController : ControllerBase
     {
-        private UserManager<ApplicationUser> _userManager;
-        private SignInManager<ApplicationUser> _signInManager;
-        private IPasswordHasher<ApplicationUser> passwordHasher;
-        // private readonly ApplicationSettings _appSettings;
-        private RoleManager<IdentityRole> _roleManager;
-        public ApplicationUserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            IPasswordHasher<ApplicationUser> passwordHash/*, IOptions<ApplicationSettings> appSettings*/, RoleManager<IdentityRole> roleManager)
+    private readonly    IApplicationUserServices userServices;
+        public ApplicationUserController(IApplicationUserServices _userServices)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            passwordHasher = passwordHash;
-            //  _appSettings = appSettings.Value;
-            _roleManager = roleManager;
+            userServices = _userServices;
         }
-      //  #region Insert Method
-      //  [HttpPost]
-      ////  [Authorize(Roles = "SuperAdmin")]
-      //  [Route("Register")]
-      //  //Post: /api/ApplicationUser/Register
-      //  public async Task<object> PostApplicationUser(UserModel model)
-      //  {
-      //      var applicationuser = new ApplicationUser()
-      //      {
-      //          UserName = model.UserName,
-      //          Email = model.Email,
-      //          FullName = model.FullName,
-      //          Creationdate = DateTime.Now
-      //      };
+       
+        [HttpPost]
+        //  [Authorize(Roles = "SuperAdmin")]
+        [Route("Register")]
+        //Post: /api/ApplicationUser/Register
+        public async Task<object> PostApplicationUser(UserModel model)
+        {
+            return userServices.PostApplicationUserAsync(model);
 
-      //      try
-      //      {
-      //          var result = await _userManager.CreateAsync(applicationuser, model.Password);
-
-      //          if (result.Succeeded)
-      //          {
-      //              await _userManager.AddToRoleAsync(applicationuser, model.Role);
-      //              return Ok(result);
-      //          }
-      //          else
-      //          {
-      //              foreach (var item in result.Errors)
-      //              {
-      //                  if (item.Code == "DuplicateUserName")
-      //                  {
-      //                      return Ok(2);
-      //                  }
-      //                  if (item.Code == "InvalidUserName")
-      //                  {
-      //                      return Ok(1);
-      //                  }
-      //              }
-      //              return Ok(result);
-      //          }
-
-      //      }
-      //      catch (DbUpdateException ex)
-      //      {
-
-      //          var sqlException = ex.GetBaseException() as SqlException;
-
-      //          if (sqlException != null)
-      //          {
-      //              var number = sqlException.Number;
-
-      //              if (number == 547)
-      //              {
-      //                  return Ok(5);
-
-      //              }
-      //              else
-      //                  return Ok(6);
-      //          }
-      //          return Ok(6);
-
-      //      }
-      //  }
+        }
 
     }
 }

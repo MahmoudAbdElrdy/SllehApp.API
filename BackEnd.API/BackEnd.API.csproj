@@ -13,7 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BackEnd.Repositories\BackEnd.Repositories.csproj" />
     <ProjectReference Include="..\DAL\BackEnd.DAL.csproj" />
+    <ProjectReference Include="..\Service\BackEnd.Service.csproj" />
   </ItemGroup>
 
 </Project>
