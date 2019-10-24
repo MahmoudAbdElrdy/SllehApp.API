@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
+using BackEnd.Repositories.Generics;
+using BackEnd.Repositories.UOW;
+using DAL;
 
 namespace BackEnd.Service.Services
 {
@@ -18,14 +21,19 @@ namespace BackEnd.Service.Services
         private IPasswordHasher<ApplicationUser> passwordHasher;
         // private readonly ApplicationSettings _appSettings;
         private RoleManager<IdentityRole> _roleManager;
+        //private IUnitOfWork<DatabaseContext> _unitOfWork;
+        //private IGRepository<ApplicationUser> _user;
+
         public ApplicationUserServices(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            IPasswordHasher<ApplicationUser> passwordHash/*, IOptions<ApplicationSettings> appSettings*/, RoleManager<IdentityRole> roleManager)
+            IPasswordHasher<ApplicationUser> passwordHash/*, IGRepository<ApplicationUser> user, IUnitOfWork<DatabaseContext> unitOfWork,, IOptions<ApplicationSettings> appSettings*/, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             passwordHasher = passwordHash;
             //  _appSettings = appSettings.Value;
             _roleManager = roleManager;
+            //_unitOfWork = unitOfWork;
+            //_user = user;
         }
      
         public async Task<object> PostApplicationUserAsync(UserModel model)

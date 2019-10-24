@@ -18,19 +18,21 @@ namespace BackEnd.API.Controllers
     [ApiController]
     public class ApplicationUserController : ControllerBase
     {
-    private readonly    IApplicationUserServices userServices;
-        public ApplicationUserController(IApplicationUserServices _userServices)
+    private readonly    IApplicationUserServices _userServices;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ApplicationUserController(IApplicationUserServices userServices, UserManager<ApplicationUser> userManager)
         {
-            userServices = _userServices;
+            _userServices = userServices;
+            _userManager = userManager;
         }
        
         [HttpPost]
         //  [Authorize(Roles = "SuperAdmin")]
         [Route("Register")]
         //Post: /api/ApplicationUser/Register
-        public async Task<object> PostApplicationUser(UserModel model)
+        public async Task<object> PostApplicationUser([FromBody]UserModel model)
         {
-            return userServices.PostApplicationUserAsync(model);
+            return _userServices.PostApplicationUserAsync(model);
 
         }
 
