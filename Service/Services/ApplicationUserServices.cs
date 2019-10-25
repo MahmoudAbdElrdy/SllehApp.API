@@ -23,20 +23,21 @@ namespace BackEnd.Service.Services
         private RoleManager<IdentityRole> _roleManager;
         //private IUnitOfWork<DatabaseContext> _unitOfWork;
         //private IGRepository<ApplicationUser> _user;
-
+        private IResponseDTO _response;
         public ApplicationUserServices(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            IPasswordHasher<ApplicationUser> passwordHash, RoleManager<IdentityRole> roleManager)
+            IPasswordHasher<ApplicationUser> passwordHash, RoleManager<IdentityRole> roleManager,IResponseDTO responseDTO)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             passwordHasher = passwordHash;
             //  _appSettings = appSettings.Value;
             _roleManager = roleManager;
+            _response = responseDTO;
             //_unitOfWork = unitOfWork;
             //_user = user;
         }
      
-        public async Task<object> PostApplicationUserAsync(UserModel model)
+        public async Task<IResponseDTO> PostApplicationUserAsync(UserModel model)
         {
             var applicationuser = new ApplicationUser()
             {
@@ -44,16 +45,21 @@ namespace BackEnd.Service.Services
                 Email = model.Email,
                 FullName = model.FullName,
                 Creationdate = DateTime.Now
+                
             };
 
             try
             {
                 var result = await _userManager.CreateAsync(applicationuser, model.Password);
-
+                
                 if (result.Succeeded)
                 {
+
                     await _userManager.AddToRoleAsync(applicationuser, model.Role);
-                    return result;
+                    _response.Data = applicationuser;
+                    _response.IsPassed = true;
+                    _response.Message = "OK";
+                    return _response;
                 }
                 else
                 {
@@ -61,14 +67,20 @@ namespace BackEnd.Service.Services
                     {
                         if (item.Code == "DuplicateUserName")
                         {
-                            return 2;
+                            _response.Data = null;
+                            _response.IsPassed = false;
+                            _response.Message = "DuplicateUserName";
+                            return _response;
                         }
                         if (item.Code == "InvalidUserName")
                         {
-                            return (1);
+                            _response.Data = null;
+                            _response.IsPassed = false;
+                            _response.Message = "InvalidUserName";
+                            return _response;
                         }
                     }
-                    return (result);
+                    return (_response);
                 }
 
             }
@@ -83,28 +95,46 @@ namespace BackEnd.Service.Services
 
                     if (number == 547)
                     {
-                        return (5);
+                        _response.Data = null;
+                        _response.IsPassed = false;
+                        _response.Message = "547";
+                        return _response;
 
                     }
                     else
-                        return (6);
+                        _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "6";
+                    return _response;
                 }
-                return (6);
+                return _response;
 
             }
         }
-        public async Task createRolesandUsers(string RoleName)
+        public async Task<IResponseDTO> createRolesandUsers(string RoleName)
         {
+            if(RoleName ==null)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "RoleName ISNULL";
+                return _response;
+            }
             bool x = await _roleManager.RoleExistsAsync(RoleName);
             if (!x)
             {
                 var role = new IdentityRole();
                 role.Name = RoleName;
                 await _roleManager.CreateAsync(role);
-             
-
+                _response.Data = role;
+                _response.IsPassed = true;
+                _response.Message = "OK";
+                return _response;
             }
-           
+            _response.Data = null;
+            _response.IsPassed = false;
+            _response.Message = "RoleExists";
+            return _response;
 
         }
 

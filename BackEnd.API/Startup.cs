@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BackEnd.Repositories.Generics;
 using BackEnd.Repositories.UOW;
 using BackEnd.Service.IServices;
+using BackEnd.Service.Mapper;
+using BackEnd.Service.Models;
 using BackEnd.Service.Services;
 using DAL;
 using DAL.Entities;
@@ -78,9 +81,11 @@ namespace BackEnd.API
             });
             services.AddScoped(typeof(IGRepository<>), typeof(GRepository<>));
            services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
-            services.AddScoped<IApplicationUserServices,ApplicationUserServices>().Reverse();
             services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
             services.AddScoped<RoleManager<IdentityRole>, RoleManager<IdentityRole>>();
+            services.AddAutoMapper(x => x.AddProfile(new DomainProfile()));
+            services.AddScoped<IApplicationUserServices,ApplicationUserServices>().Reverse();
+            services.AddScoped<IResponseDTO,ResponseDTO>().Reverse();
 
         }
 

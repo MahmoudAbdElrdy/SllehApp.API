@@ -33,7 +33,7 @@ namespace BackEnd.API.Controllers
         //  [Authorize(Roles = "SuperAdmin")]
         [Route("Register")]
         //Post: /api/ApplicationUser/Register
-        public async Task<object> PostApplicationUser(UserModel model)
+        public async Task<IResponseDTO> PostApplicationUser(UserModel model)
         {
             return await _userServices.PostApplicationUserAsync(model);
 
@@ -42,10 +42,10 @@ namespace BackEnd.API.Controllers
         [HttpPost]
 
         [Route("CreateRoles")]
-        public async Task CreateRoles(string RoleName)
+        public async Task<IResponseDTO> CreateRoles(string RoleName)
         {
 
-            await _userServices.createRolesandUsers(RoleName);
+         return   await _userServices.createRolesandUsers(RoleName);
           
         }
     }
