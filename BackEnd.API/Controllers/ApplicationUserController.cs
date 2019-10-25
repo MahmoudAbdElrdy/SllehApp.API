@@ -20,21 +20,33 @@ namespace BackEnd.API.Controllers
     {
     private readonly    IApplicationUserServices _userServices;
         private readonly UserManager<ApplicationUser> _userManager;
-        public ApplicationUserController(IApplicationUserServices userServices, UserManager<ApplicationUser> userManager)
+        private RoleManager<IdentityRole> _roleManager;
+
+        public ApplicationUserController(IApplicationUserServices userServices, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userServices = userServices;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
        
         [HttpPost]
         //  [Authorize(Roles = "SuperAdmin")]
         [Route("Register")]
         //Post: /api/ApplicationUser/Register
-        public async Task<object> PostApplicationUser([FromBody]UserModel model)
+        public async Task<object> PostApplicationUser(UserModel model)
         {
-            return _userServices.PostApplicationUserAsync(model);
+            return await _userServices.PostApplicationUserAsync(model);
 
         }
 
+        [HttpPost]
+
+        [Route("CreateRoles")]
+        public async Task CreateRoles(string RoleName)
+        {
+
+            await _userServices.createRolesandUsers(RoleName);
+          
+        }
     }
 }

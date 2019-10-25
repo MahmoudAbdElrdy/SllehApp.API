@@ -43,6 +43,10 @@ namespace BackEnd.API
              options.SerializerSettings.Formatting = Formatting.Indented;
              options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
              options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+             var resolver = options.SerializerSettings.ContractResolver;
+             if (resolver != null)
+                 (resolver as DefaultContractResolver).NamingStrategy = null;
+
          });
             services.AddDbContext<DatabaseContext>(options =>
                     options.UseLazyLoadingProxies()
@@ -75,8 +79,9 @@ namespace BackEnd.API
             services.AddScoped(typeof(IGRepository<>), typeof(GRepository<>));
            services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
             services.AddScoped<IApplicationUserServices,ApplicationUserServices>().Reverse();
-            //services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
-         
+            services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
+            services.AddScoped<RoleManager<IdentityRole>, RoleManager<IdentityRole>>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

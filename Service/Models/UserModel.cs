@@ -24,6 +24,6 @@ namespace BackEnd.Service.Models
 
         public int Count { get; set; }
 
-        public IEnumerable<RoleModel> RoleModels { get; set; }
+       public IEnumerable<RoleModel> RoleModels { get; set; }
     }
 }

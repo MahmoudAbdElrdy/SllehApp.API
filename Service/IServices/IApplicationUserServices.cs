@@ -9,5 +9,6 @@ namespace BackEnd.Service.IServices
    public interface IApplicationUserServices
     {
         Task<object> PostApplicationUserAsync(UserModel model);
+          Task createRolesandUsers(string RoleName);
     }
 }

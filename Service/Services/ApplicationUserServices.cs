@@ -25,7 +25,7 @@ namespace BackEnd.Service.Services
         //private IGRepository<ApplicationUser> _user;
 
         public ApplicationUserServices(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            IPasswordHasher<ApplicationUser> passwordHash/*, IGRepository<ApplicationUser> user, IUnitOfWork<DatabaseContext> unitOfWork,, IOptions<ApplicationSettings> appSettings*/, RoleManager<IdentityRole> roleManager)
+            IPasswordHasher<ApplicationUser> passwordHash, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -93,5 +93,21 @@ namespace BackEnd.Service.Services
 
             }
         }
+        public async Task createRolesandUsers(string RoleName)
+        {
+            bool x = await _roleManager.RoleExistsAsync(RoleName);
+            if (!x)
+            {
+                var role = new IdentityRole();
+                role.Name = RoleName;
+                await _roleManager.CreateAsync(role);
+             
+
+            }
+           
+
+        }
+
+       
     }
 }
