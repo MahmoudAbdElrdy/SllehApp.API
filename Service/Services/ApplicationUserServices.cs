@@ -11,6 +11,11 @@ using System.Threading.Tasks;
 using BackEnd.Repositories.Generics;
 using BackEnd.Repositories.UOW;
 using DAL;
+using Microsoft.Extensions.Options;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Linq;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace BackEnd.Service.Services
 {
@@ -18,19 +23,19 @@ namespace BackEnd.Service.Services
     {
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _signInManager;
-        private IPasswordHasher<ApplicationUser> passwordHasher;
-        // private readonly ApplicationSettings _appSettings;
+        private IPasswordHasher<ApplicationUser> _passwordHasher;
+         private readonly ApplicationSettings _appSettings;
         private RoleManager<IdentityRole> _roleManager;
         //private IUnitOfWork<DatabaseContext> _unitOfWork;
         //private IGRepository<ApplicationUser> _user;
         private IResponseDTO _response;
         public ApplicationUserServices(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            IPasswordHasher<ApplicationUser> passwordHash, RoleManager<IdentityRole> roleManager,IResponseDTO responseDTO)
+            IPasswordHasher<ApplicationUser> passwordHash, RoleManager<IdentityRole> roleManager,IResponseDTO responseDTO, IOptions<ApplicationSettings> appSettings)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            passwordHasher = passwordHash;
-            //  _appSettings = appSettings.Value;
+            _passwordHasher = passwordHash;
+             _appSettings = appSettings.Value;
             _roleManager = roleManager;
             _response = responseDTO;
             //_unitOfWork = unitOfWork;
@@ -111,6 +116,7 @@ namespace BackEnd.Service.Services
 
             }
         }
+     
         public async Task<IResponseDTO> createRolesandUsers(string RoleName)
         {
             if(RoleName ==null)
@@ -138,6 +144,41 @@ namespace BackEnd.Service.Services
 
         }
 
-       
+        public async Task<IResponseDTO> Login(LoginModel model)
+        {
+            var user = await _userManager.FindByNameAsync(model.LoginUserName);
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.LoginPassword))
+            {
+                // Get Role assigned to the user 
+                var UserRoles = await _userManager.GetRolesAsync(user);
+                IdentityOptions _options = new IdentityOptions();
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim("UserID",user.Id.ToString()),
+                        new Claim(_options.ClaimsIdentity.RoleClaimType,UserRoles.FirstOrDefault())
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(1),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)),
+                    SecurityAlgorithms.HmacSha256Signature)
+                };
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                var token = tokenHandler.WriteToken(securityToken);
+                _response.IsPassed = true;
+                _response.Message = "OK";
+                _response.Data = token;
+                return _response;
+            }
+            else
+                _response.IsPassed = false;
+            _response.Message = "Username or Password is incorrect";
+            _response.Data = null;
+            return _response;
+        
+
+        }
     }
 }

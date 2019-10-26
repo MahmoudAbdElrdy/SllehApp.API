@@ -40,7 +40,7 @@ namespace BackEnd.API.Controllers
         }
 
         [HttpPost]
-
+          [Authorize(Roles = "Admin")]
         [Route("CreateRoles")]
         public async Task<IResponseDTO> CreateRoles(string RoleName)
         {
@@ -48,5 +48,15 @@ namespace BackEnd.API.Controllers
          return   await _userServices.createRolesandUsers(RoleName);
           
         }
+        [HttpPost]
+
+        [Route("Login")]
+        public async Task<IResponseDTO> Login(LoginModel model)
+        {
+
+            return await _userServices.Login(model);
+
+        }
+
     }
 }

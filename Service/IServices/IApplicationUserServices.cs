@@ -10,5 +10,6 @@ namespace BackEnd.Service.IServices
     {
         Task<IResponseDTO> PostApplicationUserAsync(UserModel model);
         Task<IResponseDTO> createRolesandUsers(string RoleName);
+         Task<IResponseDTO> Login(LoginModel model);
     }
 }
