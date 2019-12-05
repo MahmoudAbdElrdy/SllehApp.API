@@ -113,7 +113,7 @@ namespace BackEnd.API
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString())
+                    builder => builder.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
@@ -157,7 +157,7 @@ namespace BackEnd.API
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
            
             ////using (var scope = app.ApplicationServices.CreateScope())
@@ -169,7 +169,7 @@ namespace BackEnd.API
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("../swagger/v1/swagger.json", " Auditor V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", " Auditor V1");
 
             });
             app.UseAuthentication();
