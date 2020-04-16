@@ -5,12 +5,12 @@ using System;
 
 namespace DAL
 {
-    public class DatabaseContext: IdentityDbContext
+    public class SllehApp : IdentityDbContext
     {
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+        public SllehApp(DbContextOptions<SllehApp> options) : base(options)
         {
 
         }
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+      //  public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     }
 }

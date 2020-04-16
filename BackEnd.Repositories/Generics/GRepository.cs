@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using BackEnd.DAL;
+using BackEnd.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -19,7 +20,7 @@ public class GRepository<T> : IGRepository<T>
         #endregion
 
         #region Constructor
-        public GRepository(DatabaseContext dbContext)
+        public GRepository(SllehAppContext dbContext)
         {
             _dbContext = dbContext;
         }

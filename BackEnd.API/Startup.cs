@@ -9,8 +9,8 @@ using BackEnd.Service.IServices;
 using BackEnd.Service.Mapper;
 using BackEnd.Service.Models;
 using BackEnd.Service.Services;
-using DAL;
-using DAL.Entities;
+//using DAL;
+//using DAL.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +28,12 @@ using Swashbuckle.AspNetCore.Swagger;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+
+using BackEnd.DAL.Models;
+
 namespace BackEnd.API
 {
     public class Startup
@@ -42,7 +48,7 @@ namespace BackEnd.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
+            // services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
 
             services.AddMvc(config => {
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -56,41 +62,41 @@ namespace BackEnd.API
                  (resolver as DefaultContractResolver).NamingStrategy = null;
 
          });
-            services.AddDbContext<DatabaseContext>(options =>
-                    options.UseLazyLoadingProxies()
+            services.AddDbContext<SllehAppContext>(options =>
+                    options.UseLazyLoadingProxies(false)
                     .UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")));
-       
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-                    {
-                        options.User.RequireUniqueEmail = false;
-                    })
-    .AddEntityFrameworkStores<DatabaseContext>()
-    .AddDefaultTokenProviders()
-    .AddDefaultUI();
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredLength = 4;
-            });
+
+            //        services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            //                {
+            //                    options.User.RequireUniqueEmail = false;
+            //                })
+            //.AddEntityFrameworkStores<DB_A56457_LookandGoContext>()
+            //.AddDefaultTokenProviders()
+            //.AddDefaultUI();
+            //        services.Configure<IdentityOptions>(options =>
+            //        {
+            //            options.Password.RequireDigit = false;
+            //            options.Password.RequireNonAlphanumeric = false;
+            //            options.Password.RequireLowercase = false;
+            //            options.Password.RequireUppercase = false;
+            //            options.Password.RequiredLength = 4;
+            //        });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "AspNetCoreApiStarter", Version = "v1" });
                 // Swagger 2.+ support
-                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
-                {
-                    In = "header",
-                    Description = "Please insert JWT with Bearer into field",
-                    Name = "Authorization",
-                    Type = "apiKey"
-                });
+                //              c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                //              {
+                //                  In = "header",
+                //                  Description = "Please insert JWT with Bearer into field",
+                //                  Name = "Authorization",
+                //                  Type = "apiKey"
+                //              });
 
-                c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
-  {
-    { "Bearer", new string[] { } }
-  });
+                //              c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                //{
+                //  { "Bearer", new string[] { } }
+                //});
             });
             //services.AddSwaggerGen(c => {
             //    c.ResolveConflictingActions(x => x.First());
@@ -102,12 +108,30 @@ namespace BackEnd.API
             //    });
             //});
             services.AddScoped(typeof(IGRepository<>), typeof(GRepository<>));
-           services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
-            services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
-            services.AddScoped<RoleManager<IdentityRole>, RoleManager<IdentityRole>>();
+            services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+            //services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
+            //services.AddScoped<RoleManager<IdentityRole>, RoleManager<IdentityRole>>();
             services.AddAutoMapper(x => x.AddProfile(new DomainProfile()));
-            services.AddScoped<IApplicationUserServices,ApplicationUserServices>().Reverse();
-            services.AddScoped<IResponseDTO,ResponseDTO>().Reverse();
+            services.AddScoped<IServicesAdminUsers, AdminUsersServices>().Reverse();
+            //services.AddScoped<IServicesCountry, CountryServices>().Reverse();
+            //services.AddScoped<IServicesCity, CityServices>().Reverse();
+            //services.AddScoped<IServicesContactUs, ContactUsServices>().Reverse();
+            //services.AddScoped<IServicesContactUsMarket, ContactUsMarketServices>().Reverse();
+            //services.AddScoped<IServicesAdvertisementView, AdvertisementViewServices>().Reverse();
+            //services.AddScoped<IServicesAboutUs, AboutUsServices>().Reverse();
+            //services.AddScoped<IServicesAdvertisement, AdvertisementServices>().Reverse();
+            //services.AddScoped<IServicesAdvertisementOpen, AdvertisementOpenServices>().Reverse();
+            //services.AddScoped<IServicesAdvertisementUpdate, AdvertisementUpdateServices>().Reverse();
+            //services.AddScoped<IServicesCategory, CategoryServices>().Reverse();
+            //services.AddScoped<IServicesCustomer, CustomerServices>().Reverse();
+            //services.AddScoped<IServicesCustomerLogin, CustomerLoginServices>().Reverse();
+            //services.AddScoped<IServicesMarket, MarketServices>().Reverse();
+            //services.AddScoped<IServicesMarketFollow, MarketFollowServices>().Reverse();
+            //services.AddScoped<IServicesPrivacy, PrivacyServices>().Reverse();
+            ////   services.AddScoped<ise,PrivacyServices >().Reverse();
+            services.AddScoped<IResponseDTO, ResponseDTO>().Reverse();
+            //
+            // services.AddScoped<IDepartmentServices,DepartmentServices>().Reverse();
 
             // Add service and create Policy with options
             services.AddCors(options =>
@@ -159,7 +183,7 @@ namespace BackEnd.API
             }
             app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
-           
+
             ////using (var scope = app.ApplicationServices.CreateScope())
             ////{
             ////    //Resolve ASP .NET Core Identity with DI help
@@ -172,9 +196,15 @@ namespace BackEnd.API
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", " Auditor V1");
 
             });
+            //app.UseStaticFiles();
+            //app.UseStaticFiles(new StaticFileOptions()
+            //{
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"UploadFiles")),
+            //    RequestPath = new PathString("/UploadFiles")
+            //});
             app.UseAuthentication();
             app.UseMvc();
-            
+
 
         }
     }
