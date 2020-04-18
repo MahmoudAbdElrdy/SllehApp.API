@@ -20,7 +20,7 @@ public class GRepository<T> : IGRepository<T>
         #endregion
 
         #region Constructor
-        public GRepository(SllehAppContext dbContext)
+        public GRepository(DB_A57576_SllehAppContext dbContext)
         {
             _dbContext = dbContext;
         }

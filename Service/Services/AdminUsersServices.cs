@@ -19,11 +19,11 @@ namespace BackEnd.Service.Services
     public class AdminUsersServices : IServicesAdminUsers
     {
         private readonly IGRepository<AdminUsers> _AdminUsersRepositroy;
-        private readonly IUnitOfWork<SllehAppContext> _unitOfWork;
+        private readonly IUnitOfWork<DB_A57576_SllehAppContext> _unitOfWork;
         private readonly IResponseDTO _response;
         private readonly IMapper _mapper;
         public AdminUsersServices(IGRepository<AdminUsers> AdminUsers,
-            IUnitOfWork<SllehAppContext> unitOfWork, IResponseDTO responseDTO, IMapper mapper)
+            IUnitOfWork<DB_A57576_SllehAppContext> unitOfWork, IResponseDTO responseDTO, IMapper mapper)
         {
             _AdminUsersRepositroy = AdminUsers;
             _unitOfWork = unitOfWork;

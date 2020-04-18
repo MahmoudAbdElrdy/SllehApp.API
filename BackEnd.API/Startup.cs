@@ -62,7 +62,7 @@ namespace BackEnd.API
                  (resolver as DefaultContractResolver).NamingStrategy = null;
 
          });
-            services.AddDbContext<SllehAppContext>(options =>
+            services.AddDbContext<DB_A57576_SllehAppContext>(options =>
                     options.UseLazyLoadingProxies(false)
                     .UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")));
 

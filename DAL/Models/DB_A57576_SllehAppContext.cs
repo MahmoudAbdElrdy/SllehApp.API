@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BackEnd.DAL.Models
 {
-    public partial class SllehAppContext : DbContext
+    public partial class DB_A57576_SllehAppContext : DbContext
     {
-        public SllehAppContext()
+        public DB_A57576_SllehAppContext()
         {
         }
 
-        public SllehAppContext(DbContextOptions<SllehAppContext> options)
+        public DB_A57576_SllehAppContext(DbContextOptions<DB_A57576_SllehAppContext> options)
             : base(options)
         {
         }
@@ -22,7 +22,7 @@ namespace BackEnd.DAL.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.;Database=SllehApp;integrated security=true;MultipleActiveResultSets=true;trusted_connection=true");
+                optionsBuilder.UseSqlServer("Server=SQL5050.site4now.net;Database=DB_A57576_SllehApp;User Id=DB_A57576_SllehApp_admin;Password=zaid2slleh;");
             }
         }
 
