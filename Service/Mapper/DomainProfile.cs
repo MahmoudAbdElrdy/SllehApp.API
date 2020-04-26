@@ -18,6 +18,21 @@ namespace BackEnd.Service.Mapper
             #endregion
 
             CreateMap<AdminUsersVM, AdminUsers>().ReverseMap();
+            CreateMap<CarVM, Car>().ReverseMap();
+            CreateMap<CityVM, City>().ReverseMap();
+            CreateMap<CountryVM, Country>().ReverseMap();
+            CreateMap<CustomerVM, Customer>().ReverseMap();
+            CreateMap<CustomerNotificationsVM, CustomerNotifications>().ReverseMap();
+            CreateMap<MalfunctionVM, Malfunction>().ReverseMap();
+            CreateMap<OrderVM, Order>().ReverseMap();
+            CreateMap<WorkshopVM, Workshop>().ReverseMap();
+            CreateMap<WorkshopCarVM, WorkshopCar>().ReverseMap();
+            CreateMap<WorkshopFeaturesVM, WorkshopFeatures>().ReverseMap();
+            CreateMap<WorkshopMalfunctionVM, WorkshopMalfunction>().ReverseMap();
+            CreateMap<WorkshopNotificationsVM, WorkshopNotifications>().ReverseMap();
+            CreateMap<WorkshopRateVM, WorkshopRate>().ReverseMap();
+            CreateMap<WorkshopTechnicianVM, WorkshopTechnician>().ReverseMap();
+            CreateMap<WorkshopWorkTimeVM, WorkshopWorkTime>().ReverseMap();
             //CreateMap<ReportSetting, ReportSettingModel>();
             //CreateMap<ReportSettingModel, ReportSetting>()
             //     .ForMember(t => t.CurrentDate, opt => opt.MapFrom(s => DateTime.ParseExact(s.CurrentDate, "d/M/yyyy", CultureInfo.InvariantCulture)));

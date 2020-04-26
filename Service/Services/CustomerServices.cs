@@ -16,20 +16,20 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Service.Services
 {
-    public class AdminUsersServices : IServicesAdminUsers
+    public class CustomerServices : IServicesCustomer
     {
         #region PrivateField
-        private readonly IGRepository<AdminUsers> _AdminUsersRepositroy;
+        private readonly IGRepository<Customer> _CustomerRepositroy;
         private readonly IUnitOfWork<DB_A57576_SllehAppContext> _unitOfWork;
         private readonly IResponseDTO _response;
         private readonly IMapper _mapper;
         #endregion
 
         #region Constructor
-        public AdminUsersServices(IGRepository<AdminUsers> AdminUsers,
+        public CustomerServices(IGRepository<Customer> Customer,
             IUnitOfWork<DB_A57576_SllehAppContext> unitOfWork, IResponseDTO responseDTO, IMapper mapper)
         {
-            _AdminUsersRepositroy = AdminUsers;
+            _CustomerRepositroy = Customer;
             _unitOfWork = unitOfWork;
             _response = responseDTO;
             _mapper = mapper;
@@ -37,14 +37,14 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region DeleteAdminUsers(AdminUsersVM model)
-        public IResponseDTO DeleteAdminUsers(AdminUsersVM model)
+        #region DeleteCustomer(CustomerVM model)
+        public IResponseDTO DeleteCustomer(CustomerVM model)
         {
             try
             {
 
-                var DbAdminUsers = _mapper.Map<AdminUsers>(model);
-                var entityEntry = _AdminUsersRepositroy.Remove(DbAdminUsers);
+                var DbCustomer = _mapper.Map<Customer>(model);
+                var entityEntry = _CustomerRepositroy.Remove(DbCustomer);
 
 
                 int save = _unitOfWork.Commit();
@@ -72,13 +72,13 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region EditAdminUsers(AdminUsersVM model)
-        public IResponseDTO EditAdminUsers(AdminUsersVM model)
+        #region EditCustomer(CustomerVM model)
+        public IResponseDTO EditCustomer(CustomerVM model)
         {
             try
             {
-                var DbAdminUsers = _mapper.Map<AdminUsers>(model);
-                var entityEntry = _AdminUsersRepositroy.Update(DbAdminUsers);
+                var DbCustomer = _mapper.Map<Customer>(model);
+                var entityEntry = _CustomerRepositroy.Update(DbCustomer);
 
 
                 int save = _unitOfWork.Commit();
@@ -108,16 +108,16 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region GetAllAdminUsers()
-        public IResponseDTO GetAllAdminUsers()
+        #region GetAllCustomer()
+        public IResponseDTO GetAllCustomer()
         {
             try
             {
-                var AdminUserss = _AdminUsersRepositroy.GetAll();
+                var Customers = _CustomerRepositroy.GetAll();
 
 
-                var AdminUserssList = _mapper.Map<List<AdminUsersVM>>(AdminUserss);
-                _response.Data = AdminUserssList;
+                var CustomersList = _mapper.Map<List<CustomerVM>>(Customers);
+                _response.Data = CustomersList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -131,12 +131,12 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region AdminUsersLogin(AdminUsersVM model)
-        public IResponseDTO AdminUsersLogin(AdminUsersVM model)
+        #region CustomerLogin(CustomerVM model)
+        public IResponseDTO CustomerLogin(CustomerVM model)
         {
             try
             {
-                var res = _AdminUsersRepositroy.GetFirst(X => X.UserName == model.UserName && X.Password == model.Password);
+                var res = _CustomerRepositroy.GetFirst(X => X.Email == model.Email && X.Password == model.Password);
                 if(res == null)
                 {
                     _response.Data = null;
@@ -145,8 +145,8 @@ namespace BackEnd.Service.Services
                 }
                 else
                 {
-                    var DbAdminUsers = _mapper.Map<AdminUsersVM>(model);
-                    _response.Data = DbAdminUsers;
+                    var DbCustomer = _mapper.Map<CustomerVM>(model);
+                    _response.Data = DbCustomer;
                     _response.IsPassed = true;
                     _response.Message = "Ok";
                 }
@@ -161,16 +161,16 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region GetByIDAdminUsers(object id)
-        public IResponseDTO GetByIDAdminUsers(object id)
+        #region GetByIDCustomer(object id)
+        public IResponseDTO GetByIDCustomer(object id)
         {
             try
             {
-                var AdminUserss = _AdminUsersRepositroy.Find(id);
+                var Customers = _CustomerRepositroy.Find(id);
 
 
-                var AdminUserssList = _mapper.Map<AdminUsersVM>(AdminUserss);
-                _response.Data = AdminUserssList;
+                var CustomersList = _mapper.Map<CustomerVM>(Customers);
+                _response.Data = CustomersList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -184,15 +184,15 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region PostAdminUsers(AdminUsersVM model)
-        public IResponseDTO PostAdminUsers(AdminUsersVM model)
+        #region PostCustomer(CustomerVM model)
+        public IResponseDTO PostCustomer(CustomerVM model)
         {
 
             try
             {
-                var DbAdminUsers = _mapper.Map<AdminUsers>(model);
+                var DbCustomer = _mapper.Map<Customer>(model);
 
-                var AdminUsers = _mapper.Map<AdminUsersVM>(_AdminUsersRepositroy.Add(DbAdminUsers));
+                var Customer = _mapper.Map<CustomerVM>(_CustomerRepositroy.Add(DbCustomer));
 
                 int save = _unitOfWork.Commit();
 

@@ -16,20 +16,20 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Service.Services
 {
-    public class AdminUsersServices : IServicesAdminUsers
+    public class OrderServices : IServicesOrder
     {
         #region PrivateField
-        private readonly IGRepository<AdminUsers> _AdminUsersRepositroy;
+        private readonly IGRepository<Order> _OrderRepositroy;
         private readonly IUnitOfWork<DB_A57576_SllehAppContext> _unitOfWork;
         private readonly IResponseDTO _response;
         private readonly IMapper _mapper;
         #endregion
 
         #region Constructor
-        public AdminUsersServices(IGRepository<AdminUsers> AdminUsers,
+        public OrderServices(IGRepository<Order> Order,
             IUnitOfWork<DB_A57576_SllehAppContext> unitOfWork, IResponseDTO responseDTO, IMapper mapper)
         {
-            _AdminUsersRepositroy = AdminUsers;
+            _OrderRepositroy = Order;
             _unitOfWork = unitOfWork;
             _response = responseDTO;
             _mapper = mapper;
@@ -37,14 +37,14 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region DeleteAdminUsers(AdminUsersVM model)
-        public IResponseDTO DeleteAdminUsers(AdminUsersVM model)
+        #region DeleteOrder(OrderVM model)
+        public IResponseDTO DeleteOrder(OrderVM model)
         {
             try
             {
 
-                var DbAdminUsers = _mapper.Map<AdminUsers>(model);
-                var entityEntry = _AdminUsersRepositroy.Remove(DbAdminUsers);
+                var DbOrder = _mapper.Map<Order>(model);
+                var entityEntry = _OrderRepositroy.Remove(DbOrder);
 
 
                 int save = _unitOfWork.Commit();
@@ -72,13 +72,13 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region EditAdminUsers(AdminUsersVM model)
-        public IResponseDTO EditAdminUsers(AdminUsersVM model)
+        #region EditOrder(OrderVM model)
+        public IResponseDTO EditOrder(OrderVM model)
         {
             try
             {
-                var DbAdminUsers = _mapper.Map<AdminUsers>(model);
-                var entityEntry = _AdminUsersRepositroy.Update(DbAdminUsers);
+                var DbOrder = _mapper.Map<Order>(model);
+                var entityEntry = _OrderRepositroy.Update(DbOrder);
 
 
                 int save = _unitOfWork.Commit();
@@ -108,16 +108,16 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region GetAllAdminUsers()
-        public IResponseDTO GetAllAdminUsers()
+        #region GetAllOrder()
+        public IResponseDTO GetAllOrder()
         {
             try
             {
-                var AdminUserss = _AdminUsersRepositroy.GetAll();
+                var Orders = _OrderRepositroy.GetAll();
 
 
-                var AdminUserssList = _mapper.Map<List<AdminUsersVM>>(AdminUserss);
-                _response.Data = AdminUserssList;
+                var OrdersList = _mapper.Map<List<OrderVM>>(Orders);
+                _response.Data = OrdersList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -131,46 +131,16 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region AdminUsersLogin(AdminUsersVM model)
-        public IResponseDTO AdminUsersLogin(AdminUsersVM model)
+        #region GetByIDOrder(object id)
+        public IResponseDTO GetByIDOrder(object id)
         {
             try
             {
-                var res = _AdminUsersRepositroy.GetFirst(X => X.UserName == model.UserName && X.Password == model.Password);
-                if(res == null)
-                {
-                    _response.Data = null;
-                    _response.IsPassed = false;
-                    _response.Message = "Not saved";
-                }
-                else
-                {
-                    var DbAdminUsers = _mapper.Map<AdminUsersVM>(model);
-                    _response.Data = DbAdminUsers;
-                    _response.IsPassed = true;
-                    _response.Message = "Ok";
-                }
-            }
-            catch (Exception ex)
-            {
-                _response.Data = null;
-                _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
-            }
-            return _response;
-        }
-        #endregion
-
-        #region GetByIDAdminUsers(object id)
-        public IResponseDTO GetByIDAdminUsers(object id)
-        {
-            try
-            {
-                var AdminUserss = _AdminUsersRepositroy.Find(id);
+                var Orders = _OrderRepositroy.Find(id);
 
 
-                var AdminUserssList = _mapper.Map<AdminUsersVM>(AdminUserss);
-                _response.Data = AdminUserssList;
+                var OrdersList = _mapper.Map<OrderVM>(Orders);
+                _response.Data = OrdersList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -184,15 +154,15 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region PostAdminUsers(AdminUsersVM model)
-        public IResponseDTO PostAdminUsers(AdminUsersVM model)
+        #region PostOrder(OrderVM model)
+        public IResponseDTO PostOrder(OrderVM model)
         {
 
             try
             {
-                var DbAdminUsers = _mapper.Map<AdminUsers>(model);
+                var DbOrder = _mapper.Map<Order>(model);
 
-                var AdminUsers = _mapper.Map<AdminUsersVM>(_AdminUsersRepositroy.Add(DbAdminUsers));
+                var Order = _mapper.Map<OrderVM>(_OrderRepositroy.Add(DbOrder));
 
                 int save = _unitOfWork.Commit();
 
@@ -220,6 +190,52 @@ namespace BackEnd.Service.Services
 
             return _response;
 
+        }
+        #endregion
+
+        #region GetByCustomerId(Guid? id)
+        public IResponseDTO GetByCustomerId(Guid? id)
+        {
+            try
+            {
+                var Orders = _OrderRepositroy.Find(x => x.CustomerId == id);
+
+
+                var OrdersList = _mapper.Map<OrderVM>(Orders);
+                _response.Data = OrdersList;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
+        #endregion
+
+        #region GetByWorkshopId(Guid? id)
+        public IResponseDTO GetByWorkshopId(Guid? id)
+        {
+            try
+            {
+                var Orders = _OrderRepositroy.Find(x => x.WorkshopId == id);
+
+
+                var OrdersList = _mapper.Map<OrderVM>(Orders);
+                _response.Data = OrdersList;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
         }
         #endregion
     }

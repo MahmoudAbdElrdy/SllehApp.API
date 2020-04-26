@@ -16,20 +16,20 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Service.Services
 {
-    public class AdminUsersServices : IServicesAdminUsers
+    public class WorkshopServices : IServicesWorkshop
     {
         #region PrivateField
-        private readonly IGRepository<AdminUsers> _AdminUsersRepositroy;
+        private readonly IGRepository<Workshop> _WorkshopRepositroy;
         private readonly IUnitOfWork<DB_A57576_SllehAppContext> _unitOfWork;
         private readonly IResponseDTO _response;
         private readonly IMapper _mapper;
         #endregion
 
         #region Constructor
-        public AdminUsersServices(IGRepository<AdminUsers> AdminUsers,
+        public WorkshopServices(IGRepository<Workshop> Workshop,
             IUnitOfWork<DB_A57576_SllehAppContext> unitOfWork, IResponseDTO responseDTO, IMapper mapper)
         {
-            _AdminUsersRepositroy = AdminUsers;
+            _WorkshopRepositroy = Workshop;
             _unitOfWork = unitOfWork;
             _response = responseDTO;
             _mapper = mapper;
@@ -37,14 +37,14 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region DeleteAdminUsers(AdminUsersVM model)
-        public IResponseDTO DeleteAdminUsers(AdminUsersVM model)
+        #region DeleteWorkshop(WorkshopVM model)
+        public IResponseDTO DeleteWorkshop(WorkshopVM model)
         {
             try
             {
 
-                var DbAdminUsers = _mapper.Map<AdminUsers>(model);
-                var entityEntry = _AdminUsersRepositroy.Remove(DbAdminUsers);
+                var DbWorkshop = _mapper.Map<Workshop>(model);
+                var entityEntry = _WorkshopRepositroy.Remove(DbWorkshop);
 
 
                 int save = _unitOfWork.Commit();
@@ -72,13 +72,13 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region EditAdminUsers(AdminUsersVM model)
-        public IResponseDTO EditAdminUsers(AdminUsersVM model)
+        #region EditWorkshop(WorkshopVM model)
+        public IResponseDTO EditWorkshop(WorkshopVM model)
         {
             try
             {
-                var DbAdminUsers = _mapper.Map<AdminUsers>(model);
-                var entityEntry = _AdminUsersRepositroy.Update(DbAdminUsers);
+                var DbWorkshop = _mapper.Map<Workshop>(model);
+                var entityEntry = _WorkshopRepositroy.Update(DbWorkshop);
 
 
                 int save = _unitOfWork.Commit();
@@ -108,16 +108,16 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region GetAllAdminUsers()
-        public IResponseDTO GetAllAdminUsers()
+        #region GetAllWorkshop()
+        public IResponseDTO GetAllWorkshop()
         {
             try
             {
-                var AdminUserss = _AdminUsersRepositroy.GetAll();
+                var Workshops = _WorkshopRepositroy.GetAll();
 
 
-                var AdminUserssList = _mapper.Map<List<AdminUsersVM>>(AdminUserss);
-                _response.Data = AdminUserssList;
+                var WorkshopsList = _mapper.Map<List<WorkshopVM>>(Workshops);
+                _response.Data = WorkshopsList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -131,12 +131,12 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region AdminUsersLogin(AdminUsersVM model)
-        public IResponseDTO AdminUsersLogin(AdminUsersVM model)
+        #region WorkshopLogin(WorkshopVM model)
+        public IResponseDTO WorkshopLogin(WorkshopVM model)
         {
             try
             {
-                var res = _AdminUsersRepositroy.GetFirst(X => X.UserName == model.UserName && X.Password == model.Password);
+                var res = _WorkshopRepositroy.GetFirst(X => X.Email == model.Email && X.Password == model.Password);
                 if(res == null)
                 {
                     _response.Data = null;
@@ -145,8 +145,8 @@ namespace BackEnd.Service.Services
                 }
                 else
                 {
-                    var DbAdminUsers = _mapper.Map<AdminUsersVM>(model);
-                    _response.Data = DbAdminUsers;
+                    var DbWorkshop = _mapper.Map<WorkshopVM>(model);
+                    _response.Data = DbWorkshop;
                     _response.IsPassed = true;
                     _response.Message = "Ok";
                 }
@@ -161,16 +161,16 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region GetByIDAdminUsers(object id)
-        public IResponseDTO GetByIDAdminUsers(object id)
+        #region GetByIDWorkshop(object id)
+        public IResponseDTO GetByIDWorkshop(object id)
         {
             try
             {
-                var AdminUserss = _AdminUsersRepositroy.Find(id);
+                var Workshops = _WorkshopRepositroy.Find(id);
 
 
-                var AdminUserssList = _mapper.Map<AdminUsersVM>(AdminUserss);
-                _response.Data = AdminUserssList;
+                var WorkshopsList = _mapper.Map<WorkshopVM>(Workshops);
+                _response.Data = WorkshopsList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -184,15 +184,15 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region PostAdminUsers(AdminUsersVM model)
-        public IResponseDTO PostAdminUsers(AdminUsersVM model)
+        #region PostWorkshop(WorkshopVM model)
+        public IResponseDTO PostWorkshop(WorkshopVM model)
         {
 
             try
             {
-                var DbAdminUsers = _mapper.Map<AdminUsers>(model);
+                var DbWorkshop = _mapper.Map<Workshop>(model);
 
-                var AdminUsers = _mapper.Map<AdminUsersVM>(_AdminUsersRepositroy.Add(DbAdminUsers));
+                var Workshop = _mapper.Map<WorkshopVM>(_WorkshopRepositroy.Add(DbWorkshop));
 
                 int save = _unitOfWork.Commit();
 
