@@ -43,7 +43,7 @@ namespace BackEnd.DAL.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
 
             modelBuilder.Entity<AdminUsers>(entity =>
             {
@@ -120,6 +120,8 @@ namespace BackEnd.DAL.Models
                 entity.Property(e => e.Password).HasMaxLength(50);
 
                 entity.Property(e => e.Phone).HasMaxLength(50);
+
+                entity.Property(e => e.Token).HasDefaultValueSql("('')");
             });
 
             modelBuilder.Entity<CustomerNotifications>(entity =>
@@ -157,9 +159,9 @@ namespace BackEnd.DAL.Models
 
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
-                entity.Property(e => e.MapLangitude).HasMaxLength(50);
+                entity.Property(e => e.MapLangitude).HasColumnType("decimal(18, 10)");
 
-                entity.Property(e => e.MapLatitude).HasMaxLength(50);
+                entity.Property(e => e.MapLatitude).HasColumnType("decimal(18, 10)");
 
                 entity.Property(e => e.Phone).HasMaxLength(50);
 
@@ -188,15 +190,17 @@ namespace BackEnd.DAL.Models
 
                 entity.Property(e => e.Email).HasMaxLength(50);
 
-                entity.Property(e => e.MapLangitude).HasMaxLength(50);
+                entity.Property(e => e.MapLangitude).HasColumnType("decimal(18, 10)");
 
-                entity.Property(e => e.MapLatitude).HasMaxLength(50);
+                entity.Property(e => e.MapLatitude).HasColumnType("decimal(18, 10)");
 
                 entity.Property(e => e.OwnerName).HasMaxLength(50);
 
                 entity.Property(e => e.Password).HasMaxLength(50);
 
                 entity.Property(e => e.Phone).HasMaxLength(50);
+
+                entity.Property(e => e.Token).HasDefaultValueSql("('')");
             });
 
             modelBuilder.Entity<WorkshopCar>(entity =>

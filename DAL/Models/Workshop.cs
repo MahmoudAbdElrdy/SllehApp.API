@@ -21,8 +21,6 @@ namespace BackEnd.DAL.Models
         public string Name { get; set; }
         public bool? IsTrust { get; set; }
         public string ImageUrl { get; set; }
-        public string MapLatitude { get; set; }
-        public string MapLangitude { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
@@ -34,6 +32,9 @@ namespace BackEnd.DAL.Models
         public bool? HasSparePart { get; set; }
         public bool? HasWarranty { get; set; }
         public DateTime? CreationDate { get; set; }
+        public string Token { get; set; }
+        public decimal? MapLatitude { get; set; }
+        public decimal? MapLangitude { get; set; }
 
         public virtual ICollection<Order> Order { get; set; }
         public virtual ICollection<WorkshopCar> WorkshopCar { get; set; }

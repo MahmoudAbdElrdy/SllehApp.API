@@ -113,7 +113,9 @@ namespace BackEnd.API
             //services.AddScoped<RoleManager<IdentityRole>, RoleManager<IdentityRole>>();
             services.AddAutoMapper(x => x.AddProfile(new DomainProfile()));
             services.AddScoped<IServicesAdminUsers, AdminUsersServices>().Reverse();
-            //services.AddScoped<IServicesCountry, CountryServices>().Reverse();
+            services.AddScoped<IServicesWorkshop, WorkshopServices>().Reverse();
+            services.AddScoped<IServicesCustomer, CustomerServices>().Reverse();
+            services.AddScoped<IServicesOrder, OrderServices>().Reverse();
             //services.AddScoped<IServicesCity, CityServices>().Reverse();
             //services.AddScoped<IServicesContactUs, ContactUsServices>().Reverse();
             //services.AddScoped<IServicesContactUsMarket, ContactUsMarketServices>().Reverse();

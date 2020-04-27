@@ -221,6 +221,56 @@ namespace BackEnd.Service.Services
             return _response;
 
         }
+
+
+        #endregion
+        #region
+        public IResponseDTO getNearestWorkShops(double MapLatitude, double MapLangitude, string Token)
+        {
+            try
+            {
+                var Workshops = _WorkshopRepositroy.GetAll().ToList();
+
+
+                var WorkshopsList = _mapper.Map<List<WorkshopVM>>(Workshops);
+                for (int i=0;i< WorkshopsList.Count;i++)
+                {
+                    double lat1 = Deg2Rad((double)WorkshopsList[i].MapLangitude);
+                    double lat2 = Deg2Rad(MapLangitude);
+                    double lon1 = Deg2Rad((double)WorkshopsList[i].MapLatitude);
+                    double lon2 = Deg2Rad(MapLatitude);
+
+                    double R = 6371; // km
+                    double x = (lon2 - lon1) * Math.Cos((lat1 + lat2) / 2);
+                    double y = (lat2 - lat1);
+                    double distance = Math.Sqrt(x * x + y * y) * R;
+                  
+
+                    
+
+                    if (distance >= 1500000)
+                    {
+                        WorkshopsList.Remove(WorkshopsList[i]);
+                    }
+                }
+                _response.Data = WorkshopsList;
+                _response.IsPassed = true;
+                _response.Message = "Ok";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
+        private static double Deg2Rad(double deg)
+        {
+            return deg * Math.PI / 180;
+        }
+      
+       
         #endregion
     }
 }

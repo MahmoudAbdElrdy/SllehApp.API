@@ -76,5 +76,14 @@ namespace BackEnd.API.Controllers
             return depart;
         }
         #endregion
+        #region Get: api/Workshop/GetAllWorkshop
+        [HttpGet]
+        [Route("GetAllNearestWorkShops")]
+        public IResponseDTO GetAllNearestWorkShops(double MapLatitude, double MapLangitude, string Token)
+        {
+            var depart = _WorkshopServices.getNearestWorkShops(MapLatitude, MapLangitude, Token);
+            return depart;
+        }
+        #endregion
     }
 }

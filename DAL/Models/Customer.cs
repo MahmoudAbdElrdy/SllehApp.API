@@ -19,6 +19,7 @@ namespace BackEnd.DAL.Models
         public string ImageUrl { get; set; }
         public string Phone { get; set; }
         public DateTime? CreationDate { get; set; }
+        public string Token { get; set; }
 
         public virtual ICollection<CustomerNotifications> CustomerNotifications { get; set; }
         public virtual ICollection<Order> Order { get; set; }

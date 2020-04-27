@@ -8,8 +8,8 @@ namespace BackEnd.Service.Models
         public Guid OrderId { get; set; } = Guid.NewGuid();
         public Guid? CustomerId { get; set; }
         public Guid? WorkshopId { get; set; }
-        public string MapLatitude { get; set; }
-        public string MapLangitude { get; set; }
+        public decimal? MapLatitude { get; set; }
+        public decimal? MapLangitude { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
         public DateTime? CreationDate { get; set; } = DateTime.UtcNow.AddHours(3);
