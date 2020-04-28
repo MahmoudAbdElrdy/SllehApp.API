@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace BackEnd.Repositories.UOW
@@ -14,11 +15,47 @@ namespace BackEnd.Repositories.UOW
             _dbContext = dbContext;
         }
 
+        //public int Commit()
+        //{
+        //    return _dbContext.SaveChanges();
+        //}
         public int Commit()
         {
-            return _dbContext.SaveChanges();
-        }
+            int returnValue = 200;
+            using (var dbContextTransaction = _dbContext.Database.BeginTransaction())
+                //  {
+                try
+                {
+                    _dbContext.SaveChanges();
+                    dbContextTransaction.Commit();
+                }
+                catch (DbUpdateException ex)
+                {
+                    var sqlException = ex.GetBaseException() as SqlException;
 
+                    if (sqlException != null)
+                    {
+                        var number = sqlException.Number;
+
+                        if (number == 547)
+                        {
+                            returnValue = 501;
+
+                        }
+                        else
+                            returnValue = 500;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //Log Exception Handling message                      
+                    returnValue = 500;
+                    dbContextTransaction.Rollback();
+                }
+            //    }
+
+            return returnValue;
+        }
         public async Task<int> CommitAsync()
         {
             return await _dbContext.SaveChangesAsync();
