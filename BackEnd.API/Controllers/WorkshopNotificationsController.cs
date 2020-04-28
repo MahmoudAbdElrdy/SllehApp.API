@@ -28,7 +28,7 @@ namespace BackEnd.API.Controllers
         #endregion
 
         #region Post: api/WorkshopNotifications/GetByWorkshopId
-        [HttpPost]
+        [HttpGet]
         [Route("GetByWorkshopId")]
         public IResponseDTO GetByWorkshopId(Guid WorkshopId)
         {
