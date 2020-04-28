@@ -118,6 +118,9 @@ namespace BackEnd.API
             services.AddScoped<IServicesOrder, OrderServices>().Reverse();
             services.AddScoped<IServicesCustomerNotifications, CustomerNotificationsServices>().Reverse();
             services.AddScoped<IServicesWorkshopNotifications, WorkshopNotificationsServices>().Reverse();
+            services.AddScoped<IServicesCountry, CountryServices>().Reverse();
+            services.AddScoped<IServicesCity, CityServices>().Reverse();
+            services.AddScoped<IServicesCar, CarServices>().Reverse();
             
             services.AddScoped<IResponseDTO, ResponseDTO>().Reverse();
             //
