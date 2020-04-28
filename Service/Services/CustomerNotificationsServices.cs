@@ -16,20 +16,20 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Service.Services
 {
-    public class OrderServices : IServicesOrder
+    public class CustomerNotificationsServices : IServicesCustomerNotifications
     {
         #region PrivateField
-        private readonly IGRepository<Order> _OrderRepositroy;
+        private readonly IGRepository<CustomerNotifications> _CustomerNotificationsRepositroy;
         private readonly IUnitOfWork<DB_A57576_SllehAppContext> _unitOfWork;
         private readonly IResponseDTO _response;
         private readonly IMapper _mapper;
         #endregion
 
         #region Constructor
-        public OrderServices(IGRepository<Order> Order,
+        public CustomerNotificationsServices(IGRepository<CustomerNotifications> CustomerNotifications,
             IUnitOfWork<DB_A57576_SllehAppContext> unitOfWork, IResponseDTO responseDTO, IMapper mapper)
         {
-            _OrderRepositroy = Order;
+            _CustomerNotificationsRepositroy = CustomerNotifications;
             _unitOfWork = unitOfWork;
             _response = responseDTO;
             _mapper = mapper;
@@ -37,14 +37,14 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region DeleteOrder(OrderVM model)
-        public IResponseDTO DeleteOrder(OrderVM model)
+        #region DeleteCustomerNotifications(CustomerNotificationsVM model)
+        public IResponseDTO DeleteCustomerNotifications(CustomerNotificationsVM model)
         {
             try
             {
 
-                var DbOrder = _mapper.Map<Order>(model);
-                var entityEntry = _OrderRepositroy.Remove(DbOrder);
+                var DbCustomerNotifications = _mapper.Map<CustomerNotifications>(model);
+                var entityEntry = _CustomerNotificationsRepositroy.Remove(DbCustomerNotifications);
 
 
                 int save = _unitOfWork.Commit();
@@ -72,97 +72,14 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region EditOrder(OrderVM model)
-        public IResponseDTO EditOrder(OrderVM model)
+        #region EditCustomerNotifications(CustomerNotificationsVM model)
+        public IResponseDTO EditCustomerNotifications(CustomerNotificationsVM model)
         {
             try
             {
-                var DbOrder = _mapper.Map<Order>(model);
-                var entityEntry = _OrderRepositroy.Update(DbOrder);
+                var DbCustomerNotifications = _mapper.Map<CustomerNotifications>(model);
+                var entityEntry = _CustomerNotificationsRepositroy.Update(DbCustomerNotifications);
 
-
-                int save = _unitOfWork.Commit();
-
-                if (save == 200)
-                {
-                    _response.Data = model;
-                    _response.IsPassed = true;
-                    _response.Message = "Ok";
-                }
-                else
-                {
-                    _response.Data = null;
-                    _response.IsPassed = false;
-                    _response.Message = "Not saved";
-                }
-            }
-            catch (Exception ex)
-            {
-                _response.Data = null;
-                _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
-            }
-
-            return _response;
-
-        }
-        #endregion
-
-        #region GetAllOrder()
-        public IResponseDTO GetAllOrder()
-        {
-            try
-            {
-                var Orders = _OrderRepositroy.GetAll();
-
-
-                var OrdersList = _mapper.Map<List<OrderVM>>(Orders);
-                _response.Data = OrdersList;
-                _response.IsPassed = true;
-                _response.Message = "Done";
-            }
-            catch (Exception ex)
-            {
-                _response.Data = null;
-                _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
-            }
-            return _response;
-        }
-        #endregion
-
-        #region GetByIDOrder(object id)
-        public IResponseDTO GetByIDOrder(object id)
-        {
-            try
-            {
-                var Orders = _OrderRepositroy.Find(id);
-
-
-                var OrdersList = _mapper.Map<OrderVM>(Orders);
-                _response.Data = OrdersList;
-                _response.IsPassed = true;
-                _response.Message = "Done";
-            }
-            catch (Exception ex)
-            {
-                _response.Data = null;
-                _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
-            }
-            return _response;
-        }
-        #endregion
-
-        #region PostOrder(OrderVM model)
-        public IResponseDTO PostOrder(OrderVM model)
-        {
-
-            try
-            {
-                var DbOrder = _mapper.Map<Order>(model);
-
-                var Order = _mapper.Map<OrderVM>(_OrderRepositroy.Add(DbOrder));
 
                 int save = _unitOfWork.Commit();
 
@@ -178,7 +95,6 @@ namespace BackEnd.Service.Services
                     _response.IsPassed = false;
                     _response.Message = "Not saved";
                 }
-
             }
             catch (Exception ex)
             {
@@ -187,22 +103,21 @@ namespace BackEnd.Service.Services
                 _response.Message = "Error " + ex.Message;
             }
 
-
             return _response;
 
         }
         #endregion
 
-        #region GetByCustomerId(Guid? id)
-        public IResponseDTO GetByCustomerId(Guid? id)
+        #region GetAllCustomerNotifications()
+        public IResponseDTO GetAllCustomerNotifications()
         {
             try
             {
-                var Orders = _OrderRepositroy.Get(x => x.CustomerId == id);
+                var CustomerNotificationss = _CustomerNotificationsRepositroy.GetAll();
 
 
-                var OrdersList = _mapper.Map<OrderVM>(Orders);
-                _response.Data = OrdersList;
+                var CustomerNotificationssList = _mapper.Map<List<CustomerNotificationsVM>>(CustomerNotificationss);
+                _response.Data = CustomerNotificationssList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -216,16 +131,16 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region GetByWorkshopId(Guid? id)
-        public IResponseDTO GetByWorkshopId(Guid? id)
+        #region GetByIDCustomerNotifications(object id)
+        public IResponseDTO GetByIDCustomerNotifications(object id)
         {
             try
             {
-                var Orders = _OrderRepositroy.Get(x => x.WorkshopId == id);
+                var CustomerNotificationss = _CustomerNotificationsRepositroy.Find(id);
 
 
-                var OrdersList = _mapper.Map<OrderVM>(Orders);
-                _response.Data = OrdersList;
+                var CustomerNotificationssList = _mapper.Map<CustomerNotificationsVM>(CustomerNotificationss);
+                _response.Data = CustomerNotificationssList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -236,6 +151,68 @@ namespace BackEnd.Service.Services
                 _response.Message = "Error " + ex.Message;
             }
             return _response;
+        }
+        #endregion
+
+        #region GetByCustomerId(Guid CustomerId)
+        public IResponseDTO GetByCustomerId(Guid CustomerId)
+        {
+            try
+            {
+                var CustomerNotificationss = _CustomerNotificationsRepositroy.Get(x => x.CustomerId == CustomerId);
+
+
+                var CustomerNotificationssList = _mapper.Map<CustomerNotificationsVM>(CustomerNotificationss);
+                _response.Data = CustomerNotificationssList;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
+        #endregion
+
+        #region PostCustomerNotifications(CustomerNotificationsVM model)
+        public IResponseDTO PostCustomerNotifications(CustomerNotificationsVM model)
+        {
+
+            try
+            {
+                var DbCustomerNotifications = _mapper.Map<CustomerNotifications>(model);
+
+                var CustomerNotifications = _mapper.Map<CustomerNotificationsVM>(_CustomerNotificationsRepositroy.Add(DbCustomerNotifications));
+
+                int save = _unitOfWork.Commit();
+
+                if (save == 200)
+                {
+                    _response.Data = model;
+                    _response.IsPassed = true;
+                    _response.Message = "Ok";
+                }
+                else
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+
+            return _response;
+
         }
         #endregion
     }
