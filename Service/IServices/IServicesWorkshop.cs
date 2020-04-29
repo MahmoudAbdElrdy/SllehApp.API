@@ -16,6 +16,7 @@ namespace BackEnd.Service.IServices
         IResponseDTO GetByIDWorkshop(object id);
         IResponseDTO WorkshopLogin(WorkshopVM model);
         IResponseDTO getNearestWorkShops(double MapLatitude,double MapLangitude,string Token );
+        IResponseDTO GetAllWorkshopDeatalis(Guid workshopid);
 
     }
 }

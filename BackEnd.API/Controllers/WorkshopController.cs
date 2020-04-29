@@ -86,5 +86,14 @@ namespace BackEnd.API.Controllers
             return depart;
         }
         #endregion
+        #region Get: api/Workshop/GetAllWorkshop
+        [HttpGet]
+        [Route("GetAllWorkshopDeatalis")]
+        public IResponseDTO GetAllWorkshopDeatalis(Guid id)
+        {
+            var depart = _WorkshopServices.GetAllWorkshopDeatalis(id);
+            return depart;
+        }
+        #endregion
     }
 }

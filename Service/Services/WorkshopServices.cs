@@ -269,7 +269,60 @@ namespace BackEnd.Service.Services
         private static double Deg2Rad(double deg)
         {
             return deg * Math.PI / 180;
-        }             
+        }
+
+
+        #endregion
+        #region
+        public IResponseDTO GetAllWorkshopDeatalis(Guid workshopid)
+        {
+            try
+            {
+                var Workshops = from WorkShop in _WorkshopRepositroy.GetAll(m=>m.WorkshopId== workshopid)
+                                select new
+                                {
+                                    WorkshopId = WorkShop.WorkshopId,
+                                    Address = WorkShop.Address,
+                                    CreationDate = WorkShop.CreationDate,
+                                    Email = WorkShop.Email,
+                                    HasSparePart = WorkShop.HasSparePart,
+                                    HasWarranty = WorkShop.HasWarranty,
+                                    ImageUrl = WorkShop.ImageUrl,
+                                    Info = WorkShop.Info,
+                                    IsAvailable = WorkShop.IsAvailable,
+                                    IsTrust = WorkShop.IsTrust,
+                                    MapLangitude = WorkShop.MapLangitude,
+                                    MapLatitude = WorkShop.MapLatitude,
+                                    Name = WorkShop.Name,
+                                   
+                                    OwnerImage = WorkShop.OwnerImage,
+                                    OwnerName = WorkShop.OwnerName,
+                                    Password = WorkShop.Password,
+                                    Phone = WorkShop.Phone,
+                                    Token = WorkShop.Token,
+                                    WorkshopCar = _mapper.Map < List < WorkshopCarVM >> (WorkShop.WorkshopCar.Where(x => x.WorkshopId == workshopid).ToList()),
+                                    WorkshopFeatures = _mapper.Map < List < WorkshopFeaturesVM >> (WorkShop.WorkshopFeatures.Where(x=>x.WorkshopId== workshopid).ToList()),
+                                    WorkshopMalfunction = _mapper.Map < List < WorkshopMalfunctionVM >> (WorkShop.WorkshopMalfunction.Where(x => x.WorkshopId == workshopid).ToList()),
+                                    WorkshopNotifications = _mapper.Map < List <WorkshopNotificationsVM>> (WorkShop.WorkshopNotifications.Where(x => x.WorkshopId == workshopid).ToList()),
+                                    WorkshopTechnician = _mapper.Map < List <WorkshopTechnicianVM>> (WorkShop.WorkshopTechnician.Where(x => x.WorkshopId == workshopid).ToList()),
+                                    WorkshopWorkTime = _mapper.Map < List <WorkshopWorkTimeVM>>( WorkShop.WorkshopWorkTime.Where(x => x.WorkshopId == workshopid).ToList()),
+
+                                };
+
+
+                //var WorkshopsList = _mapper.Map<List<WorkshopVM>>(Workshops);
+                _response.Data = Workshops.FirstOrDefault();
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
         #endregion
     }
 }
