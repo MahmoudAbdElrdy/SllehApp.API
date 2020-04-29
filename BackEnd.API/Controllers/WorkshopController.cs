@@ -76,7 +76,8 @@ namespace BackEnd.API.Controllers
             return depart;
         }
         #endregion
-        #region Get: api/Workshop/GetAllWorkshop
+
+        #region Get: api/Workshop/GetAllNearestWorkShops
         [HttpGet]
         [Route("GetAllNearestWorkShops")]
         public IResponseDTO GetAllNearestWorkShops(double MapLatitude, double MapLangitude, string Token)

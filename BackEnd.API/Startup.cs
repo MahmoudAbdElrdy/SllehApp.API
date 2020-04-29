@@ -121,6 +121,13 @@ namespace BackEnd.API
             services.AddScoped<IServicesCountry, CountryServices>().Reverse();
             services.AddScoped<IServicesCity, CityServices>().Reverse();
             services.AddScoped<IServicesCar, CarServices>().Reverse();
+            services.AddScoped<IServicesMalfunction, MalfunctionServices>().Reverse();
+            services.AddScoped<IServicesWorkshopCar, WorkshopCarServices>().Reverse();
+            services.AddScoped<IServicesWorkshopFeatures, WorkshopFeaturesServices>().Reverse();
+            services.AddScoped<IServicesWorkshopMalfunction, WorkshopMalfunctionServices>().Reverse();
+            services.AddScoped<IServicesWorkshopRate, WorkshopRateServices>().Reverse();
+            services.AddScoped<IServicesWorkshopTechnician, WorkshopTechnicianServices>().Reverse();
+            services.AddScoped<IServicesWorkshopWorkTime, WorkshopWorkTimeServices>().Reverse();
             
             services.AddScoped<IResponseDTO, ResponseDTO>().Reverse();
             //

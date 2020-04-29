@@ -27,7 +27,7 @@ namespace BackEnd.API.Controllers
         }
         #endregion
 
-        #region Post: api/CustomerNotifications/GetByCustomerId
+        #region Get: api/CustomerNotifications/GetByCustomerId
         [HttpGet]
         [Route("GetByCustomerId")]
         public IResponseDTO GetByCustomerId(Guid CustomerId)

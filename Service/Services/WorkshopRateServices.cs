@@ -16,20 +16,20 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Service.Services
 {
-    public class WorkshopServices : IServicesWorkshop
+    public class WorkshopRateServices : IServicesWorkshopRate
     {
         #region PrivateField
-        private readonly IGRepository<Workshop> _WorkshopRepositroy;
+        private readonly IGRepository<WorkshopRate> _WorkshopRateRepositroy;
         private readonly IUnitOfWork<DB_A57576_SllehAppContext> _unitOfWork;
         private readonly IResponseDTO _response;
         private readonly IMapper _mapper;
         #endregion
 
         #region Constructor
-        public WorkshopServices(IGRepository<Workshop> Workshop,
+        public WorkshopRateServices(IGRepository<WorkshopRate> WorkshopRate,
             IUnitOfWork<DB_A57576_SllehAppContext> unitOfWork, IResponseDTO responseDTO, IMapper mapper)
         {
-            _WorkshopRepositroy = Workshop;
+            _WorkshopRateRepositroy = WorkshopRate;
             _unitOfWork = unitOfWork;
             _response = responseDTO;
             _mapper = mapper;
@@ -37,14 +37,14 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region DeleteWorkshop(WorkshopVM model)
-        public IResponseDTO DeleteWorkshop(WorkshopVM model)
+        #region DeleteWorkshopRate(WorkshopRateVM model)
+        public IResponseDTO DeleteWorkshopRate(WorkshopRateVM model)
         {
             try
             {
 
-                var DbWorkshop = _mapper.Map<Workshop>(model);
-                var entityEntry = _WorkshopRepositroy.Remove(DbWorkshop);
+                var DbWorkshopRate = _mapper.Map<WorkshopRate>(model);
+                var entityEntry = _WorkshopRateRepositroy.Remove(DbWorkshopRate);
 
 
                 int save = _unitOfWork.Commit();
@@ -72,13 +72,13 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region EditWorkshop(WorkshopVM model)
-        public IResponseDTO EditWorkshop(WorkshopVM model)
+        #region EditWorkshopRate(WorkshopRateVM model)
+        public IResponseDTO EditWorkshopRate(WorkshopRateVM model)
         {
             try
             {
-                var DbWorkshop = _mapper.Map<Workshop>(model);
-                var entityEntry = _WorkshopRepositroy.Update(DbWorkshop);
+                var DbWorkshopRate = _mapper.Map<WorkshopRate>(model);
+                var entityEntry = _WorkshopRateRepositroy.Update(DbWorkshopRate);
 
 
                 int save = _unitOfWork.Commit();
@@ -108,16 +108,16 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region GetAllWorkshop()
-        public IResponseDTO GetAllWorkshop()
+        #region GetAllWorkshopRate()
+        public IResponseDTO GetAllWorkshopRate()
         {
             try
             {
-                var Workshops = _WorkshopRepositroy.GetAll();
+                var WorkshopRates = _WorkshopRateRepositroy.GetAll();
 
 
-                var WorkshopsList = _mapper.Map<List<WorkshopVM>>(Workshops);
-                _response.Data = WorkshopsList;
+                var WorkshopRatesList = _mapper.Map<List<WorkshopRateVM>>(WorkshopRates);
+                _response.Data = WorkshopRatesList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -131,46 +131,16 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region WorkshopLogin(WorkshopVM model)
-        public IResponseDTO WorkshopLogin(WorkshopVM model)
+        #region GetByIDWorkshopRate(object id)
+        public IResponseDTO GetByIDWorkshopRate(object id)
         {
             try
             {
-                var res = _WorkshopRepositroy.GetFirst(X => X.Email == model.Email && X.Password == model.Password);
-                if(res == null)
-                {
-                    _response.Data = null;
-                    _response.IsPassed = false;
-                    _response.Message = "Not saved";
-                }
-                else
-                {
-                    var DbWorkshop = _mapper.Map<WorkshopVM>(model);
-                    _response.Data = DbWorkshop;
-                    _response.IsPassed = true;
-                    _response.Message = "Ok";
-                }
-            }
-            catch (Exception ex)
-            {
-                _response.Data = null;
-                _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
-            }
-            return _response;
-        }
-        #endregion
-
-        #region GetByIDWorkshop(object id)
-        public IResponseDTO GetByIDWorkshop(object id)
-        {
-            try
-            {
-                var Workshops = _WorkshopRepositroy.Find(id);
+                var WorkshopRates = _WorkshopRateRepositroy.Find(id);
 
 
-                var WorkshopsList = _mapper.Map<WorkshopVM>(Workshops);
-                _response.Data = WorkshopsList;
+                var WorkshopRatesList = _mapper.Map<WorkshopRateVM>(WorkshopRates);
+                _response.Data = WorkshopRatesList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -184,15 +154,15 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region PostWorkshop(WorkshopVM model)
-        public IResponseDTO PostWorkshop(WorkshopVM model)
+        #region PostWorkshopRate(WorkshopRateVM model)
+        public IResponseDTO PostWorkshopRate(WorkshopRateVM model)
         {
 
             try
             {
-                var DbWorkshop = _mapper.Map<Workshop>(model);
+                var DbWorkshopRate = _mapper.Map<WorkshopRate>(model);
 
-                var Workshop = _mapper.Map<WorkshopVM>(_WorkshopRepositroy.Add(DbWorkshop));
+                var WorkshopRate = _mapper.Map<WorkshopRateVM>(_WorkshopRateRepositroy.Add(DbWorkshopRate));
 
                 int save = _unitOfWork.Commit();
 
@@ -221,42 +191,20 @@ namespace BackEnd.Service.Services
             return _response;
 
         }
-
-
         #endregion
 
-        #region getNearestWorkShops(MapLatitude,MapLangitude,Token)
-        public IResponseDTO getNearestWorkShops(double MapLatitude, double MapLangitude, string Token)
+        #region GetByCustomerId(Guid? id)
+        public IResponseDTO GetByCustomerId(Guid? id)
         {
             try
             {
-                var Workshops = _WorkshopRepositroy.GetAll().ToList();
+                var WorkshopRates = _WorkshopRateRepositroy.Get(x => x.CustomerId == id);
 
 
-                var WorkshopsList = _mapper.Map<List<WorkshopVM>>(Workshops);
-                for (int i=0;i< WorkshopsList.Count;i++)
-                {
-                    double lat1 = Deg2Rad((double)WorkshopsList[i].MapLangitude);
-                    double lat2 = Deg2Rad(MapLangitude);
-                    double lon1 = Deg2Rad((double)WorkshopsList[i].MapLatitude);
-                    double lon2 = Deg2Rad(MapLatitude);
-
-                    double R = 6371; // km
-                    double x = (lon2 - lon1) * Math.Cos((lat1 + lat2) / 2);
-                    double y = (lat2 - lat1);
-                    double distance = Math.Sqrt(x * x + y * y) * R;
-                  
-
-                    
-
-                    if (distance >= 1500000)
-                    {
-                        WorkshopsList.Remove(WorkshopsList[i]);
-                    }
-                }
-                _response.Data = WorkshopsList;
+                var WorkshopRatesList = _mapper.Map<WorkshopRateVM>(WorkshopRates);
+                _response.Data = WorkshopRatesList;
                 _response.IsPassed = true;
-                _response.Message = "Ok";
+                _response.Message = "Done";
             }
             catch (Exception ex)
             {
@@ -266,10 +214,29 @@ namespace BackEnd.Service.Services
             }
             return _response;
         }
-        private static double Deg2Rad(double deg)
+        #endregion
+
+        #region GetByWorkshopId(Guid? id)
+        public IResponseDTO GetByWorkshopId(Guid? id)
         {
-            return deg * Math.PI / 180;
-        }             
+            try
+            {
+                var WorkshopRates = _WorkshopRateRepositroy.Get(x => x.WorkshopId == id);
+
+
+                var WorkshopRatesList = _mapper.Map<WorkshopRateVM>(WorkshopRates);
+                _response.Data = WorkshopRatesList;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
         #endregion
     }
 }
