@@ -70,5 +70,14 @@ namespace BackEnd.API.Controllers
             return depart;
         }
         #endregion
+        #region Get: api/Car/GetAllData
+        [HttpGet]
+        [Route("GetAllData")]
+        public IResponseDTO GetAllData()
+        {
+            var depart = _CarServices.GetAllData();
+            return depart;
+        }
+        #endregion
     }
 }

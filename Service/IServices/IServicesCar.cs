@@ -14,5 +14,6 @@ namespace BackEnd.Service.IServices
         IResponseDTO EditCar(CarVM model);
         IResponseDTO DeleteCar(CarVM model);
         IResponseDTO GetByIDCar(object id);
+        IResponseDTO GetAllData();
     }
 }
