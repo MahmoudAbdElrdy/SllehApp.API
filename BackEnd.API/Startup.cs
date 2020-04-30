@@ -83,7 +83,7 @@ namespace BackEnd.API
             //        });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "AspNetCoreApiStarter", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "Slleh App", Version = "v1" });
                 // Swagger 2.+ support
                 //              c.AddSecurityDefinition("Bearer", new ApiKeyScheme
                 //              {
@@ -124,6 +124,7 @@ namespace BackEnd.API
             services.AddScoped<IServicesMalfunction, MalfunctionServices>().Reverse();
             services.AddScoped<IServicesWorkshopCar, WorkshopCarServices>().Reverse();
             services.AddScoped<IServicesWorkshopFeatures, WorkshopFeaturesServices>().Reverse();
+            services.AddScoped<IServicesFeatures, FeaturesServices>().Reverse();
             services.AddScoped<IServicesWorkshopMalfunction, WorkshopMalfunctionServices>().Reverse();
             services.AddScoped<IServicesWorkshopRate, WorkshopRateServices>().Reverse();
             services.AddScoped<IServicesWorkshopTechnician, WorkshopTechnicianServices>().Reverse();
@@ -194,6 +195,7 @@ namespace BackEnd.API
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", " Auditor V1");
+                c.DocExpansion(DocExpansion.None);
 
             });
             //app.UseStaticFiles();

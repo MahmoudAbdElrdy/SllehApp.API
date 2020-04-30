@@ -21,6 +21,7 @@ namespace BackEnd.DAL.Models
         public virtual DbSet<Country> Country { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<CustomerNotifications> CustomerNotifications { get; set; }
+        public virtual DbSet<Features> Features { get; set; }
         public virtual DbSet<Malfunction> Malfunction { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<Workshop> Workshop { get; set; }
@@ -43,7 +44,7 @@ namespace BackEnd.DAL.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
             modelBuilder.Entity<AdminUsers>(entity =>
             {
@@ -142,6 +143,15 @@ namespace BackEnd.DAL.Models
                     .HasConstraintName("FK_CustomerNotifications_Customer");
             });
 
+            modelBuilder.Entity<Features>(entity =>
+            {
+                entity.Property(e => e.FeaturesId).ValueGeneratedNever();
+
+                entity.Property(e => e.CreationDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Name).HasMaxLength(50);
+            });
+
             modelBuilder.Entity<Malfunction>(entity =>
             {
                 entity.Property(e => e.MalfunctionId).ValueGeneratedNever();
@@ -222,13 +232,18 @@ namespace BackEnd.DAL.Models
 
             modelBuilder.Entity<WorkshopFeatures>(entity =>
             {
-                entity.HasKey(e => e.FeatureId);
+                entity.HasKey(e => e.FeatureWorkeshopId);
 
-                entity.Property(e => e.FeatureId).ValueGeneratedNever();
+                entity.Property(e => e.FeatureWorkeshopId).ValueGeneratedNever();
 
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Name).HasMaxLength(50);
+
+                entity.HasOne(d => d.Feature)
+                    .WithMany(p => p.WorkshopFeatures)
+                    .HasForeignKey(d => d.FeatureId)
+                    .HasConstraintName("FK_WorkshopFeatures_Features");
 
                 entity.HasOne(d => d.Workshop)
                     .WithMany(p => p.WorkshopFeatures)

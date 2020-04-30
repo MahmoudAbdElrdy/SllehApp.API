@@ -273,12 +273,13 @@ namespace BackEnd.Service.Services
 
 
         #endregion
-        #region
+
+        #region GetAllWorkshopDeatalis(Guid workshopid)
         public IResponseDTO GetAllWorkshopDeatalis(Guid workshopid)
         {
             try
             {
-                var Workshops = from WorkShop in _WorkshopRepositroy.GetAll(m=>m.WorkshopId== workshopid)
+                var Workshops = from WorkShop in _WorkshopRepositroy.GetAll(m => m.WorkshopId == workshopid)
                                 select new
                                 {
                                     WorkshopId = WorkShop.WorkshopId,
@@ -294,18 +295,16 @@ namespace BackEnd.Service.Services
                                     MapLangitude = WorkShop.MapLangitude,
                                     MapLatitude = WorkShop.MapLatitude,
                                     Name = WorkShop.Name,
-                                   
                                     OwnerImage = WorkShop.OwnerImage,
                                     OwnerName = WorkShop.OwnerName,
-                                    Password = WorkShop.Password,
+                                    Password = "",
                                     Phone = WorkShop.Phone,
                                     Token = WorkShop.Token,
-                                    WorkshopCar = _mapper.Map < List < WorkshopCarVM >> (WorkShop.WorkshopCar.Where(x => x.WorkshopId == workshopid).ToList()),
-                                    WorkshopFeatures = _mapper.Map < List < WorkshopFeaturesVM >> (WorkShop.WorkshopFeatures.Where(x=>x.WorkshopId== workshopid).ToList()),
-                                    WorkshopMalfunction = _mapper.Map < List < WorkshopMalfunctionVM >> (WorkShop.WorkshopMalfunction.Where(x => x.WorkshopId == workshopid).ToList()),
-                                    WorkshopNotifications = _mapper.Map < List <WorkshopNotificationsVM>> (WorkShop.WorkshopNotifications.Where(x => x.WorkshopId == workshopid).ToList()),
-                                    WorkshopTechnician = _mapper.Map < List <WorkshopTechnicianVM>> (WorkShop.WorkshopTechnician.Where(x => x.WorkshopId == workshopid).ToList()),
-                                    WorkshopWorkTime = _mapper.Map < List <WorkshopWorkTimeVM>>( WorkShop.WorkshopWorkTime.Where(x => x.WorkshopId == workshopid).ToList()),
+                                    WorkshopCar = _mapper.Map<List<WorkshopCarVM>>(WorkShop.WorkshopCar.Where(x => x.WorkshopId == workshopid).ToList()),
+                                    WorkshopFeatures = _mapper.Map<List<WorkshopFeaturesVM>>(WorkShop.WorkshopFeatures.Where(x => x.WorkshopId == workshopid).ToList()),
+                                    WorkshopMalfunction = _mapper.Map<List<WorkshopMalfunctionVM>>(WorkShop.WorkshopMalfunction.Where(x => x.WorkshopId == workshopid).ToList()),
+                                    WorkshopTechnician = _mapper.Map<List<WorkshopTechnicianVM>>(WorkShop.WorkshopTechnician.Where(x => x.WorkshopId == workshopid).ToList()),
+                                    WorkshopWorkTime = _mapper.Map<List<WorkshopWorkTimeVM>>(WorkShop.WorkshopWorkTime.Where(x => x.WorkshopId == workshopid).ToList()),
 
                                 };
 
