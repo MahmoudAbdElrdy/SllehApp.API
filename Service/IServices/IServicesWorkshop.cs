@@ -1,6 +1,7 @@
 ﻿//using BackEnd.DAL.Entities;
 using BackEnd.Repositories.Generics;
 using BackEnd.Service.Models;
+using BackEnd.Service.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,6 +18,8 @@ namespace BackEnd.Service.IServices
         IResponseDTO WorkshopLogin(WorkshopVM model);
         IResponseDTO getNearestWorkShops(double MapLatitude,double MapLangitude,string Token );
         IResponseDTO GetAllWorkshopDeatalis(Guid workshopid);
+        IResponseDTO SearchWorkShop(Data data, bool HasSparePart, bool HasWarranty);
+
 
     }
 }

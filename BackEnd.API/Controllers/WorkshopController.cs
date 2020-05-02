@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using BackEnd.Service.IServices;
 using BackEnd.Service.Models;
+using BackEnd.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackEnd.API.Controllers
@@ -92,6 +94,17 @@ namespace BackEnd.API.Controllers
         public IResponseDTO GetAllWorkshopDeatalis(Guid id)
         {
             var depart = _WorkshopServices.GetAllWorkshopDeatalis(id);
+            return depart;
+        }
+        #endregion
+        #region Get: api/Workshop/Search
+        [HttpPost]
+        [Route("Search")]
+        public IResponseDTO Search(Data data, bool HasSparePart, bool HasWarranty)
+        {
+           
+
+               var depart = _WorkshopServices.SearchWorkShop(data, HasSparePart, HasWarranty);
             return depart;
         }
         #endregion

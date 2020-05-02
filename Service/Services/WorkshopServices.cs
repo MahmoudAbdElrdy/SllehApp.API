@@ -19,6 +19,9 @@ namespace BackEnd.Service.Services
     public class WorkshopServices : IServicesWorkshop
     {
         #region PrivateField
+        private readonly IGRepository<WorkshopCar> _CarWorkshopRepositroy;
+        private readonly IGRepository<WorkshopMalfunction> _MalfunctionWorkshopRepositroy;
+        private readonly IGRepository<WorkshopFeatures> _FeaturesWorkshopRepositroy;
         private readonly IGRepository<Workshop> _WorkshopRepositroy;
         private readonly IUnitOfWork<DB_A57576_SllehAppContext> _unitOfWork;
         private readonly IResponseDTO _response;
@@ -27,8 +30,13 @@ namespace BackEnd.Service.Services
 
         #region Constructor
         public WorkshopServices(IGRepository<Workshop> Workshop,
+            IGRepository<WorkshopCar> Car, IGRepository<WorkshopMalfunction> Malfunction, IGRepository<WorkshopFeatures> Features,
+
             IUnitOfWork<DB_A57576_SllehAppContext> unitOfWork, IResponseDTO responseDTO, IMapper mapper)
         {
+            _CarWorkshopRepositroy = Car;
+            _MalfunctionWorkshopRepositroy = Malfunction;
+            _FeaturesWorkshopRepositroy = Features;
             _WorkshopRepositroy = Workshop;
             _unitOfWork = unitOfWork;
             _response = responseDTO;
@@ -323,5 +331,125 @@ namespace BackEnd.Service.Services
             return _response;
         }
         #endregion
+        #region search Work shop
+        public IResponseDTO SearchWorkShop(Data data, bool HasSparePart, bool HasWarranty)
+        {
+            try
+            {
+                List<Guid> carIds = null;
+                List<Guid?> workshopCarIds = null;
+                List<Guid> MalfunctionIds = null;
+                List<Guid?> workshopmalfunctionIds = null;
+                List<Guid> FeatureIds = null;
+                List<Guid?> workshopFeatureIds = null;
+
+                if (data.cars != null)
+                {
+                    carIds = data.cars.Select(c => c.CarId).ToList();
+                    var WrokshopCar = _CarWorkshopRepositroy.GetAll().Where(w => carIds.Contains((Guid)w.CarId));
+                     workshopCarIds = WrokshopCar.Select(c =>c.WorkshopId).ToList();
+
+                }
+                if(data.malfunctions!=null)
+                {
+                     MalfunctionIds = data.malfunctions.Select(c => c.MalfunctionId).ToList();
+                    var Wrokshopmalfunction = _MalfunctionWorkshopRepositroy.GetAll().Where(w => MalfunctionIds.Contains((Guid)w.MalfunctionId));
+                     workshopmalfunctionIds = Wrokshopmalfunction.Select(c => c.WorkshopId).ToList();
+
+                }
+                if (data.Features != null)
+                {
+                     FeatureIds = data.Features.Select(c => c.FeaturesId).ToList();
+                    var WrokshopFeature = _FeaturesWorkshopRepositroy.GetAll().Where(w => FeatureIds.Contains((Guid)w.FeatureId));
+                     workshopFeatureIds = WrokshopFeature.Select(c => c.WorkshopId).ToList();
+
+                }
+
+                var predicate = PredicateBuilder.True<Workshop>();
+                var oldPredicate = predicate;
+                if (carIds!=null )
+                {
+                    if(carIds.Count != 0)
+                    predicate = predicate.And(w =>
+                                 workshopCarIds.Contains((Guid)w.WorkshopId));
+                }
+                if (MalfunctionIds!=null)
+                {
+                    if (MalfunctionIds.Count != 0)
+                        predicate = predicate.And(w =>
+                                 workshopmalfunctionIds.Contains((Guid)w.WorkshopId));
+                }
+                if (FeatureIds!=null)
+                {
+                    if (FeatureIds.Count != 0)
+                        predicate = predicate.And(w =>
+                                 workshopFeatureIds.Contains((Guid)w.WorkshopId));
+                }
+                //if (carIds.Count!=0&&MalfunctionIds.Count!=0&&FeatureIds.Count!=0)
+                //{
+                //     Wrokshop = _WorkshopRepositroy.GetAll().Where(w =>
+                //                  workshopCarIds.Contains((Guid)w.WorkshopId) &&
+                //                  workshopmalfunctionIds.Contains((Guid)w.WorkshopId) &&
+                //                  workshopFeatureIds.Contains((Guid)w.WorkshopId) &&
+                //                  w.HasSparePart.Equals(HasSparePart) &&
+                //                  w.HasWarranty.Equals(HasWarranty)
+                //                  ).ToList();
+                //}
+                var result = new List<Workshop>();
+                if (oldPredicate == predicate)
+                {
+                    result = new List<Workshop>();
+                }
+                else
+                {
+                    result = _WorkshopRepositroy.GetAll().Where(predicate).ToList();
+
+                }
+            
+
+                if (result == null)
+                {
+                    _response.Data = result;
+                    _response.IsPassed = true;
+                    _response.Message = "Done";
+                }
+                else
+                {
+                    _response.Data =_mapper.Map<List<WorkshopVM>>(result);
+                    _response.IsPassed = true;
+                    _response.Message = "Done";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
+        #endregion
+
+    }
+    public static class PredicateBuilder
+    {
+        public static Expression<Func<T, bool>> True<T>() { return f => true; }
+        public static Expression<Func<T, bool>> False<T>() { return f => false; }
+
+        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> expr1,
+                                                            Expression<Func<T, bool>> expr2)
+        {
+            var invokedExpr = Expression.Invoke(expr2, expr1.Parameters.Cast<Expression>());
+            return Expression.Lambda<Func<T, bool>>
+                  (Expression.OrElse(expr1.Body, invokedExpr), expr1.Parameters);
+        }
+
+        public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> expr1,
+                                                             Expression<Func<T, bool>> expr2)
+        {
+            var invokedExpr = Expression.Invoke(expr2, expr1.Parameters.Cast<Expression>());
+            return Expression.Lambda<Func<T, bool>>
+                  (Expression.AndAlso(expr1.Body, invokedExpr), expr1.Parameters);
+        }
     }
 }
