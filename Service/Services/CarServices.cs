@@ -191,6 +191,8 @@ namespace BackEnd.Service.Services
         public List<CarVM> cars { get; set; }
         public List<MalfunctionVM> malfunctions { get; set; }
         public List<FeaturesVM> Features { get; set; }
+       public bool HasSparePart { get; set; }
+         public bool HasWarranty { get; set; }
 
     } 
 }

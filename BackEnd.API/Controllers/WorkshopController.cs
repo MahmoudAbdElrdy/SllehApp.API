@@ -100,11 +100,11 @@ namespace BackEnd.API.Controllers
         #region Get: api/Workshop/Search
         [HttpPost]
         [Route("Search")]
-        public IResponseDTO Search(Data data, bool HasSparePart, bool HasWarranty)
+        public IResponseDTO Search(Data data)
         {
            
 
-               var depart = _WorkshopServices.SearchWorkShop(data, HasSparePart, HasWarranty);
+               var depart = _WorkshopServices.SearchWorkShop(data);
             return depart;
         }
         #endregion

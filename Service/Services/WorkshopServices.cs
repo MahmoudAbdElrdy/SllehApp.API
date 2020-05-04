@@ -238,29 +238,33 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var Workshops = _WorkshopRepositroy.GetAll().ToList();
+                var Workshops = _WorkshopRepositroy.GetAll().Where(x=>x.MapLangitude!=null||x.MapLangitude!=null).ToList();
 
 
                 var WorkshopsList = _mapper.Map<List<WorkshopVM>>(Workshops);
                 for (int i=0;i< WorkshopsList.Count;i++)
                 {
-                    double lat1 = Deg2Rad((double)WorkshopsList[i].MapLangitude);
-                    double lat2 = Deg2Rad(MapLangitude);
-                    double lon1 = Deg2Rad((double)WorkshopsList[i].MapLatitude);
-                    double lon2 = Deg2Rad(MapLatitude);
-
-                    double R = 6371; // km
-                    double x = (lon2 - lon1) * Math.Cos((lat1 + lat2) / 2);
-                    double y = (lat2 - lat1);
-                    double distance = Math.Sqrt(x * x + y * y) * R;
-                  
-
-                    
-
-                    if (distance >= 1500000)
+                    if(WorkshopsList[i].MapLangitude!=null || WorkshopsList[i].MapLatitude != null)
                     {
-                        WorkshopsList.Remove(WorkshopsList[i]);
+                        double lat1 = Deg2Rad((double)WorkshopsList[i].MapLangitude);
+                        double lat2 = Deg2Rad(MapLangitude);
+                        double lon1 = Deg2Rad((double)WorkshopsList[i].MapLatitude);
+                        double lon2 = Deg2Rad(MapLatitude);
+
+                        double R = 6371; // km
+                        double x = (lon2 - lon1) * Math.Cos((lat1 + lat2) / 2);
+                        double y = (lat2 - lat1);
+                        double distance = Math.Sqrt(x * x + y * y) * R;
+
+
+
+
+                        if (distance >= 1500000)
+                        {
+                            WorkshopsList.Remove(WorkshopsList[i]);
+                        }
                     }
+                  
                 }
                 _response.Data = WorkshopsList;
                 _response.IsPassed = true;
@@ -332,7 +336,7 @@ namespace BackEnd.Service.Services
         }
         #endregion
         #region search Work shop
-        public IResponseDTO SearchWorkShop(Data data, bool HasSparePart, bool HasWarranty)
+        public IResponseDTO SearchWorkShop(Data data  )
         {
             try
             {
@@ -342,6 +346,8 @@ namespace BackEnd.Service.Services
                 List<Guid?> workshopmalfunctionIds = null;
                 List<Guid> FeatureIds = null;
                 List<Guid?> workshopFeatureIds = null;
+                bool HasSparePart = data.HasSparePart;
+                bool HasWarranty = data.HasWarranty;
 
                 if (data.cars != null)
                 {
@@ -385,16 +391,8 @@ namespace BackEnd.Service.Services
                         predicate = predicate.And(w =>
                                  workshopFeatureIds.Contains((Guid)w.WorkshopId));
                 }
-                //if (carIds.Count!=0&&MalfunctionIds.Count!=0&&FeatureIds.Count!=0)
-                //{
-                //     Wrokshop = _WorkshopRepositroy.GetAll().Where(w =>
-                //                  workshopCarIds.Contains((Guid)w.WorkshopId) &&
-                //                  workshopmalfunctionIds.Contains((Guid)w.WorkshopId) &&
-                //                  workshopFeatureIds.Contains((Guid)w.WorkshopId) &&
-                //                  w.HasSparePart.Equals(HasSparePart) &&
-                //                  w.HasWarranty.Equals(HasWarranty)
-                //                  ).ToList();
-                //}
+             
+                
                 var result = new List<Workshop>();
                 if (oldPredicate == predicate)
                 {
@@ -402,7 +400,11 @@ namespace BackEnd.Service.Services
                 }
                 else
                 {
+                    predicate = predicate.And(w=>w.HasSparePart.Equals(HasSparePart) && w.HasWarranty.Equals(HasWarranty));
+
+
                     result = _WorkshopRepositroy.GetAll().Where(predicate).ToList();
+                   // result = result.Where(x => x.HasSparePart.Equals(HasSparePart)&&x.HasWarranty.Equals(HasWarranty)).ToList();
 
                 }
             
