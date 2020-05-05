@@ -108,6 +108,83 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
+        #region UpdateCustomerNotificationsStatus(Guid CustomerNotificationId , bool Status)
+        public IResponseDTO UpdateCustomerNotificationsStatus(Guid NotificationId , bool IsRead)
+        {
+            try
+            {
+                var DbCustomerNotifications = _CustomerNotificationsRepositroy.GetFirst(x => x.NotificationId == NotificationId);
+                DbCustomerNotifications.IsRead = IsRead;
+                var entityEntry = _CustomerNotificationsRepositroy.Update(DbCustomerNotifications);
+
+
+                int save = _unitOfWork.Commit();
+
+                if (save == 200)
+                {
+                    _response.Data = null;
+                    _response.IsPassed = true;
+                    _response.Message = "Ok";
+                }
+                else
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+            return _response;
+
+        }
+        #endregion
+
+        #region UpdateNotificationsStatus()
+        public IResponseDTO UpdateNotificationsStatus()
+        {
+            try
+            {
+                var DbCustomerNotifications = _CustomerNotificationsRepositroy.GetAll().ToList();
+                foreach (var Notification in DbCustomerNotifications)
+                {
+                    Notification.IsRead = true;
+                    _CustomerNotificationsRepositroy.Update(Notification);
+                }
+
+
+                int save = _unitOfWork.Commit();
+
+                if (save == 200)
+                {
+                    _response.Data = null;
+                    _response.IsPassed = true;
+                    _response.Message = "Ok";
+                }
+                else
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+            return _response;
+
+        }
+        #endregion
+
         #region GetAllCustomerNotifications()
         public IResponseDTO GetAllCustomerNotifications()
         {

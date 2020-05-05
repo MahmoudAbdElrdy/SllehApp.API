@@ -47,6 +47,26 @@ namespace BackEnd.API.Controllers
         }
         #endregion
 
+        #region Get: api/WorkshopNotifications/UpdateWorkshopNotificationsStatus
+        [HttpGet]
+        [Route("UpdateWorkshopNotificationsStatus")]
+        public IResponseDTO UpdateWorkshopNotificationsStatus(Guid NotificationId, bool IsRead)
+        {
+            var depart = _WorkshopNotificationsServices.UpdateWorkshopNotificationsStatus(NotificationId, IsRead);
+            return depart;
+        }
+        #endregion
+
+        #region Get: api/WorkshopNotifications/UpdateNotificationsStatus
+        [HttpGet]
+        [Route("UpdateNotificationsStatus")]
+        public IResponseDTO UpdateNotificationsStatus()
+        {
+            var depart = _WorkshopNotificationsServices.UpdateNotificationsStatus();
+            return depart;
+        }
+        #endregion
+
         #region Get: api/WorkshopNotifications/GetAllWorkshopNotifications
         [HttpGet]
         [Route("GetAllWorkshopNotifications")]

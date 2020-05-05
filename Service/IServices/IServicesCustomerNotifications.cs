@@ -12,6 +12,8 @@ namespace BackEnd.Service.IServices
         IResponseDTO PostCustomerNotifications(CustomerNotificationsVM model);
         IResponseDTO GetAllCustomerNotifications();
         IResponseDTO EditCustomerNotifications(CustomerNotificationsVM model);
+        IResponseDTO UpdateCustomerNotificationsStatus(Guid NotificationId, bool IsRead);
+        IResponseDTO UpdateNotificationsStatus();
         IResponseDTO DeleteCustomerNotifications(CustomerNotificationsVM model);
         IResponseDTO GetByIDCustomerNotifications(object id);
         IResponseDTO GetByCustomerId(Guid CustomerId);

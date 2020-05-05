@@ -12,6 +12,8 @@ namespace BackEnd.Service.IServices
         IResponseDTO PostWorkshopNotifications(WorkshopNotificationsVM model);
         IResponseDTO GetAllWorkshopNotifications();
         IResponseDTO EditWorkshopNotifications(WorkshopNotificationsVM model);
+        IResponseDTO UpdateWorkshopNotificationsStatus(Guid NotificationId, bool IsRead);
+        IResponseDTO UpdateNotificationsStatus();
         IResponseDTO DeleteWorkshopNotifications(WorkshopNotificationsVM model);
         IResponseDTO GetByIDWorkshopNotifications(object id);
         IResponseDTO GetByWorkshopId(Guid WorkshopId);

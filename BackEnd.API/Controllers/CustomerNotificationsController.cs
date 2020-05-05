@@ -47,6 +47,26 @@ namespace BackEnd.API.Controllers
         }
         #endregion
 
+        #region Get: api/CustomerNotifications/UpdateCustomerNotificationsStatus
+        [HttpGet]
+        [Route("UpdateCustomerNotificationsStatus")]
+        public IResponseDTO UpdateCustomerNotificationsStatus(Guid NotificationId, bool IsRead)
+        {
+            var depart = _CustomerNotificationsServices.UpdateCustomerNotificationsStatus(NotificationId, IsRead);
+            return depart;
+        }
+        #endregion
+
+        #region Get: api/CustomerNotifications/UpdateNotificationsStatus
+        [HttpGet]
+        [Route("UpdateNotificationsStatus")]
+        public IResponseDTO UpdateNotificationsStatus()
+        {
+            var depart = _CustomerNotificationsServices.UpdateNotificationsStatus();
+            return depart;
+        }
+        #endregion
+
         #region Get: api/CustomerNotifications/GetAllCustomerNotifications
         [HttpGet]
         [Route("GetAllCustomerNotifications")]

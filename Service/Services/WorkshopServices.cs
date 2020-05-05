@@ -153,7 +153,7 @@ namespace BackEnd.Service.Services
                 }
                 else
                 {
-                    var DbWorkshop = _mapper.Map<WorkshopVM>(model);
+                    var DbWorkshop = _mapper.Map<WorkshopVM>(res);
                     _response.Data = DbWorkshop;
                     _response.IsPassed = true;
                     _response.Message = "Ok";
@@ -335,8 +335,9 @@ namespace BackEnd.Service.Services
             return _response;
         }
         #endregion
-        #region search Work shop
-        public IResponseDTO SearchWorkShop(Data data  )
+
+        #region SearchWorkShop(Data data)
+        public IResponseDTO SearchWorkShop(Data data)
         {
             try
             {
@@ -433,6 +434,8 @@ namespace BackEnd.Service.Services
         #endregion
 
     }
+
+    #region PredicateBuilder
     public static class PredicateBuilder
     {
         public static Expression<Func<T, bool>> True<T>() { return f => true; }
@@ -454,4 +457,5 @@ namespace BackEnd.Service.Services
                   (Expression.AndAlso(expr1.Body, invokedExpr), expr1.Parameters);
         }
     }
+    #endregion
 }

@@ -145,7 +145,7 @@ namespace BackEnd.Service.Services
                 }
                 else
                 {
-                    var DbAdminUsers = _mapper.Map<AdminUsersVM>(model);
+                    var DbAdminUsers = _mapper.Map<AdminUsersVM>(res);
                     _response.Data = DbAdminUsers;
                     _response.IsPassed = true;
                     _response.Message = "Ok";

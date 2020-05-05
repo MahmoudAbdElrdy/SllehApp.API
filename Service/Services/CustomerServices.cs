@@ -145,7 +145,7 @@ namespace BackEnd.Service.Services
                 }
                 else
                 {
-                    var DbCustomer = _mapper.Map<CustomerVM>(model);
+                    var DbCustomer = _mapper.Map<CustomerVM>(res);
                     _response.Data = DbCustomer;
                     _response.IsPassed = true;
                     _response.Message = "Ok";

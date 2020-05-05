@@ -108,6 +108,83 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
+        #region UpdateWorkshopNotificationsStatus(Guid WorkshopNotificationId , bool Status)
+        public IResponseDTO UpdateWorkshopNotificationsStatus(Guid NotificationId, bool IsRead)
+        {
+            try
+            {
+                var DbWorkshopNotifications = _WorkshopNotificationsRepositroy.GetFirst(x => x.NotificationId == NotificationId);
+                DbWorkshopNotifications.IsRead = IsRead;
+                var entityEntry = _WorkshopNotificationsRepositroy.Update(DbWorkshopNotifications);
+
+
+                int save = _unitOfWork.Commit();
+
+                if (save == 200)
+                {
+                    _response.Data = null;
+                    _response.IsPassed = true;
+                    _response.Message = "Ok";
+                }
+                else
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+            return _response;
+
+        }
+        #endregion
+
+        #region UpdateNotificationsStatus()
+        public IResponseDTO UpdateNotificationsStatus()
+        {
+            try
+            {
+                var DbWorkshopNotifications = _WorkshopNotificationsRepositroy.GetAll().ToList();
+                foreach (var Notification in DbWorkshopNotifications)
+                {
+                    Notification.IsRead = true;
+                    _WorkshopNotificationsRepositroy.Update(Notification);
+                }
+
+
+                int save = _unitOfWork.Commit();
+
+                if (save == 200)
+                {
+                    _response.Data = null;
+                    _response.IsPassed = true;
+                    _response.Message = "Ok";
+                }
+                else
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+            return _response;
+
+        }
+        #endregion
+
         #region GetAllWorkshopNotifications()
         public IResponseDTO GetAllWorkshopNotifications()
         {
