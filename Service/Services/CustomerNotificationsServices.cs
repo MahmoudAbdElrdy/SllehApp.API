@@ -194,7 +194,12 @@ namespace BackEnd.Service.Services
 
 
                 var CustomerNotificationssList = _mapper.Map<List<CustomerNotificationsVM>>(CustomerNotificationss);
-                _response.Data = CustomerNotificationssList;
+                var count = _CustomerNotificationsRepositroy.Get(x => x.IsRead == false).Count();
+                _response.Data = new
+                {
+                    Notifications = CustomerNotificationssList,
+                    countNew = count
+                };
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }

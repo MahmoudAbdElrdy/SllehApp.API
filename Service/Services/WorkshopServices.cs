@@ -238,13 +238,13 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var Workshops = _WorkshopRepositroy.GetAll().Where(x=>x.MapLangitude!=null||x.MapLangitude!=null).ToList();
+                var Workshops = _WorkshopRepositroy.GetAll().Where(x => x.MapLangitude != null && x.MapLangitude != null).ToList();
 
 
                 var WorkshopsList = _mapper.Map<List<WorkshopVM>>(Workshops);
                 for (int i=0;i< WorkshopsList.Count;i++)
                 {
-                    if(WorkshopsList[i].MapLangitude!=null || WorkshopsList[i].MapLatitude != null)
+                    //if(WorkshopsList[i].MapLangitude!=null || WorkshopsList[i].MapLatitude != null)
                     {
                         double lat1 = Deg2Rad((double)WorkshopsList[i].MapLangitude);
                         double lat2 = Deg2Rad(MapLangitude);
