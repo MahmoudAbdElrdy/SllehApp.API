@@ -295,6 +295,8 @@ namespace BackEnd.DAL.Models
 
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
+                entity.Property(e => e.Rate).HasColumnType("decimal(10, 2)");
+
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.WorkshopRate)
                     .HasForeignKey(d => d.CustomerId)

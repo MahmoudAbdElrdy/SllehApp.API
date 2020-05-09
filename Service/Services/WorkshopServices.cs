@@ -121,10 +121,32 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var Workshops = _WorkshopRepositroy.GetAll();
+                var Workshops = _WorkshopRepositroy.Get(includeProperties: "WorkshopRate");
 
 
-                var WorkshopsList = _mapper.Map<List<WorkshopVM>>(Workshops);
+                var WorkshopsList = Workshops.Select(x => new
+                {
+                    Address = x.Address,
+                    CreationDate = x.CreationDate,
+                    WorkshopId = x.WorkshopId,
+                    Name = x.Name,
+                    IsTrust = x.IsTrust,
+                    ImageUrl = x.ImageUrl,
+                    Token = x.Token,
+                    MapLatitude = x.MapLatitude,
+                    MapLangitude = x.MapLangitude,
+                    Email = x.Email,
+                    Password = "",
+                    Phone = x.Phone,
+                    Info = x.Info,
+                    OwnerName = x.OwnerName,
+                    OwnerImage = x.OwnerImage,
+                    IsAvailable = x.IsAvailable,
+                    HasSparePart = x.HasSparePart,
+                    HasWarranty = x.HasWarranty,
+                    RateCount = x.WorkshopRate.Count,
+                    RateAVG = x.WorkshopRate.Count > 0 ? x.WorkshopRate.Average(y => y.Rate) : 0.0m,
+                }).ToList();
                 _response.Data = WorkshopsList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
@@ -238,10 +260,10 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var Workshops = _WorkshopRepositroy.GetAll().Where(x => x.MapLangitude != null && x.MapLangitude != null).ToList();
+                var WorkshopsList = _WorkshopRepositroy.Get(x => x.MapLangitude != null && x.MapLangitude != null, includeProperties: "WorkshopRate").ToList();
 
 
-                var WorkshopsList = _mapper.Map<List<WorkshopVM>>(Workshops);
+                //var WorkshopsList = _mapper.Map<List<WorkshopVM>>(Workshops);
                 for (int i=0;i< WorkshopsList.Count;i++)
                 {
                     //if(WorkshopsList[i].MapLangitude!=null || WorkshopsList[i].MapLatitude != null)
@@ -266,7 +288,29 @@ namespace BackEnd.Service.Services
                     }
                   
                 }
-                _response.Data = WorkshopsList;
+                _response.Data = WorkshopsList.Select(x => new
+                {
+                    Address = x.Address,
+                    CreationDate = x.CreationDate,
+                    WorkshopId = x.WorkshopId,
+                    Name = x.Name,
+                    IsTrust = x.IsTrust,
+                    ImageUrl = x.ImageUrl,
+                    Token = x.Token,
+                    MapLatitude = x.MapLatitude,
+                    MapLangitude = x.MapLangitude,
+                    Email = x.Email,
+                    Password = "",
+                    Phone = x.Phone,
+                    Info = x.Info,
+                    OwnerName = x.OwnerName,
+                    OwnerImage = x.OwnerImage,
+                    IsAvailable = x.IsAvailable,
+                    HasSparePart = x.HasSparePart,
+                    HasWarranty = x.HasWarranty,
+                    RateCount = x.WorkshopRate.Count,
+                    RateAVG = x.WorkshopRate.Count > 0 ? x.WorkshopRate.Average(y => y.Rate) : 0.0m,
+                }).ToList();
                 _response.IsPassed = true;
                 _response.Message = "Ok";
             }
@@ -291,7 +335,7 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var Workshops = from WorkShop in _WorkshopRepositroy.GetAll(m => m.WorkshopId == workshopid)
+                var Workshops = from WorkShop in _WorkshopRepositroy.Get(m => m.WorkshopId == workshopid, includeProperties: "WorkshopCar,WorkshopFeatures,WorkshopMalfunction,WorkshopTechnician,WorkshopWorkTime")
                                 select new
                                 {
                                     WorkshopId = WorkShop.WorkshopId,
@@ -317,7 +361,6 @@ namespace BackEnd.Service.Services
                                     WorkshopMalfunction = _mapper.Map<List<WorkshopMalfunctionVM>>(WorkShop.WorkshopMalfunction.Where(x => x.WorkshopId == workshopid).ToList()),
                                     WorkshopTechnician = _mapper.Map<List<WorkshopTechnicianVM>>(WorkShop.WorkshopTechnician.Where(x => x.WorkshopId == workshopid).ToList()),
                                     WorkshopWorkTime = _mapper.Map<List<WorkshopWorkTimeVM>>(WorkShop.WorkshopWorkTime.Where(x => x.WorkshopId == workshopid).ToList()),
-
                                 };
 
 
@@ -404,7 +447,7 @@ namespace BackEnd.Service.Services
                     predicate = predicate.And(w=>w.HasSparePart.Equals(HasSparePart) && w.HasWarranty.Equals(HasWarranty));
 
 
-                    result = _WorkshopRepositroy.GetAll().Where(predicate).ToList();
+                    result = _WorkshopRepositroy.Get(predicate, includeProperties: "WorkshopRate").ToList();
                    // result = result.Where(x => x.HasSparePart.Equals(HasSparePart)&&x.HasWarranty.Equals(HasWarranty)).ToList();
 
                 }
@@ -418,7 +461,30 @@ namespace BackEnd.Service.Services
                 }
                 else
                 {
-                    _response.Data =_mapper.Map<List<WorkshopVM>>(result);
+                    //_response.Data =_mapper.Map<List<WorkshopVM>>(result);
+                    _response.Data = result.Select(x => new
+                    {
+                        Address = x.Address,
+                        CreationDate = x.CreationDate,
+                        WorkshopId = x.WorkshopId,
+                        Name = x.Name,
+                        IsTrust = x.IsTrust,
+                        ImageUrl = x.ImageUrl,
+                        Token = x.Token,
+                        MapLatitude = x.MapLatitude,
+                        MapLangitude = x.MapLangitude,
+                        Email = x.Email,
+                        Password = "",
+                        Phone = x.Phone,
+                        Info = x.Info,
+                        OwnerName = x.OwnerName,
+                        OwnerImage = x.OwnerImage,
+                        IsAvailable = x.IsAvailable,
+                        HasSparePart = x.HasSparePart,
+                        HasWarranty = x.HasWarranty,
+                        RateCount = x.WorkshopRate.Count,
+                        RateAVG = x.WorkshopRate.Count > 0 ? x.WorkshopRate.Average(y => y.Rate) : 0.0m,
+                    }).ToList();
                     _response.IsPassed = true;
                     _response.Message = "Done";
                 }

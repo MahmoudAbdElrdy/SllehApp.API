@@ -22,8 +22,8 @@ namespace BackEnd.Service.Models
         public bool? IsTrust { get; set; } = false;
         public string ImageUrl { get; set; }
         public string Token { get; set; }
-        public decimal? MapLatitude { get; set; }
-        public decimal? MapLangitude { get; set; }
+        public decimal? MapLatitude { get; set; } = 0.0m;
+        public decimal? MapLangitude { get; set; } = 0.0m;
         public string Address { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }

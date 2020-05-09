@@ -10,6 +10,7 @@ namespace BackEnd.Service.Models
         public Guid? CustomerId { get; set; }
         public string Notes { get; set; } = "";
         public DateTime? CreationDate { get; set; } = DateTime.UtcNow.AddHours(3);
+        public decimal Rate { get; set; } = 0.0m;
 
         //public virtual CustomerVM Customer { get; set; }
         //public virtual WorkshopVM Workshop { get; set; }
