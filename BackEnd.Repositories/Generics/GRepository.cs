@@ -429,7 +429,7 @@ public class GRepository<T> : IGRepository<T>
         /// <returns></returns>
         public virtual EntityEntry<T> Remove(T entity)
         {
-            return _dbContext.Update(entity);
+            return _dbContext.Remove(entity);
         }
 
         /// <summary>
