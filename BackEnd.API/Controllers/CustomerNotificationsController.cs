@@ -60,9 +60,9 @@ namespace BackEnd.API.Controllers
         #region Get: api/CustomerNotifications/UpdateNotificationsStatus
         [HttpGet]
         [Route("UpdateNotificationsStatus")]
-        public IResponseDTO UpdateNotificationsStatus()
+        public IResponseDTO UpdateNotificationsStatus(Guid? id)
         {
-            var depart = _CustomerNotificationsServices.UpdateNotificationsStatus();
+            var depart = _CustomerNotificationsServices.UpdateNotificationsStatus(id);
             return depart;
         }
         #endregion

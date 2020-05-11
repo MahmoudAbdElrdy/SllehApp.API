@@ -13,9 +13,10 @@ namespace BackEnd.Service.IServices
         IResponseDTO GetAllCustomerNotifications();
         IResponseDTO EditCustomerNotifications(CustomerNotificationsVM model);
         IResponseDTO UpdateCustomerNotificationsStatus(Guid NotificationId, bool IsRead);
-        IResponseDTO UpdateNotificationsStatus();
+       // IResponseDTO UpdateNotificationsStatus();
         IResponseDTO DeleteCustomerNotifications(CustomerNotificationsVM model);
         IResponseDTO GetByIDCustomerNotifications(object id);
         IResponseDTO GetByCustomerId(Guid CustomerId);
+        IResponseDTO UpdateNotificationsStatus(Guid? id);
     }
 }

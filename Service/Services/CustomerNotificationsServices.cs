@@ -146,11 +146,11 @@ namespace BackEnd.Service.Services
         #endregion
 
         #region UpdateNotificationsStatus()
-        public IResponseDTO UpdateNotificationsStatus()
+        public IResponseDTO UpdateNotificationsStatus(Guid? id)
         {
             try
             {
-                var DbCustomerNotifications = _CustomerNotificationsRepositroy.GetAll().ToList();
+                var DbCustomerNotifications = _CustomerNotificationsRepositroy.GetAll(x=>x.CustomerId==id).ToList();
                 foreach (var Notification in DbCustomerNotifications)
                 {
                     Notification.IsRead = true;
