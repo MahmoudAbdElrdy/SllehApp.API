@@ -220,16 +220,17 @@ namespace BackEnd.Service.Services
         public IResponseDTO GetByWorkshopId(Guid? id)
         {
             try
-            {
-                var WorkshopRates = from entity in _WorkshopRateRepositroy.Get(x => x.WorkshopId == id)
+            {//58b03cb5-30d1-4dec-81f1-988302c876d3
+                var WorkshopRates = from entity in _WorkshopRateRepositroy.Get(x => x.WorkshopId == id, includeProperties: "Customer")
                                     select new
                                     {
-                                        entity.CreationDate,
-                                        entity.CustomerId,
-                                        entity.Notes,
-                                        entity.Rate,
-                                        entity.RateId,
-                                        entity.WorkshopId,
+                                        CreationDate=entity.CreationDate,
+                                        CustomerId=entity.CustomerId,
+                                        Notes=entity.Notes,
+                                        Rate=entity.Rate,
+                                        RateId=entity.RateId,
+                                        WorkshopId=entity.WorkshopId,
+                                        CustomerName =entity.Customer.Name
                                     };
 
 

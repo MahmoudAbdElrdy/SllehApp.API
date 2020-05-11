@@ -86,6 +86,7 @@ namespace BackEnd.Repositories.Generics
         object GetMaximum(Expression<Func<T, object>> selector);
         Task<object> GetMaximumAsync(Expression<Func<T, object>> selector);
         #endregion
+        ICollection<T> Filter(Expression<Func<T, bool>> predicate);
 
     }
 }

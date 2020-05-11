@@ -246,7 +246,11 @@ public class GRepository<T> : IGRepository<T>
                     return query.ToList();
             }
         }
-
+        public ICollection<T> Filter(Expression<Func<T, bool>> predicate)
+        {
+            //  var x = _dbContext.Set<T>();
+            return _dbContext.Set<T>().Where(predicate).ToList();
+        }
         /// <summary>
         /// Retrieve all records
         /// </summary>
