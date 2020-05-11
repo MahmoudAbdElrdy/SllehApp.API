@@ -221,10 +221,19 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var WorkshopRates = _WorkshopRateRepositroy.Get(x => x.WorkshopId == id);
+                var WorkshopRates = from entity in _WorkshopRateRepositroy.Get(x => x.WorkshopId == id)
+                                    select new
+                                    {
+                                        entity.CreationDate,
+                                        entity.CustomerId,
+                                        entity.Notes,
+                                        entity.Rate,
+                                        entity.RateId,
+                                        entity.WorkshopId,
+                                    };
 
 
-                var WorkshopRatesList = _mapper.Map<WorkshopRateVM>(WorkshopRates);
+                var WorkshopRatesList = WorkshopRates.ToList();
                 _response.Data = WorkshopRatesList;
                 _response.IsPassed = true;
                 _response.Message = "Done";

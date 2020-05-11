@@ -335,7 +335,7 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var Workshops = from WorkShop in _WorkshopRepositroy.Get(m => m.WorkshopId == workshopid, includeProperties: "WorkshopCar,WorkshopFeatures,WorkshopMalfunction,WorkshopTechnician,WorkshopWorkTime")
+                var Workshops = from WorkShop in _WorkshopRepositroy.Get(m => m.WorkshopId == workshopid, includeProperties: "WorkshopCar,WorkshopFeatures,WorkshopMalfunction,WorkshopTechnician,WorkshopWorkTime,WorkshopRate")
                                 select new
                                 {
                                     WorkshopId = WorkShop.WorkshopId,
@@ -356,6 +356,8 @@ namespace BackEnd.Service.Services
                                     Password = "",
                                     Phone = WorkShop.Phone,
                                     Token = WorkShop.Token,
+                                    RateCount = WorkShop.WorkshopRate.Where(x=>x.WorkshopId==workshopid).ToList().Count,
+                                    RateAVG = WorkShop.WorkshopRate.ToList().Count > 0 ? WorkShop.WorkshopRate.Average(y => y.Rate) : 0.0m,
                                     WorkshopCar = _mapper.Map<List<WorkshopCarVM>>(WorkShop.WorkshopCar.Where(x => x.WorkshopId == workshopid).ToList()),
                                     WorkshopFeatures = _mapper.Map<List<WorkshopFeaturesVM>>(WorkShop.WorkshopFeatures.Where(x => x.WorkshopId == workshopid).ToList()),
                                     WorkshopMalfunction = _mapper.Map<List<WorkshopMalfunctionVM>>(WorkShop.WorkshopMalfunction.Where(x => x.WorkshopId == workshopid).ToList()),

@@ -155,6 +155,7 @@ namespace BackEnd.Service.Services
                 {
                     Notification.IsRead = true;
                     _CustomerNotificationsRepositroy.Update(Notification);
+                    _unitOfWork.Commit();
                 }
 
 
@@ -241,10 +242,24 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var CustomerNotificationss = _CustomerNotificationsRepositroy.Get(x => x.CustomerId == CustomerId);
+                var CustomerNotificationss = from enttity in _CustomerNotificationsRepositroy.Get(x => x.CustomerId == CustomerId)
+                                             select new
+                                             {
+                                              enttity.Content,
+                                             enttity.CreationDate,
+                                             enttity.CustomerId,
+                                             enttity.ImageUrl,
+                                             enttity.IsRead,
+                                             enttity.NotificationId,
+                                             enttity.Title,
+                                              
+                                             
 
 
-                var CustomerNotificationssList = _mapper.Map<CustomerNotificationsVM>(CustomerNotificationss);
+                                             };
+
+
+                var CustomerNotificationssList = CustomerNotificationss.ToList();
                 _response.Data = CustomerNotificationssList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
