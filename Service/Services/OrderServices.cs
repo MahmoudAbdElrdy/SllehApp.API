@@ -198,10 +198,10 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var Orders = _OrderRepositroy.Get(x => x.CustomerId == id);
+                var Orders = _OrderRepositroy.Get(x => x.CustomerId == id,includeProperties: "Customer");
 
 
-                var OrdersList = _mapper.Map<OrderVM>(Orders);
+                var OrdersList = _mapper.Map<List<OrderVM>>(Orders);
                 _response.Data = OrdersList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
@@ -221,10 +221,10 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var Orders = _OrderRepositroy.Get(x => x.WorkshopId == id);
+                var Orders = _OrderRepositroy.Get(x => x.WorkshopId == id,includeProperties: "Workshop");
 
 
-                var OrdersList = _mapper.Map<OrderVM>(Orders);
+                var OrdersList = _mapper.Map<List<OrderVM>>(Orders);
                 _response.Data = OrdersList;
                 _response.IsPassed = true;
                 _response.Message = "Done";

@@ -33,6 +33,7 @@ using Microsoft.Extensions.FileProviders;
 using System.IO;
 
 using BackEnd.DAL.Models;
+using Chat.Hubs;
 
 namespace BackEnd.API
 {
@@ -65,7 +66,8 @@ namespace BackEnd.API
             services.AddDbContext<DB_A57576_SllehAppContext>(options =>
                     options.UseLazyLoadingProxies(false)
                     .UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")));
-
+            // SignalR
+            services.AddSignalR();
             //        services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             //                {
             //                    options.User.RequireUniqueEmail = false;
@@ -205,6 +207,10 @@ namespace BackEnd.API
             //    RequestPath = new PathString("/UploadFiles")
             //});
             app.UseAuthentication();
+            app.UseSignalR(route =>
+            {
+                route.MapHub<ChatHub>("/chathub");
+            });
             app.UseMvc();
 
 
