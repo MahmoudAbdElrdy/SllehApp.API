@@ -198,7 +198,7 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var Orders = _OrderRepositroy.Get(x => x.CustomerId == id,includeProperties: "Customer");
+                var Orders = _OrderRepositroy.Get(x => x.CustomerId == id,includeProperties: "Workshop");
 
 
                 var OrdersList = _mapper.Map<List<OrderVM>>(Orders);
@@ -221,7 +221,7 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var Orders = _OrderRepositroy.Get(x => x.WorkshopId == id,includeProperties: "Workshop");
+                var Orders = _OrderRepositroy.Get(x => x.WorkshopId == id,includeProperties: "Customer");
 
 
                 var OrdersList = _mapper.Map<List<OrderVM>>(Orders);
