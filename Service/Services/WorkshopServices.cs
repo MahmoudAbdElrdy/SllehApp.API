@@ -260,9 +260,10 @@ namespace BackEnd.Service.Services
         {
             try
             {
+                List<Workshop> workshops;
                 var WorkshopsList = _WorkshopRepositroy.Get(x => x.MapLangitude != null && x.MapLangitude != null, includeProperties: "WorkshopRate").ToList();
 
-
+                workshops = WorkshopsList.ToList();
                 //var WorkshopsList = _mapper.Map<List<WorkshopVM>>(Workshops);
                 for (int i=0;i< WorkshopsList.Count;i++)
                 {
@@ -273,22 +274,22 @@ namespace BackEnd.Service.Services
                         double lon1 = Deg2Rad((double)WorkshopsList[i].MapLatitude);
                         double lon2 = Deg2Rad(MapLatitude);
 
-                        double R = 6371; // km
+                        double R = 6371; // km    m 6378137
                         double x = (lon2 - lon1) * Math.Cos((lat1 + lat2) / 2);
                         double y = (lat2 - lat1);
                         double distance = Math.Sqrt(x * x + y * y) * R;
 
 
+                        System.Diagnostics.Debug.WriteLine($"Name : {WorkshopsList[i].Name} , distance : {distance} ");
 
-
-                        if (distance >= 1500000)
+                        if (distance >= 15)
                         {
-                            WorkshopsList.Remove(WorkshopsList[i]);
+                            workshops.Remove(WorkshopsList[i]);
                         }
                     }
                   
                 }
-                _response.Data = WorkshopsList.Select(x => new
+                _response.Data = workshops.Select(x => new
                 {
                     Address = x.Address,
                     CreationDate = x.CreationDate,
@@ -311,6 +312,7 @@ namespace BackEnd.Service.Services
                     RateCount = x.WorkshopRate.Count,
                     RateAVG = x.WorkshopRate.Count > 0 ? x.WorkshopRate.Average(y => y.Rate) : 0.0m,
                 }).ToList();
+
                 _response.IsPassed = true;
                 _response.Message = "Ok";
             }
@@ -440,11 +442,11 @@ namespace BackEnd.Service.Services
              
                 
                 var result = new List<Workshop>();
-                if (oldPredicate == predicate)
-                {
-                    result = new List<Workshop>();
-                }
-                else
+                //if (oldPredicate == predicate)
+                //{
+                //    result = new List<Workshop>();
+                //}
+                //else
                 {
                     predicate = predicate.And(w=>w.HasSparePart.Equals(HasSparePart) && w.HasWarranty.Equals(HasWarranty));
 
