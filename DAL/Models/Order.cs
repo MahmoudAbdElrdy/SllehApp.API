@@ -11,9 +11,9 @@ namespace BackEnd.DAL.Models
         public string Address { get; set; }
         public string Phone { get; set; }
         public DateTime? CreationDate { get; set; }
-        public int? Status { get; set; }
         public decimal? MapLatitude { get; set; }
         public decimal? MapLangitude { get; set; }
+        public int? Status { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Workshop Workshop { get; set; }

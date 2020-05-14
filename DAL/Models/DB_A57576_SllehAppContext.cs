@@ -175,10 +175,6 @@ namespace BackEnd.DAL.Models
 
                 entity.Property(e => e.Phone).HasMaxLength(50);
 
-                entity.Property(e => e.Status)
-                    .HasMaxLength(50)
-                    .HasDefaultValueSql("('open')");
-
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Order)
                     .HasForeignKey(d => d.CustomerId)
@@ -211,6 +207,11 @@ namespace BackEnd.DAL.Models
                 entity.Property(e => e.Phone).HasMaxLength(50);
 
                 entity.Property(e => e.Token).HasDefaultValueSql("('')");
+
+                entity.HasOne(d => d.City)
+                    .WithMany(p => p.Workshop)
+                    .HasForeignKey(d => d.CityId)
+                    .HasConstraintName("FK_Workshop_City");
             });
 
             modelBuilder.Entity<WorkshopCar>(entity =>
@@ -237,8 +238,6 @@ namespace BackEnd.DAL.Models
                 entity.Property(e => e.FeatureWorkeshopId).ValueGeneratedNever();
 
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.HasOne(d => d.Feature)
                     .WithMany(p => p.WorkshopFeatures)

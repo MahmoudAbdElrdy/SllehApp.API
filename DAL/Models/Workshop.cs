@@ -35,7 +35,9 @@ namespace BackEnd.DAL.Models
         public string Token { get; set; }
         public decimal? MapLatitude { get; set; }
         public decimal? MapLangitude { get; set; }
+        public Guid? CityId { get; set; }
 
+        public virtual City City { get; set; }
         public virtual ICollection<Order> Order { get; set; }
         public virtual ICollection<WorkshopCar> WorkshopCar { get; set; }
         public virtual ICollection<WorkshopFeatures> WorkshopFeatures { get; set; }

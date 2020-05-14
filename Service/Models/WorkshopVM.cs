@@ -35,6 +35,7 @@ namespace BackEnd.Service.Models
         public bool? HasSparePart { get; set; }
         public bool? HasWarranty { get; set; }
         public DateTime? CreationDate { get; set; } = DateTime.UtcNow.AddHours(3);
+        public Guid? CityId { get; set; }
 
         //public virtual ICollection<OrderVM> Order { get; set; }
         //public virtual ICollection<WorkshopCarVM> WorkshopCar { get; set; }
