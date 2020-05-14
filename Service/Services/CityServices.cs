@@ -100,12 +100,12 @@ namespace BackEnd.Service.Services
             return _response;
           
         }
-        // Saudi id : 'fd3f74d2-f3ca-4f17-b3be-cdf6ef800f7a'
+        // Saudi id : '1E5DE704-5A80-4CAA-AB98-910AC31E205D'
         public IResponseDTO GetSaudiCity()
         {
             try
             {
-                var Citys = _CityRepositroy.Get(x => x.CountryId == Guid.Parse("fd3f74d2-f3ca-4f17-b3be-cdf6ef800f7a"))
+                var Citys = _CityRepositroy.Get(x => x.CountryId == Guid.Parse("1E5DE704-5A80-4CAA-AB98-910AC31E205D"))
                                            .OrderBy(y => y.Order).OrderBy(z => z.CityName);
                 var CitysList = _mapper.Map<List<CityVM>>(Citys);
                 _response.Data = CitysList;
