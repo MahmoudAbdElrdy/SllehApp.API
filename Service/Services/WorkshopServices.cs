@@ -548,7 +548,7 @@ namespace BackEnd.Service.Services
                     predicate = predicate.And(w=>w.HasSparePart.Equals(HasSparePart) && w.HasWarranty.Equals(HasWarranty));
 
 
-                    result = _WorkshopRepositroy.Get(predicate, includeProperties: "WorkshopRate").ToList();
+                    result = _WorkshopRepositroy.Get(predicate, includeProperties: "WorkshopRate,City").ToList();
                    // result = result.Where(x => x.HasSparePart.Equals(HasSparePart)&&x.HasWarranty.Equals(HasWarranty)).ToList();
 
                 }
@@ -566,6 +566,7 @@ namespace BackEnd.Service.Services
                     _response.Data = result.Select(x => new
                     {
                         Address = x.Address,
+                        CityId = x.CityId,
                         CreationDate = x.CreationDate,
                         WorkshopId = x.WorkshopId,
                         Name = x.Name,
