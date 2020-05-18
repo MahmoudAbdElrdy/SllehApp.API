@@ -31,7 +31,7 @@ namespace BackEnd.Service.Models
         public string Info { get; set; }
         public string OwnerName { get; set; }
         public string OwnerImage { get; set; }
-        public bool? IsAvailable { get; set; }
+        public bool? IsAvailable { get; set; } = true;
         public bool? HasSparePart { get; set; }
         public bool? HasWarranty { get; set; }
         public DateTime? CreationDate { get; set; } = DateTime.UtcNow.AddHours(3);

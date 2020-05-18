@@ -119,6 +119,50 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
+        #region UpdateStatus(Guid WorkshopId)
+        public IResponseDTO UpdateStatus(Guid WorkshopId)
+        {
+            try
+            {
+                var DbWorkshop = _WorkshopRepositroy.Find(x=>x.WorkshopId == WorkshopId);
+                if (DbWorkshop.IsAvailable != null)
+                {
+                    DbWorkshop.IsAvailable = !DbWorkshop.IsAvailable;
+                }
+                else
+                {
+                    DbWorkshop.IsAvailable = true;
+                }
+                var entityEntry = _WorkshopRepositroy.Update(DbWorkshop);
+
+
+                int save = _unitOfWork.Commit();
+
+                if (save == 200)
+                {
+                    _response.Data = null;
+                    _response.IsPassed = true;
+                    _response.Message = "Ok";
+                }
+                else
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+            return _response;
+
+        }
+        #endregion
+
         #region GetAllWorkshop()
         public IResponseDTO GetAllWorkshop()
         {
@@ -323,8 +367,6 @@ namespace BackEnd.Service.Services
             return _response;
 
         }
-
-
         #endregion
 
         #region getNearestWorkShops(MapLatitude,MapLangitude,Token)

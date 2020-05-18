@@ -79,6 +79,16 @@ namespace BackEnd.API.Controllers
         }
         #endregion
 
+        #region Get: api/Workshop/UpdateStatus
+        [HttpGet]
+        [Route("UpdateStatus")]
+        public IResponseDTO UpdateStatus(Guid WorkshopId)
+        {
+            var depart = _WorkshopServices.UpdateStatus(WorkshopId);
+            return depart;
+        }
+        #endregion
+
         #region Delete: api/Workshop/RemoveWorkshop
         [HttpDelete]
         [Route("RemoveWorkshop")]
@@ -98,6 +108,7 @@ namespace BackEnd.API.Controllers
             return depart;
         }
         #endregion
+
         #region Get: api/Workshop/GetAllWorkshop
         [HttpGet]
         [Route("GetAllWorkshopDeatalis")]
@@ -107,7 +118,8 @@ namespace BackEnd.API.Controllers
             return depart;
         }
         #endregion
-        #region Get: api/Workshop/Search
+
+        #region Post: api/Workshop/Search
         [HttpPost]
         [Route("Search")]
         public IResponseDTO Search(Data data)

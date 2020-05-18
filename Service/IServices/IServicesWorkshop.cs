@@ -14,6 +14,7 @@ namespace BackEnd.Service.IServices
         IResponseDTO Signup(DAL.Models.Workshop model);
         IResponseDTO GetAllWorkshop();
         IResponseDTO EditWorkshop(WorkshopVM model);
+        IResponseDTO UpdateStatus(Guid WorkshopId);
         IResponseDTO DeleteWorkshop(WorkshopVM model);
         IResponseDTO GetByIDWorkshop(object id);
         IResponseDTO WorkshopLogin(WorkshopVM model);
