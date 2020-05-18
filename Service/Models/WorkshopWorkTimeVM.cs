@@ -8,8 +8,8 @@ namespace BackEnd.Service.Models
         public Guid WorkTimeId { get; set; } = Guid.NewGuid();
         public Guid? WorkshopId { get; set; }
         public int? DayOfWeek { get; set; }
-        public DateTime? FromTime { get; set; }
-        public DateTime? ToTime { get; set; }
+        public decimal FromTime { get; set; }
+        public decimal ToTime { get; set; }
         public bool? IsAvailable { get; set; } = true;
         public DateTime? CreationDate { get; set; } = DateTime.UtcNow.AddHours(3);
 

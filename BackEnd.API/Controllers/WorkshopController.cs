@@ -29,6 +29,16 @@ namespace BackEnd.API.Controllers
         }
         #endregion
 
+        #region Post: api/Workshop/Signup
+        [HttpPost]
+        [Route("Signup")]
+        public IResponseDTO Signup(DAL.Models.Workshop Workshop)
+        {
+            var depart = _WorkshopServices.Signup(Workshop);
+            return depart;
+        }
+        #endregion
+
         #region Post: api/Workshop/WorkshopLogin
         [HttpPost]
         [Route("WorkshopLogin")]

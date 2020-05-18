@@ -258,8 +258,8 @@ namespace BackEnd.Service.Services
 
         #endregion
 
-        #region Register(Workshop model)
-        public IResponseDTO Register(Workshop model)
+        #region Signup(Workshop model)
+        public IResponseDTO Signup(Workshop model)
         {
 
             try
@@ -271,24 +271,28 @@ namespace BackEnd.Service.Services
                 foreach(var WorkshopCar in model.WorkshopCar)
                 {
                     WorkshopCar.WorkshopId = DbWorkshop.WorkshopId;
+                    WorkshopCar.WorkshopCarId = Guid.NewGuid();
                     _CarWorkshopRepositroy.Add(WorkshopCar);
                 }
 
                 foreach (var WorkshopMalfunction in model.WorkshopMalfunction)
                 {
                     WorkshopMalfunction.WorkshopId = DbWorkshop.WorkshopId;
+                    WorkshopMalfunction.WorkshopMalfunctionId = Guid.NewGuid();
                     _MalfunctionWorkshopRepositroy.Add(WorkshopMalfunction);
                 }
 
                 foreach (var WorkshopFeatures in model.WorkshopFeatures)
                 {
                     WorkshopFeatures.WorkshopId = DbWorkshop.WorkshopId;
+                    WorkshopFeatures.FeatureWorkeshopId = Guid.NewGuid();
                     _FeaturesWorkshopRepositroy.Add(WorkshopFeatures);
                 }
 
                 foreach (var WorkshopWorkTime in model.WorkshopWorkTime)
                 {
                     WorkshopWorkTime.WorkshopId = DbWorkshop.WorkshopId;
+                    WorkshopWorkTime.WorkTimeId = Guid.NewGuid();
                     _WorkTimeWorkshopRepositroy.Add(WorkshopWorkTime);
                 }
 

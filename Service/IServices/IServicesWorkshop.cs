@@ -11,6 +11,7 @@ namespace BackEnd.Service.IServices
    public interface IServicesWorkshop
     {
         IResponseDTO PostWorkshop(WorkshopVM model);
+        IResponseDTO Signup(DAL.Models.Workshop model);
         IResponseDTO GetAllWorkshop();
         IResponseDTO EditWorkshop(WorkshopVM model);
         IResponseDTO DeleteWorkshop(WorkshopVM model);
