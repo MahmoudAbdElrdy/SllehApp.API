@@ -77,6 +77,16 @@ namespace BackEnd.API.Controllers
         }
         #endregion
 
+        #region Get: api/Order/GetRunningByWorkshopId
+        [HttpGet]
+        [Route("GetRunningByWorkshopId")]
+        public IResponseDTO GetRunningByWorkshopId(Guid? id)
+        {
+            var depart = _OrderServices.GetByWorkshopId(id);
+            return depart;
+        }
+        #endregion
+
         #region Delete: api/Order/RemoveOrder
         [HttpDelete]
         [Route("RemoveOrder")]

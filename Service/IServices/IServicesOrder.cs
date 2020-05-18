@@ -15,6 +15,7 @@ namespace BackEnd.Service.IServices
         IResponseDTO DeleteOrder(OrderVM model);
         IResponseDTO GetByIDOrder(object id);
         IResponseDTO GetByCustomerId(Guid? id);
+        IResponseDTO GetRunningByWorkshopId(Guid? id);
         IResponseDTO GetByWorkshopId(Guid? id);
     }
 }

@@ -331,9 +331,13 @@ namespace BackEnd.DAL.Models
 
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
-                entity.Property(e => e.FromTime).HasColumnType("datetime");
+                entity.Property(e => e.FromTime)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasDefaultValueSql("((0.00))");
 
-                entity.Property(e => e.ToTime).HasColumnType("datetime");
+                entity.Property(e => e.ToTime)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasDefaultValueSql("((0.00))");
 
                 entity.HasOne(d => d.Workshop)
                     .WithMany(p => p.WorkshopWorkTime)

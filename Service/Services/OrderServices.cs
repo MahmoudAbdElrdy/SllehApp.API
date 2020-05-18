@@ -238,5 +238,28 @@ namespace BackEnd.Service.Services
             return _response;
         }
         #endregion
+
+        #region GetRunningByWorkshopId(Guid? id)
+        public IResponseDTO GetRunningByWorkshopId(Guid? id)
+        {
+            try
+            {
+                var Orders = _OrderRepositroy.Get(x => x.WorkshopId == id && x.Status == 1, includeProperties: "Customer");
+
+
+                var OrdersList = _mapper.Map<List<OrderVM>>(Orders);
+                _response.Data = OrdersList;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
+        #endregion
     }
 }

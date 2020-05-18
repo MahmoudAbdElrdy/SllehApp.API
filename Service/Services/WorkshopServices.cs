@@ -22,6 +22,7 @@ namespace BackEnd.Service.Services
         private readonly IGRepository<WorkshopCar> _CarWorkshopRepositroy;
         private readonly IGRepository<WorkshopMalfunction> _MalfunctionWorkshopRepositroy;
         private readonly IGRepository<WorkshopFeatures> _FeaturesWorkshopRepositroy;
+        private readonly IGRepository<WorkshopWorkTime> _WorkTimeWorkshopRepositroy;
         private readonly IGRepository<Workshop> _WorkshopRepositroy;
         private readonly IUnitOfWork<DB_A57576_SllehAppContext> _unitOfWork;
         private readonly IResponseDTO _response;
@@ -29,14 +30,16 @@ namespace BackEnd.Service.Services
         #endregion
 
         #region Constructor
-        public WorkshopServices(IGRepository<Workshop> Workshop,
-            IGRepository<WorkshopCar> Car, IGRepository<WorkshopMalfunction> Malfunction, IGRepository<WorkshopFeatures> Features,
+        public WorkshopServices(IGRepository<Workshop> Workshop,IGRepository<WorkshopCar> Car,
+             IGRepository<WorkshopMalfunction> Malfunction, IGRepository<WorkshopFeatures> Features,
+             IGRepository<WorkshopWorkTime> WorkTimes,
 
             IUnitOfWork<DB_A57576_SllehAppContext> unitOfWork, IResponseDTO responseDTO, IMapper mapper)
         {
             _CarWorkshopRepositroy = Car;
             _MalfunctionWorkshopRepositroy = Malfunction;
             _FeaturesWorkshopRepositroy = Features;
+            _WorkTimeWorkshopRepositroy = WorkTimes;
             _WorkshopRepositroy = Workshop;
             _unitOfWork = unitOfWork;
             _response = responseDTO;
@@ -223,6 +226,71 @@ namespace BackEnd.Service.Services
                 var DbWorkshop = _mapper.Map<Workshop>(model);
 
                 var Workshop = _mapper.Map<WorkshopVM>(_WorkshopRepositroy.Add(DbWorkshop));
+
+                int save = _unitOfWork.Commit();
+
+                if (save == 200)
+                {
+                    _response.Data = model;
+                    _response.IsPassed = true;
+                    _response.Message = "Ok";
+                }
+                else
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+
+            return _response;
+
+        }
+
+
+        #endregion
+
+        #region Register(Workshop model)
+        public IResponseDTO Register(Workshop model)
+        {
+
+            try
+            {
+                var DbWorkshop = _mapper.Map<Workshop>(model);
+
+                _WorkshopRepositroy.Add(DbWorkshop);
+
+                foreach(var WorkshopCar in model.WorkshopCar)
+                {
+                    WorkshopCar.WorkshopId = DbWorkshop.WorkshopId;
+                    _CarWorkshopRepositroy.Add(WorkshopCar);
+                }
+
+                foreach (var WorkshopMalfunction in model.WorkshopMalfunction)
+                {
+                    WorkshopMalfunction.WorkshopId = DbWorkshop.WorkshopId;
+                    _MalfunctionWorkshopRepositroy.Add(WorkshopMalfunction);
+                }
+
+                foreach (var WorkshopFeatures in model.WorkshopFeatures)
+                {
+                    WorkshopFeatures.WorkshopId = DbWorkshop.WorkshopId;
+                    _FeaturesWorkshopRepositroy.Add(WorkshopFeatures);
+                }
+
+                foreach (var WorkshopWorkTime in model.WorkshopWorkTime)
+                {
+                    WorkshopWorkTime.WorkshopId = DbWorkshop.WorkshopId;
+                    _WorkTimeWorkshopRepositroy.Add(WorkshopWorkTime);
+                }
 
                 int save = _unitOfWork.Commit();
 
