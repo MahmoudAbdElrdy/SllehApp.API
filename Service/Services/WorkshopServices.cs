@@ -124,7 +124,7 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var DbWorkshop = _WorkshopRepositroy.Find(x=>x.WorkshopId == WorkshopId);
+                var DbWorkshop = _WorkshopRepositroy.Get(x=>x.WorkshopId == WorkshopId).FirstOrDefault();
                 if (DbWorkshop.IsAvailable != null)
                 {
                     DbWorkshop.IsAvailable = !DbWorkshop.IsAvailable;

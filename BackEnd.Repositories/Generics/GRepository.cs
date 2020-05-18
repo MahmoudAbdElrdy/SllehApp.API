@@ -74,7 +74,7 @@ public class GRepository<T> : IGRepository<T>
         /// <returns></returns>
         public int Count()
         {
-            return _dbContext.Set<T>().Count();
+            return _dbContext.Set<T>().AsNoTracking().Count();
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ public class GRepository<T> : IGRepository<T>
         /// <returns></returns>
         public T GetMinimum()
         {
-            return _dbContext.Set<T>().Min();
+            return _dbContext.Set<T>().AsNoTracking().Min();
         }
         /// <summary>
         /// Returns the minimum value of generic IQueryable asynchronously
@@ -135,7 +135,7 @@ public class GRepository<T> : IGRepository<T>
         /// <returns></returns>
         public T GetMaximum()
         {
-            return _dbContext.Set<T>().Max();
+            return _dbContext.Set<T>().AsNoTracking().Max();
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ public class GRepository<T> : IGRepository<T>
           Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
           string includeProperties = "", int page = 0, string NoTrack = "")
         {
-            IQueryable<T> query = _dbContext.Set<T>();
+            IQueryable<T> query = _dbContext.Set<T>().AsNoTracking();
 
             if (filter != null)
             {
@@ -422,8 +422,6 @@ public class GRepository<T> : IGRepository<T>
 
 
         #endregion
-
-
 
         #region Remove Methods
         /// <summary>
