@@ -29,4 +29,8 @@
     <ProjectReference Include="..\Service\BackEnd.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UploadFiles\" />
+  </ItemGroup>
+
 </Project>

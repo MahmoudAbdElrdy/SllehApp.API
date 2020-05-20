@@ -9,6 +9,10 @@ namespace Chat.Hubs
 {
     public class ChatHub : Hub<ITypedHubClient>
     {
+        public ChatHub()
+        {
+
+        }
         public void Send(string name, string message)
         {
             Clients.All.BroadcastMessage(name, message);

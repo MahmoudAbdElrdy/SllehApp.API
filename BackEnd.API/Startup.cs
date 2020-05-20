@@ -200,12 +200,12 @@ namespace BackEnd.API
                 c.DocExpansion(DocExpansion.None);
 
             });
-            //app.UseStaticFiles();
-            //app.UseStaticFiles(new StaticFileOptions()
-            //{
-            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"UploadFiles")),
-            //    RequestPath = new PathString("/UploadFiles")
-            //});
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"UploadFiles")),
+                RequestPath = new PathString("/UploadFiles")
+            });
             app.UseAuthentication();
             app.UseSignalR(route =>
             {
