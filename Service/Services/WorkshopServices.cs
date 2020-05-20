@@ -308,9 +308,9 @@ namespace BackEnd.Service.Services
 
             try
             {
-                var DbWorkshop = _mapper.Map<Workshop>(model);
-
-                _WorkshopRepositroy.Add(DbWorkshop);
+                var DbWorkshop = _mapper.Map<WorkshopVM>(model);
+                DbWorkshop.WorkshopId = Guid.NewGuid();
+                _WorkshopRepositroy.Add(_mapper.Map<Workshop>(DbWorkshop));
 
                 foreach(var WorkshopCar in model.WorkshopCar)
                 {
@@ -344,7 +344,7 @@ namespace BackEnd.Service.Services
 
                 if (save == 200)
                 {
-                    _response.Data = model;
+                    _response.Data = DbWorkshop.WorkshopId;
                     _response.IsPassed = true;
                     _response.Message = "Ok";
                 }
