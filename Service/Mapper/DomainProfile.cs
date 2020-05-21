@@ -26,6 +26,7 @@ namespace BackEnd.Service.Mapper
             CreateMap<MalfunctionVM, Malfunction>().ReverseMap();
             CreateMap<OrderVM, Order>().ReverseMap();
             CreateMap<WorkshopVM, Workshop>().ReverseMap();
+            CreateMap<WorkshopSVM, Workshop>().ReverseMap();
             CreateMap<WorkshopCarVM, WorkshopCar>().ReverseMap();
             CreateMap<WorkshopFeaturesVM, WorkshopFeatures>().ReverseMap();
             CreateMap<WorkshopMalfunctionVM, WorkshopMalfunction>().ReverseMap();

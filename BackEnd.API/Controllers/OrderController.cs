@@ -82,7 +82,7 @@ namespace BackEnd.API.Controllers
         [Route("GetRunningByWorkshopId")]
         public IResponseDTO GetRunningByWorkshopId(Guid? id)
         {
-            var depart = _OrderServices.GetByWorkshopId(id);
+            var depart = _OrderServices.GetRunningByWorkshopId(id);
             return depart;
         }
         #endregion

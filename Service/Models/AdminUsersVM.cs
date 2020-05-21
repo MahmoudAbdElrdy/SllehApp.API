@@ -9,5 +9,6 @@ namespace BackEnd.Service.Models
         public string UserName { get; set; }
         public string Password { get; set; }
         public bool? Available { get; set; } = true;
+        public DateTime? CreationDate { get; set; } = DateTime.UtcNow.AddHours(3);
     }
 }

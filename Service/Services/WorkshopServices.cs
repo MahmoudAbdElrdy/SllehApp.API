@@ -302,49 +302,49 @@ namespace BackEnd.Service.Services
 
         #endregion
 
-        #region Signup(Workshop model)
-        public IResponseDTO Signup(Workshop model)
+        #region Signup(WorkshopSVM model)
+        public IResponseDTO Signup(WorkshopSVM model)
         {
 
             try
             {
-                var DbWorkshop = _mapper.Map<WorkshopVM>(model);
-                DbWorkshop.WorkshopId = Guid.NewGuid();
-                _WorkshopRepositroy.Add(_mapper.Map<Workshop>(DbWorkshop));
+                //var DbWorkshop = _mapper.Map<WorkshopVM>(model);
+                //DbWorkshop.WorkshopId = Guid.NewGuid();
+                _WorkshopRepositroy.Add(_mapper.Map<Workshop>(model));
 
                 foreach(var WorkshopCar in model.WorkshopCar)
                 {
-                    WorkshopCar.WorkshopId = DbWorkshop.WorkshopId;
+                    WorkshopCar.WorkshopId = model.WorkshopId;
                     WorkshopCar.WorkshopCarId = Guid.NewGuid();
-                    _CarWorkshopRepositroy.Add(WorkshopCar);
+                    _CarWorkshopRepositroy.Add(_mapper.Map<WorkshopCar>(WorkshopCar));
                 }
 
                 foreach (var WorkshopMalfunction in model.WorkshopMalfunction)
                 {
-                    WorkshopMalfunction.WorkshopId = DbWorkshop.WorkshopId;
+                    WorkshopMalfunction.WorkshopId = model.WorkshopId;
                     WorkshopMalfunction.WorkshopMalfunctionId = Guid.NewGuid();
-                    _MalfunctionWorkshopRepositroy.Add(WorkshopMalfunction);
+                    _MalfunctionWorkshopRepositroy.Add(_mapper.Map<WorkshopMalfunction>(WorkshopMalfunction));
                 }
 
                 foreach (var WorkshopFeatures in model.WorkshopFeatures)
                 {
-                    WorkshopFeatures.WorkshopId = DbWorkshop.WorkshopId;
+                    WorkshopFeatures.WorkshopId = model.WorkshopId;
                     WorkshopFeatures.FeatureWorkeshopId = Guid.NewGuid();
-                    _FeaturesWorkshopRepositroy.Add(WorkshopFeatures);
+                    _FeaturesWorkshopRepositroy.Add(_mapper.Map<WorkshopFeatures>(WorkshopFeatures));
                 }
 
                 foreach (var WorkshopWorkTime in model.WorkshopWorkTime)
                 {
-                    WorkshopWorkTime.WorkshopId = DbWorkshop.WorkshopId;
+                    WorkshopWorkTime.WorkshopId = model.WorkshopId;
                     WorkshopWorkTime.WorkTimeId = Guid.NewGuid();
-                    _WorkTimeWorkshopRepositroy.Add(WorkshopWorkTime);
+                    _WorkTimeWorkshopRepositroy.Add(_mapper.Map<WorkshopWorkTime>(WorkshopWorkTime));
                 }
 
                 int save = _unitOfWork.Commit();
 
                 if (save == 200)
                 {
-                    _response.Data = DbWorkshop.WorkshopId;
+                    _response.Data = model.WorkshopId;
                     _response.IsPassed = true;
                     _response.Message = "Ok";
                 }
