@@ -27,6 +27,16 @@ namespace BackEnd.API.Controllers
         }
         #endregion
 
+        #region Post: api/WorkshopTechnician/SaveListOfTechnician
+        [HttpPost]
+        [Route("SaveListOfTechnician")]
+        public IResponseDTO SaveListOfTechnician(System.Collections.Generic.List<WorkshopTechnicianVM> WorkshopTechnicianVM)
+        {
+            var depart = _WorkshopTechnicianServices.PostWorkshopTechnician(WorkshopTechnicianVM);
+            return depart;
+        }
+        #endregion
+
         #region Put: api/WorkshopTechnician/UpdateWorkshopTechnician
         [HttpPut]
         [Route("UpdateWorkshopTechnician")]

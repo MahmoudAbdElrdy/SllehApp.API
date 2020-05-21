@@ -10,6 +10,7 @@ namespace BackEnd.Service.IServices
    public interface IServicesWorkshopTechnician
     {
         IResponseDTO PostWorkshopTechnician(WorkshopTechnicianVM model);
+        IResponseDTO PostWorkshopTechnician(List<WorkshopTechnicianVM> model);
         IResponseDTO GetAllWorkshopTechnician();
         IResponseDTO EditWorkshopTechnician(WorkshopTechnicianVM model);
         IResponseDTO DeleteWorkshopTechnician(WorkshopTechnicianVM model);
