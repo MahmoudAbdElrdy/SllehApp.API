@@ -32,6 +32,7 @@ namespace BackEnd.Service.Mapper
             CreateMap<WorkshopMalfunctionVM, WorkshopMalfunction>().ReverseMap();
             CreateMap<WorkshopNotificationsVM, WorkshopNotifications>().ReverseMap();
             CreateMap<WorkshopRateVM, WorkshopRate>().ReverseMap();
+            CreateMap<WorkshopNotificationsVM, WorkshopNotifications>().ReverseMap();
             CreateMap<WorkshopTechnicianVM, WorkshopTechnician>().ReverseMap();
             CreateMap<WorkshopWorkTimeVM, WorkshopWorkTime>().ReverseMap();
             CreateMap<FeaturesVM, Features>().ReverseMap();

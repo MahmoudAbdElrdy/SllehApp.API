@@ -312,33 +312,33 @@ namespace BackEnd.Service.Services
                 //DbWorkshop.WorkshopId = Guid.NewGuid();
                 _WorkshopRepositroy.Add(_mapper.Map<Workshop>(model));
 
-                foreach(var WorkshopCar in model.WorkshopCar)
-                {
-                    WorkshopCar.WorkshopId = model.WorkshopId;
-                    WorkshopCar.WorkshopCarId = Guid.NewGuid();
-                    _CarWorkshopRepositroy.Add(_mapper.Map<WorkshopCar>(WorkshopCar));
-                }
+                //foreach(var WorkshopCar in model.WorkshopCar)
+                //{
+                //    WorkshopCar.WorkshopId = model.WorkshopId;
+                //    WorkshopCar.WorkshopCarId = Guid.NewGuid();
+                //    _CarWorkshopRepositroy.Add(_mapper.Map<WorkshopCar>(WorkshopCar));
+                //}
 
-                foreach (var WorkshopMalfunction in model.WorkshopMalfunction)
-                {
-                    WorkshopMalfunction.WorkshopId = model.WorkshopId;
-                    WorkshopMalfunction.WorkshopMalfunctionId = Guid.NewGuid();
-                    _MalfunctionWorkshopRepositroy.Add(_mapper.Map<WorkshopMalfunction>(WorkshopMalfunction));
-                }
+                //foreach (var WorkshopMalfunction in model.WorkshopMalfunction)
+                //{
+                //    WorkshopMalfunction.WorkshopId = model.WorkshopId;
+                //    WorkshopMalfunction.WorkshopMalfunctionId = Guid.NewGuid();
+                //    _MalfunctionWorkshopRepositroy.Add(_mapper.Map<WorkshopMalfunction>(WorkshopMalfunction));
+                //}
 
-                foreach (var WorkshopFeatures in model.WorkshopFeatures)
-                {
-                    WorkshopFeatures.WorkshopId = model.WorkshopId;
-                    WorkshopFeatures.FeatureWorkeshopId = Guid.NewGuid();
-                    _FeaturesWorkshopRepositroy.Add(_mapper.Map<WorkshopFeatures>(WorkshopFeatures));
-                }
+                //foreach (var WorkshopFeatures in model.WorkshopFeatures)
+                //{
+                //    WorkshopFeatures.WorkshopId = model.WorkshopId;
+                //    WorkshopFeatures.FeatureWorkeshopId = Guid.NewGuid();
+                //    _FeaturesWorkshopRepositroy.Add(_mapper.Map<WorkshopFeatures>(WorkshopFeatures));
+                //}
 
-                foreach (var WorkshopWorkTime in model.WorkshopWorkTime)
-                {
-                    WorkshopWorkTime.WorkshopId = model.WorkshopId;
-                    WorkshopWorkTime.WorkTimeId = Guid.NewGuid();
-                    _WorkTimeWorkshopRepositroy.Add(_mapper.Map<WorkshopWorkTime>(WorkshopWorkTime));
-                }
+                //foreach (var WorkshopWorkTime in model.WorkshopWorkTime)
+                //{
+                //    WorkshopWorkTime.WorkshopId = model.WorkshopId;
+                //    WorkshopWorkTime.WorkTimeId = Guid.NewGuid();
+                //    _WorkTimeWorkshopRepositroy.Add(_mapper.Map<WorkshopWorkTime>(WorkshopWorkTime));
+                //}
 
                 int save = _unitOfWork.Commit();
 
