@@ -13,7 +13,7 @@ namespace BackEnd.Service.IServices
         IResponseDTO GetAllWorkshopNotifications();
         IResponseDTO EditWorkshopNotifications(WorkshopNotificationsVM model);
         IResponseDTO UpdateWorkshopNotificationsStatus(Guid NotificationId, bool IsRead);
-        IResponseDTO UpdateNotificationsStatus();
+        IResponseDTO UpdateNotificationsStatus(Guid WorkshopId);
         IResponseDTO DeleteWorkshopNotifications(WorkshopNotificationsVM model);
         IResponseDTO GetByIDWorkshopNotifications(object id);
         IResponseDTO GetByWorkshopId(Guid WorkshopId);

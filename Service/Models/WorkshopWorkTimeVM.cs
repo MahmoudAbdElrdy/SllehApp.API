@@ -7,7 +7,7 @@ namespace BackEnd.Service.Models
     {
         public Guid WorkTimeId { get; set; } = Guid.NewGuid();
         public Guid? WorkshopId { get; set; }
-        public int? DayOfWeek { get; set; }
+        public int? DayOfWeek { get; set; } = 0;
         public decimal FromTime { get; set; }
         public decimal ToTime { get; set; }
         public bool? IsAvailable { get; set; } = true;

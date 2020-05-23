@@ -145,12 +145,12 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region UpdateNotificationsStatus()
-        public IResponseDTO UpdateNotificationsStatus()
+        #region UpdateNotificationsStatus(Guid WorkshopId)
+        public IResponseDTO UpdateNotificationsStatus(Guid WorkshopId)
         {
             try
             {
-                var DbWorkshopNotifications = _WorkshopNotificationsRepositroy.GetAll().ToList();
+                var DbWorkshopNotifications = _WorkshopNotificationsRepositroy.Get(x => x.WorkshopId == WorkshopId).ToList();
                 foreach (var Notification in DbWorkshopNotifications)
                 {
                     Notification.IsRead = true;
@@ -241,13 +241,22 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var WorkshopNotificationss = _WorkshopNotificationsRepositroy.Get(x => x.WorkshopId == WorkshopId);
-
-
-                var WorkshopNotificationssList = _mapper.Map<WorkshopNotificationsVM>(WorkshopNotificationss);
-                _response.Data = WorkshopNotificationssList;
-                _response.IsPassed = true;
-                _response.Message = "Done";
+                var WorkshopNotificationss = _WorkshopNotificationsRepositroy.Get(x => x.WorkshopId == WorkshopId).ToList();
+                if(WorkshopNotificationss == null || WorkshopNotificationss.Count == 0)
+                {
+                    //var WorkshopNotificationssList = _mapper.Map<WorkshopNotificationsVM>(WorkshopNotificationss);
+                    _response.Data = new List<WorkshopNotificationsVM>();
+                    _response.IsPassed = true;
+                    _response.Message = "Done";
+                }
+                else
+                {
+                    var WorkshopNotificationssList = _mapper.Map<WorkshopNotificationsVM>(WorkshopNotificationss);
+                    _response.Data = WorkshopNotificationssList;
+                    _response.IsPassed = true;
+                    _response.Message = "Done";
+                }
+                
             }
             catch (Exception ex)
             {

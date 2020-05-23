@@ -56,6 +56,8 @@ namespace BackEnd.DAL.Models
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
+                entity.Property(e => e.CreationDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Password).IsRequired();
 
                 entity.Property(e => e.UserName)
@@ -80,9 +82,7 @@ namespace BackEnd.DAL.Models
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.CityName)
-                    .HasMaxLength(50)
-                    .HasDefaultValueSql("('')");
+                entity.Property(e => e.CityName).HasDefaultValueSql("('')");
 
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
@@ -114,12 +114,6 @@ namespace BackEnd.DAL.Models
 
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Email).HasMaxLength(50);
-
-                entity.Property(e => e.Name).HasMaxLength(50);
-
-                entity.Property(e => e.Password).HasMaxLength(50);
-
                 entity.Property(e => e.Phone).HasMaxLength(50);
 
                 entity.Property(e => e.Token).HasDefaultValueSql("('')");
@@ -131,11 +125,7 @@ namespace BackEnd.DAL.Models
 
                 entity.Property(e => e.NotificationId).ValueGeneratedNever();
 
-                entity.Property(e => e.Content).HasMaxLength(50);
-
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Title).HasMaxLength(50);
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.CustomerNotifications)
@@ -148,8 +138,6 @@ namespace BackEnd.DAL.Models
                 entity.Property(e => e.FeaturesId).ValueGeneratedNever();
 
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Name).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Malfunction>(entity =>
@@ -157,15 +145,11 @@ namespace BackEnd.DAL.Models
                 entity.Property(e => e.MalfunctionId).ValueGeneratedNever();
 
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Name).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.Property(e => e.OrderId).ValueGeneratedNever();
-
-                entity.Property(e => e.Address).HasMaxLength(50);
 
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
@@ -190,19 +174,11 @@ namespace BackEnd.DAL.Models
             {
                 entity.Property(e => e.WorkshopId).ValueGeneratedNever();
 
-                entity.Property(e => e.Address).HasMaxLength(50);
-
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Email).HasMaxLength(50);
 
                 entity.Property(e => e.MapLangitude).HasColumnType("decimal(18, 10)");
 
                 entity.Property(e => e.MapLatitude).HasColumnType("decimal(18, 10)");
-
-                entity.Property(e => e.OwnerName).HasMaxLength(50);
-
-                entity.Property(e => e.Password).HasMaxLength(50);
 
                 entity.Property(e => e.Phone).HasMaxLength(50);
 
@@ -273,11 +249,7 @@ namespace BackEnd.DAL.Models
 
                 entity.Property(e => e.NotificationId).ValueGeneratedNever();
 
-                entity.Property(e => e.Content).HasMaxLength(50);
-
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Title).HasMaxLength(50);
 
                 entity.HasOne(d => d.Workshop)
                     .WithMany(p => p.WorkshopNotifications)

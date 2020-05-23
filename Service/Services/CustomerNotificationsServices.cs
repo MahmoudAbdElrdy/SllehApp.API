@@ -252,13 +252,7 @@ namespace BackEnd.Service.Services
                                              enttity.IsRead,
                                              enttity.NotificationId,
                                              enttity.Title,
-                                              
-                                             
-
-
                                              };
-
-
                 var CustomerNotificationssList = CustomerNotificationss.ToList();
                 _response.Data = CustomerNotificationssList;
                 _response.IsPassed = true;

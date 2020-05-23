@@ -192,5 +192,45 @@ namespace BackEnd.Service.Services
 
         }
         #endregion
+
+        #region PostWorkshopTechnician(WorkshopTechnicianVM model)
+        public IResponseDTO PostWorkshopTechnician(List<WorkshopTechnicianVM> model)
+        {
+
+            try
+            {
+                foreach (var Technician in model)
+                {
+                    var DbWorkshopTechnician = _mapper.Map<WorkshopTechnician>(Technician);
+                    _WorkshopTechnicianRepositroy.Add(DbWorkshopTechnician);
+                }
+                int save = _unitOfWork.Commit();
+
+                if (save == 200)
+                {
+                    _response.Data = null;
+                    _response.IsPassed = true;
+                    _response.Message = "Ok";
+                }
+                else
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+
+            return _response;
+
+        }
+        #endregion
     }
 }
