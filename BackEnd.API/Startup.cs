@@ -131,6 +131,7 @@ namespace BackEnd.API
             services.AddScoped<IServicesWorkshopRate, WorkshopRateServices>().Reverse();
             services.AddScoped<IServicesWorkshopTechnician, WorkshopTechnicianServices>().Reverse();
             services.AddScoped<IServicesWorkshopWorkTime, WorkshopWorkTimeServices>().Reverse();
+            services.AddScoped<IServicesChat,ChatServices>().Reverse();
             
             services.AddScoped<IResponseDTO, ResponseDTO>().Reverse();
             //

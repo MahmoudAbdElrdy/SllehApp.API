@@ -17,6 +17,7 @@ namespace BackEnd.DAL.Models
 
         public virtual DbSet<AdminUsers> AdminUsers { get; set; }
         public virtual DbSet<Car> Car { get; set; }
+        public virtual DbSet<Chat> Chat { get; set; }
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Country> Country { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
@@ -44,7 +45,7 @@ namespace BackEnd.DAL.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
 
             modelBuilder.Entity<AdminUsers>(entity =>
             {
@@ -72,6 +73,21 @@ namespace BackEnd.DAL.Models
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Name).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Chat>(entity =>
+            {
+                entity.HasKey(e => e.Messageld)
+                    .HasName("PK_OrderNotifications");
+
+                entity.Property(e => e.Messageld).ValueGeneratedNever();
+
+                entity.Property(e => e.CreationDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.Chat)
+                    .HasForeignKey(d => d.OrderId)
+                    .HasConstraintName("FK_ChatNotifications_Order");
             });
 
             modelBuilder.Entity<City>(entity =>
