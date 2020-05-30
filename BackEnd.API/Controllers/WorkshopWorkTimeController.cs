@@ -50,7 +50,7 @@ namespace BackEnd.API.Controllers
         #region Get: api/WorkshopWorkTime/GetWorkshopWorkTimeById
         [HttpGet]
         [Route("GetWorkshopWorkTimeById")]
-        public IResponseDTO GetById(object id)
+        public IResponseDTO GetById(Guid id)
         {
             var depart = _WorkshopWorkTimeServices.GetByIDWorkshopWorkTime(id);
             return depart;

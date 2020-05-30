@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BackEnd.Service.IServices;
 using BackEnd.Service.Models;
 using Chat.Hubs;
 using Microsoft.AspNetCore.Http;
@@ -20,8 +21,8 @@ namespace Chat.Controllers
     {
         private readonly IHubContext<ChatHub> _ChatHubContext;
 
-        
-    //    IHubContext<ChatHub, ITypedHubClient> _chatHubContext;
+        private readonly IServicesChat _ChatServices;
+        //    IHubContext<ChatHub, ITypedHubClient> _chatHubContext;
         //public async Task SendMessage(string messageContent, string chatId, MessageType messageType, string RecieveSearchId)
         //{
 
@@ -70,26 +71,28 @@ namespace Chat.Controllers
         //    else
         //        return Helper.CreateResponse("200", "Fail", false);
         //}
-            public ChatController(IHubContext<ChatHub> chatHubContext)
+        public ChatController(IHubContext<ChatHub> chatHubContext, IServicesChat ChatServices)
         {
          //   _chatHubContext = chatHubContext;
             _ChatHubContext = chatHubContext;
+            _ChatServices = ChatServices;
         }
 
-        //// GET: api/values
-        //[HttpGet]
-        //[Route("GetAll")]
-        //public IEnumerable<string> Get()
-        //{
-        //    _ChatHubContext.Clients.All.BroadcastMessage("test", "test");
-        //    return new string[] { "value1", "value2" };
-        //}
         [HttpPost]
-        [Route("SendMessage")]
-        public  Task SendMessage(ChatMessage message)
+        [Route("PostChat")]
+        public IResponseDTO PostChat(ChatVM message)
         {
-            return _ChatHubContext.Clients.All.SendAsync("ReceiveMessage", message.message);
+            var depart = _ChatServices.PostChat(message);
+            _ChatHubContext.Clients.All.SendAsync("ReceiveMessage", message);
+            return depart;
         }
+
+        //[HttpPost]
+        //[Route("SendMessage")]
+        //public  Task SendMessage(ChatVM message)
+        //{
+        //    return _ChatHubContext.Clients.All.SendAsync("ReceiveMessage", message);
+        //}
         // [HttpGet("lengthy")]
         //public async Task<IActionResult> Lengthy()
         //{

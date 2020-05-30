@@ -1,4 +1,6 @@
 ﻿
+using BackEnd.Service.IServices;
+using BackEnd.Service.Models;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -7,31 +9,27 @@ using System.Threading.Tasks;
 
 namespace Chat.Hubs
 {
-    public class ChatHub : Hub<ITypedHubClient>
+    public class ChatHub : Hub
     {
-        public ChatHub()
-        {
+       
+        private readonly IServicesChat _ChatServices;
 
-        }
-        public void Send(string name, string message)
+        public ChatHub(IServicesChat servicesChat)
         {
-            Clients.All.BroadcastMessage(name, message);
+            _ChatServices = servicesChat;
+        }
+        public async Task SendMessage(ChatVM message)
+        {
+            await Clients.All.SendAsync("ReceiveMessage", message);
         }
 
     }
-   
 
-    }
+
+
     public interface ITypedHubClient
     {
-        Task BroadcastMessage(string name, string message);
+        Task BroadcastMessage(ChatVM chatVM);
     }
-    public class ChatMessage
-    {
-        public string user { get; set; }
-
-        public string message { get; set; }
-
-        public string room { get; set; }
-    }
+}
 
