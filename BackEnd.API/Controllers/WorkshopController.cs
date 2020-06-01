@@ -29,6 +29,7 @@ namespace BackEnd.API.Controllers
             return depart;
         }
         #endregion
+
         #region Post: api/Upload/UploadWorkshop
         [HttpPost]
         //[Consumes("multipart/form-data")]
@@ -89,6 +90,16 @@ namespace BackEnd.API.Controllers
         public IResponseDTO UpdateWorkshop(WorkshopVM WorkshopVM)
         {
             var depart = _WorkshopServices.EditWorkshop(WorkshopVM);
+            return depart;
+        }
+        #endregion
+        
+        #region Put: api/Workshop/UpdateAllWorkshop
+        [HttpPut]
+        [Route("UpdateAllWorkshop")]
+        public IResponseDTO UpdateAllWorkshop(WorkshopSVM WorkshopVM)
+        {
+            var depart = _WorkshopServices.UpdateWorkshop(WorkshopVM);
             return depart;
         }
         #endregion

@@ -119,6 +119,42 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
+        #region UpdateWorkshop(WorkshopSVM model)
+        public IResponseDTO UpdateWorkshop(WorkshopSVM model)
+        {
+            try
+            {
+                var DbWorkshop = _mapper.Map<Workshop>(model);
+                var entityEntry = _WorkshopRepositroy.Update(DbWorkshop);
+
+
+                int save = _unitOfWork.Commit();
+
+                if (save == 200)
+                {
+                    _response.Data = model;
+                    _response.IsPassed = true;
+                    _response.Message = "Ok";
+                }
+                else
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+            return _response;
+
+        }
+        #endregion
+
         #region UpdateStatus(Guid WorkshopId)
         public IResponseDTO UpdateStatus(Guid WorkshopId)
         {
