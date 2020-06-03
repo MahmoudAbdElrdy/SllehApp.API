@@ -158,8 +158,26 @@ namespace BackEnd.Service.Services
             }
             return _response;
         }
-      
-      
+        //GetByOrderId
+        public IResponseDTO GetByOrderId(Guid OrderId)
+        {
+            try
+            {
+                var Chats = _ChatRepositroy.GetAll().Where(x=>x.WorkShopId==OrderId);
+
+                var ChatsList = _mapper.Map<List<ChatVM>>(Chats);
+                _response.Data = ChatsList;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
     }
-  
+
 }

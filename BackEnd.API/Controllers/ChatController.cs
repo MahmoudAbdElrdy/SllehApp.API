@@ -22,55 +22,7 @@ namespace Chat.Controllers
         private readonly IHubContext<ChatHub> _ChatHubContext;
 
         private readonly IServicesChat _ChatServices;
-        //    IHubContext<ChatHub, ITypedHubClient> _chatHubContext;
-        //public async Task SendMessage(string messageContent, string chatId, MessageType messageType, string RecieveSearchId)
-        //{
-
-        //    var userId = AuthHelper.GetCurrentUserId(Context.User);
-        //    var searchId = AuthHelper.GetCurrentUserSearchId(Context.User);
-        //    var User = AuthHelper.GetCurrentUserBySearchId(searchId, _userService);
-        //    var RecieverUser = AuthHelper.GetCurrentUserBySearchId(RecieveSearchId, _userService);
-
-        //    var chat = _chatService.GetChat(chatId);
-        //    string senderSearchId = searchId;
-        //    if (chat != null && chat.ChatParticipants != null)
-        //    {
-        //        if (chat.ChatParticipants.Select(x => x.UserSearchId).Contains(searchId))
-        //        {
-        //            _chatService.SaveChatMessage(chat.Id, userId, messageContent, messageType, null);
-        //            await Clients.Group(chat.Id).SendAsync("ReceiveMessage", senderSearchId, messageContent, chat.Id, messageType, User);
-        //            string registration_ids = RecieverUser.DeviceToken;
-        //            SendNotificationTofcm sendNotification = new SendNotificationTofcm();
-        //            sendNotification.SendNotification(registration_ids, messageContent, User.UserName, senderSearchId);
-        //            _chatService.ChangeisLeave(chatId, RecieveSearchId);
-        //        }
-        //        else
-        //            await Clients.Caller.SendAsync("ReceiveMessage", "You Are Not Authorized To Access That Chat");
-        //    }
-        //    else
-        //        await Clients.Caller.SendAsync("ReceiveMessage", "Chat Error, Contact The Admin");
-        //}
-
-        //public ResponseDTO SaveChatMessage(string chatId, long userId, string message, MessageType messageType, List<ImageMessage> imageMessages)
-        //{
-        //    var chat = db.Chats.Where(x => x.Id == chatId).Include(x => x.ChatParticipants).FirstOrDefault();
-        //    if (chat != null)
-        //    {
-        //        var chatMessage = Helper.CreateChatMessageBase64(userId, message, messageType, imageMessages);
-        //        if (chat.ChatParticipants != null && chat.ChatParticipants.Select(x => x.UserId).Contains(userId))
-        //        {
-        //            chatMessage.ChatId = chat.Id;
-
-        //            db.ChatMessages.Add(chatMessage);
-        //            db.SaveChanges();
-        //            return Helper.CreateResponse("200", "Success", true);
-        //        }
-        //        else
-        //            return Helper.CreateResponse("200", "Fail", false);
-        //    }
-        //    else
-        //        return Helper.CreateResponse("200", "Fail", false);
-        //}
+     
         public ChatController(IHubContext<ChatHub> chatHubContext, IServicesChat ChatServices)
         {
          //   _chatHubContext = chatHubContext;
@@ -83,40 +35,61 @@ namespace Chat.Controllers
         public IResponseDTO PostChat(ChatVM message)
         {
             var depart = _ChatServices.PostChat(message);
-            _ChatHubContext.Clients.All.SendAsync("ReceiveMessage", message);
+          //  _ChatHubContext.Clients.User(message.OrderId.ToString()).SendAsync("ReceiveMessage", message);
             return depart;
         }
+        #region Put: api/Chat/UpdateChat
 
-        //[HttpPost]
-        //[Route("SendMessage")]
-        //public  Task SendMessage(ChatVM message)
-        //{
-        //    return _ChatHubContext.Clients.All.SendAsync("ReceiveMessage", message);
-        //}
-        // [HttpGet("lengthy")]
-        //public async Task<IActionResult> Lengthy()
-        //{
-        //    await _ChatHubContext
-        //        .Clients
-        //        .Group(ChatHub.)
-        //        .SendAsync("taskStarted");
+        #region Get: api/Chat/GetAllChat
+        [HttpGet]
+        [Route("GetByOrderId")]
+        public IResponseDTO GetByOrderId(Guid OrderId)
+        {
+            var depart = _ChatServices.GetByOrderId(OrderId);
+            return depart;
+        }
+        #endregion
 
-        //    for (int i = 0; i < 100; i++)
-        //    {
-        //        Thread.Sleep(200);
-        //        Debug.WriteLine($"progress={i + 1}");
-        //        await _ChatHubContext
-        //            .Clients
-        //            .Group(ChatHub.GROUP_NAME)
-        //            .SendAsync("taskProgressChanged", i + 1);
-        //    }
+        [HttpPut]
+        [Route("UpdateChat")]
+        public IResponseDTO UpdateChat(ChatVM ChatVM)
+        {
+            var depart = _ChatServices.EditChat(ChatVM);
+            return depart;
+        }
+        #endregion
 
-        //    await _ChatHubContext
-        //        .Clients
-        //        .Group(ChatHub.GROUP_NAME)
-        //        .SendAsync("taskEnded");
+        #region Get: api/Chat/GetAllChat
+        [HttpGet]
+        [Route("GetAllChat")]
+        public IResponseDTO GetAllChat()
+        {
+            var depart = _ChatServices.GetAllChat();
+            return depart;
+        }
+        #endregion
 
-        //    return Ok();
-        //}
+      
+
+        #region Get: api/Chat/GetChatById
+        [HttpGet]
+        [Route("GetChatById")]
+        public IResponseDTO GetById(Guid? id)
+        {
+            var depart = _ChatServices.GetByIDChat(id);
+            return depart;
+        }
+        #endregion
+
+        #region Delete: api/Chat/RemoveChat
+        [HttpDelete]
+        [Route("RemoveChat")]
+        public IResponseDTO RemoveChat(ChatVM ChatVM)
+        {
+            var depart = _ChatServices.DeleteChat(ChatVM);
+            return depart;
+        }
+        #endregion
+       
     }
 }

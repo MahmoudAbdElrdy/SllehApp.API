@@ -253,8 +253,14 @@ namespace BackEnd.Service.Services
                                              enttity.NotificationId,
                                              enttity.Title,
                                              };
-                var CustomerNotificationssList = CustomerNotificationss.ToList();
-                _response.Data = CustomerNotificationssList;
+                
+                var count = _CustomerNotificationsRepositroy.Get(x => x.IsRead == false && x.CustomerId== CustomerId).Count();
+                _response.Data = new
+                {
+                    Notifications = CustomerNotificationss.ToList(),
+                    countNew = count
+                };
+                
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }

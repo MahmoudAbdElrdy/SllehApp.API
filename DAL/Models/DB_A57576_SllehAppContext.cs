@@ -84,10 +84,15 @@ namespace BackEnd.DAL.Models
 
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Order)
+                entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Chat)
-                    .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK_ChatNotifications_Order");
+                    .HasForeignKey(d => d.CustomerId)
+                    .HasConstraintName("FK_Chat_Customer");
+
+                entity.HasOne(d => d.WorkShop)
+                    .WithMany(p => p.Chat)
+                    .HasForeignKey(d => d.WorkShopId)
+                    .HasConstraintName("FK_Chat_Workshop");
             });
 
             modelBuilder.Entity<City>(entity =>

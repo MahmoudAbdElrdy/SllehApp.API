@@ -15,6 +15,7 @@ namespace BackEnd.Service.IServices
         IResponseDTO EditChat(ChatVM model);
         IResponseDTO DeleteChat(ChatVM model);
         IResponseDTO GetByIDChat(object id);
+        IResponseDTO GetByOrderId(Guid OrderId);
   //      IResponseDTO GetAllChatSTP();
     }
 }

@@ -251,8 +251,12 @@ namespace BackEnd.Service.Services
                 }
                 else
                 {
-                    var WorkshopNotificationssList = _mapper.Map<WorkshopNotificationsVM>(WorkshopNotificationss);
-                    _response.Data = WorkshopNotificationssList;
+                    var count = _WorkshopNotificationsRepositroy.Get(x => x.IsRead == false &&x.WorkshopId== WorkshopId).Count();
+                    _response.Data = new
+                    {
+                        Notifications = WorkshopNotificationss,
+                        countNew = count
+                    };
                     _response.IsPassed = true;
                     _response.Message = "Done";
                 }

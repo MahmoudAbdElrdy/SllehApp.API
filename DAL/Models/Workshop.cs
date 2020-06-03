@@ -7,6 +7,7 @@ namespace BackEnd.DAL.Models
     {
         public Workshop()
         {
+            Chat = new HashSet<Chat>();
             Order = new HashSet<Order>();
             WorkshopCar = new HashSet<WorkshopCar>();
             WorkshopFeatures = new HashSet<WorkshopFeatures>();
@@ -38,6 +39,7 @@ namespace BackEnd.DAL.Models
         public Guid? CityId { get; set; }
 
         public virtual City City { get; set; }
+        public virtual ICollection<Chat> Chat { get; set; }
         public virtual ICollection<Order> Order { get; set; }
         public virtual ICollection<WorkshopCar> WorkshopCar { get; set; }
         public virtual ICollection<WorkshopFeatures> WorkshopFeatures { get; set; }

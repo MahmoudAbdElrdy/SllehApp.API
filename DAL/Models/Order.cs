@@ -5,11 +5,6 @@ namespace BackEnd.DAL.Models
 {
     public partial class Order
     {
-        public Order()
-        {
-            Chat = new HashSet<Chat>();
-        }
-
         public Guid OrderId { get; set; }
         public Guid? CustomerId { get; set; }
         public Guid? WorkshopId { get; set; }
@@ -22,6 +17,5 @@ namespace BackEnd.DAL.Models
 
         public virtual Customer Customer { get; set; }
         public virtual Workshop Workshop { get; set; }
-        public virtual ICollection<Chat> Chat { get; set; }
     }
 }
