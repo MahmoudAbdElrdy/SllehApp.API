@@ -22,9 +22,9 @@ namespace Chat.Hubs
             return Clients.Caller.SendAsync("ReceiveMessage", message);
         }
 
-        public Task SendMessageToUser(string connectionId, string message)
+        public Task SendMessageToUser(string connectionId, string message,string Type)
         {
-            return Clients.Client(connectionId).SendAsync("ReceiveMessage", message);
+            return Clients.Client(connectionId).SendAsync("ReceiveMessage", message,Type);
         }
 
         public Task JoinGroup(string group)
