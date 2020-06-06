@@ -73,10 +73,28 @@ namespace Chat.Controllers
 
         #region Get: api/Chat/GetChatById
         [HttpGet]
-        [Route("GetChatById")]
-        public IResponseDTO GetById(Guid? id)
+        [Route("GetCustomerByWorkShopId")]
+        public IResponseDTO GetCustomerByWorkShopId(Guid WorkShopId)
         {
-            var depart = _ChatServices.GetByIDChat(id);
+            var depart = _ChatServices.GetCustomerByWorkShopId(WorkShopId);
+            return depart;
+        }
+        #endregion
+        #region Get: api/Chat/GetChatById
+        [HttpGet]
+        [Route("GetWorkshopByCustomerId")]
+        public IResponseDTO GetWorkshopByCustomerId(Guid CustomerId)
+        {
+            var depart = _ChatServices.GetWorkshopByCustomerId(CustomerId);
+            return depart;
+        }
+        #endregion
+        #region Get: api/Chat/GetChatById
+        [HttpGet]
+        [Route("GetChatByCustomerAndWorkshop")]
+        public IResponseDTO GetChatByCustomerAndWorkshop(Guid CustomerId,Guid WorkShopId)
+        {
+            var depart = _ChatServices.GetChatByCustomerAndWorkshop(CustomerId,WorkShopId);
             return depart;
         }
         #endregion

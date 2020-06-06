@@ -196,11 +196,22 @@ namespace BackEnd.Service.Services
 
                 var CustomerNotificationssList = _mapper.Map<List<CustomerNotificationsVM>>(CustomerNotificationss);
                 var count = _CustomerNotificationsRepositroy.Get(x => x.IsRead == false).Count();
-                _response.Data = new
+                if (CustomerNotificationssList==null || CustomerNotificationssList.Count==0) {
+                    _response.Data = new
+                    {
+                       
+                    };
+                }
+
+                else
                 {
-                    Notifications = CustomerNotificationssList,
-                    countNew = count
-                };
+                    _response.Data = new
+                    {
+                        Notifications = CustomerNotificationssList,
+                        countNew = count
+                    };
+                }
+               
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -255,12 +266,22 @@ namespace BackEnd.Service.Services
                                              };
                 
                 var count = _CustomerNotificationsRepositroy.Get(x => x.IsRead == false && x.CustomerId== CustomerId).Count();
-                _response.Data = new
+                if (CustomerNotificationss == null )
                 {
-                    Notifications = CustomerNotificationss.ToList(),
-                    countNew = count
-                };
-                
+                    _response.Data = new
+                    {
+
+                    };
+                }
+
+                else
+                {
+                    _response.Data = new
+                    {
+                        Notifications = CustomerNotificationss,
+                        countNew = count
+                    };
+                }
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }

@@ -155,6 +155,7 @@ namespace BackEnd.Service.Services
                 {
                     Notification.IsRead = true;
                     _WorkshopNotificationsRepositroy.Update(Notification);
+                     _unitOfWork.Commit();
                 }
 
 
@@ -195,11 +196,25 @@ namespace BackEnd.Service.Services
 
                 var WorkshopNotificationssList = _mapper.Map<List<WorkshopNotificationsVM>>(WorkshopNotificationss);
                 var count = _WorkshopNotificationsRepositroy.Get(x => x.IsRead == false).Count();
-                _response.Data = new
+                if (WorkshopNotificationss == null )
                 {
-                    Notifications = WorkshopNotificationssList,
-                    countNew = count
-                };
+                    //var WorkshopNotificationssList = _mapper.Map<WorkshopNotificationsVM>(WorkshopNotificationss);
+                    _response.Data = new
+                    {
+
+                    };
+                    _response.IsPassed = true;
+                    _response.Message = "Done";
+                }
+                else
+                {
+                    _response.Data = new
+                    {
+                        Notifications = WorkshopNotificationssList,
+                        countNew = count
+                    };
+                }
+                
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -245,7 +260,10 @@ namespace BackEnd.Service.Services
                 if(WorkshopNotificationss == null || WorkshopNotificationss.Count == 0)
                 {
                     //var WorkshopNotificationssList = _mapper.Map<WorkshopNotificationsVM>(WorkshopNotificationss);
-                    _response.Data = new List<WorkshopNotificationsVM>();
+                    _response.Data = new
+                    {
+                       
+                    };
                     _response.IsPassed = true;
                     _response.Message = "Done";
                 }

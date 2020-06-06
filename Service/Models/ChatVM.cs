@@ -14,5 +14,6 @@ namespace BackEnd.Service.Models
         public bool? IsRead { get; set; }
         public DateTime? CreationDate { get; set; }
         public Guid? WorkShopId { get; set; }
+        public string ConnectionId { get; set; }
     }
 }

@@ -17,17 +17,18 @@ namespace BackEnd.Service.Services
     public class ChatServices : IServicesChat
     {
         private readonly IGRepository<Chat> _ChatRepositroy;
-        private readonly IGRepository<Malfunction> _MalfunctionRepositroy;
-        private readonly IGRepository<Features> _FeaturesRepositroy;
+      
+        private readonly IGRepository<Workshop> _WorkshopRepositroy;
+        private readonly IGRepository<Customer> _CustomerRepositroy;
         private readonly IUnitOfWork<DB_A57576_SllehAppContext> _unitOfWork;
         private readonly IResponseDTO _response;
         private readonly IMapper _mapper;
-        public ChatServices(IGRepository<Chat> Chat, IGRepository<Malfunction> Malfunction, IGRepository<Features> Features,
+        public ChatServices(IGRepository<Chat> Chat, IGRepository<Customer> customer, IGRepository<Workshop> Workshop,
             IUnitOfWork<DB_A57576_SllehAppContext> unitOfWork, IResponseDTO responseDTO, IMapper mapper)
         {
             _ChatRepositroy = Chat;
-            _MalfunctionRepositroy = Malfunction;
-            _FeaturesRepositroy = Features;
+            _CustomerRepositroy = customer;
+            _WorkshopRepositroy = Workshop;
             _unitOfWork = unitOfWork;
             _response = responseDTO;
             _mapper = mapper;
@@ -110,14 +111,24 @@ namespace BackEnd.Service.Services
             }
             return _response;
         }
-        public IResponseDTO GetByIDChat(object id)
+        public IResponseDTO GetCustomerByWorkShopId(Guid id)
         {
             try
-            {
-                var Chats = _ChatRepositroy.Find(id);
+            {//GetCustomerByWorkShopId
+                var Chats = _ChatRepositroy.Filter(x=>x.WorkShopId==id).ToList();
+                List<Customer> customers= new List<Customer>();
+                foreach(var customerChat in Chats)
+                {
+                    if (customerChat.CustomerId != null)
+                    {
+                        var customerHasChat = _CustomerRepositroy.Find(customerChat.CustomerId);
+                        customers.Add(customerHasChat);
+                    }
+                    
 
-                var ChatsList = _mapper.Map<ChatVM>(Chats);
-                _response.Data = ChatsList;
+                }
+                var customerList = _mapper.Map<List<CustomerVM>>(customers);
+                _response.Data = customerList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -158,7 +169,57 @@ namespace BackEnd.Service.Services
             }
             return _response;
         }
-        //GetByOrderId
+
+        public IResponseDTO GetWorkshopByCustomerId(Guid id)
+        {
+            try
+            {//GetCustomerByWorkShopId
+                var Chats = _ChatRepositroy.Filter(x => x.CustomerId == id).ToList();
+                List<Workshop> Wrokshops = new List<Workshop>();
+                foreach (var WorkShopChat in Chats)
+                {
+                    if (WorkShopChat.WorkShopId != null)
+                    {
+                        var WorkShopHasChat = _WorkshopRepositroy.Find(WorkShopChat.WorkShopId);
+                        Wrokshops.Add(WorkShopHasChat);
+                    }
+
+
+                }
+                var Wrokshopsist = _mapper.Map<List<WorkshopVM>>(Wrokshops);
+                _response.Data = Wrokshopsist;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
+
+        //GetChatByCustomerAndWorkshop
+        public IResponseDTO GetChatByCustomerAndWorkshop(Guid id,Guid id2)
+        {
+            try
+            {//GetCustomerByWorkShopId
+                var Chats = _ChatRepositroy.Filter(x => x.CustomerId == id &&x.WorkShopId==id2).ToList();
+               
+               // var Wrokshopsist = _mapper.Map<List<ChatVM>>(Chats);
+                _response.Data = Chats;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
         public IResponseDTO GetByOrderId(Guid OrderId)
         {
             try
