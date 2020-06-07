@@ -11,7 +11,7 @@ namespace BackEnd.Service.Models
         public string Content { get; set; }
         public string DataUrl { get; set; }
         public int Type { get; set; }
-        public bool? IsRead { get; set; }
+        public bool? IsRead { get; set; } = false;
         public DateTime? CreationDate { get; set; } = DateTime.UtcNow.AddHours(3);
         public Guid? WorkShopId { get; set; }
         public bool? IsCustomer { get; set; }

@@ -247,8 +247,8 @@ namespace BackEnd.Service.Services
             {//GetCustomerByWorkShopId
                 var Chats = _ChatRepositroy.Filter(x => x.CustomerId == id &&x.WorkShopId==id2).ToList();
                
-               // var Wrokshopsist = _mapper.Map<List<ChatVM>>(Chats);
-                _response.Data = Chats;
+               var Wrokshopsist = _mapper.Map<List<ChatVM>>(Chats);
+                _response.Data = Wrokshopsist;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
