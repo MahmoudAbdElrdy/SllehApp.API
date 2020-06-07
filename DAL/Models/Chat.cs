@@ -13,6 +13,7 @@ namespace BackEnd.DAL.Models
         public bool? IsRead { get; set; }
         public DateTime? CreationDate { get; set; }
         public Guid? WorkShopId { get; set; }
+        public bool? IsCustomer { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Workshop WorkShop { get; set; }

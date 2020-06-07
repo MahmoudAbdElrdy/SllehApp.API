@@ -116,19 +116,40 @@ namespace BackEnd.Service.Services
             try
             {//GetCustomerByWorkShopId
                 var Chats = _ChatRepositroy.Filter(x=>x.WorkShopId==id).ToList();
-                List<Customer> customers= new List<Customer>();
-                foreach(var customerChat in Chats)
+                
+              
+                List<ResponseChat> Wrokshops = new List<ResponseChat>();
+                foreach (var customerChat in Chats)
                 {
                     if (customerChat.CustomerId != null)
                     {
                         var customerHasChat = _CustomerRepositroy.Find(customerChat.CustomerId);
-                        customers.Add(customerHasChat);
+                        var chat = new ResponseChat();
+                        chat.Content = customerChat.Content;
+                        chat.CreationDate = customerChat.CreationDate;
+                        chat.CountUnRead = _ChatRepositroy.Get(x => x.WorkShopId == id && x.IsRead == false).Count();
+                        chat.WorkShopName = customerHasChat.Name;
+                        chat.ImageUrl = customerHasChat.ImageUrl;
+                        chat.WorkShopId = customerHasChat.CustomerId;
+
+                        Wrokshops.Add(chat);
                     }
-                    
+
 
                 }
-                var customerList = _mapper.Map<List<CustomerVM>>(customers);
-                _response.Data = customerList;
+                var result = Wrokshops.GroupBy(x => x.WorkShopId)
+                      .Select(x => x.OrderByDescending(y => y.CreationDate).First());
+
+                _response.Data = result.Select(x => new
+                {
+                    Content = x.Content,
+                    CountUnRead = x.CountUnRead,
+                    CreationDate = x.CreationDate,
+                    WorkShopName = x.WorkShopName,
+                    WorkShopId = x.WorkShopId,
+                    ImageUrl = x.ImageUrl,
+
+                });
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
@@ -175,20 +196,39 @@ namespace BackEnd.Service.Services
             try
             {//GetCustomerByWorkShopId
                 var Chats = _ChatRepositroy.Filter(x => x.CustomerId == id).ToList();
-                List<Workshop> Wrokshops = new List<Workshop>();
+                List<ResponseChat> Wrokshops = new List<ResponseChat>();
                 foreach (var WorkShopChat in Chats)
                 {
                     if (WorkShopChat.WorkShopId != null)
                     {
                         var WorkShopHasChat = _WorkshopRepositroy.Find(WorkShopChat.WorkShopId);
-                        Wrokshops.Add(WorkShopHasChat);
+                        var chat = new ResponseChat();
+                        chat.Content = WorkShopChat.Content;
+                        chat.CreationDate = WorkShopChat.CreationDate;
+                        chat.CountUnRead = _ChatRepositroy.Get(x=>x.CustomerId==id&&x.IsRead==false).Count();
+                        chat.WorkShopName = WorkShopHasChat.Name;
+                        chat.ImageUrl = WorkShopHasChat.ImageUrl;
+                        chat.WorkShopId = WorkShopChat.WorkShopId;
+
+                        Wrokshops.Add(chat);
                     }
 
 
                 }
-                var Wrokshopsist = _mapper.Map<List<WorkshopVM>>(Wrokshops);
-                _response.Data = Wrokshopsist;
-                _response.IsPassed = true;
+                var result = Wrokshops.GroupBy(x => x.WorkShopId)
+                      .Select(x => x.OrderByDescending(y => y.CreationDate).First());
+
+                _response.Data = result.Select(x => new
+                {
+                    Content=x.Content,
+                    CountUnRead = x.CountUnRead,
+                    CreationDate = x.CreationDate,
+                    WorkShopName = x.WorkShopName,
+                    WorkShopId = x.WorkShopId,
+                    ImageUrl = x.ImageUrl,
+
+                });
+                    _response.IsPassed = true;
                 _response.Message = "Done";
             }
             catch (Exception ex)
