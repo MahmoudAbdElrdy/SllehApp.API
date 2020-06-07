@@ -128,9 +128,9 @@ namespace BackEnd.Service.Services
                         chat.Content = customerChat.Content;
                         chat.CreationDate = customerChat.CreationDate;
                         chat.CountUnRead = _ChatRepositroy.Get(x => x.WorkShopId == id && x.IsRead == false).Count();
-                        chat.WorkShopName = customerHasChat.Name;
+                        chat.CustomerName = customerHasChat.Name;
                         chat.ImageUrl = customerHasChat.ImageUrl;
-                        chat.WorkShopId = customerHasChat.CustomerId;
+                        chat.CustomerId = customerHasChat.CustomerId;
 
                         Wrokshops.Add(chat);
                     }
@@ -145,8 +145,8 @@ namespace BackEnd.Service.Services
                     Content = x.Content,
                     CountUnRead = x.CountUnRead,
                     CreationDate = x.CreationDate,
-                    WorkShopName = x.WorkShopName,
-                    WorkShopId = x.WorkShopId,
+                    CustomerName = x.CustomerName,
+                    CustomerId = x.CustomerId,
                     ImageUrl = x.ImageUrl,
 
                 });
