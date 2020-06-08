@@ -258,10 +258,12 @@ namespace BackEnd.Service.Services
                 }
                 else
                 {
-                    var DbWorkshop = _mapper.Map<WorkshopVM>(res);
-                    _response.Data = DbWorkshop;
-                    _response.IsPassed = true;
-                    _response.Message = "Ok";
+                    //var DbWorkshop = _mapper.Map<WorkshopVM>(res);
+                    //_response.Data = DbWorkshop;
+                    //_response.IsPassed = true;
+                    //_response.Message = "Ok";
+                    res.Token = model.Token;
+                    return EditWorkshop(_mapper.Map<WorkshopVM>(res));
                 }
             }
             catch (Exception ex)

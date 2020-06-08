@@ -145,10 +145,12 @@ namespace BackEnd.Service.Services
                 }
                 else
                 {
-                    var DbCustomer = _mapper.Map<CustomerVM>(res);
-                    _response.Data = DbCustomer;
-                    _response.IsPassed = true;
-                    _response.Message = "Ok";
+                    //var DbCustomer = _mapper.Map<CustomerVM>(res);
+                    //_response.Data = DbCustomer;
+                    //_response.IsPassed = true;
+                    //_response.Message = "Ok";
+                    res.Token = model.Token;
+                    return EditCustomer(_mapper.Map<CustomerVM>(res));
                 }
             }
             catch (Exception ex)

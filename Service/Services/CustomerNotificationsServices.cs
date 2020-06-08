@@ -253,7 +253,7 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var CustomerNotificationss = from enttity in _CustomerNotificationsRepositroy.Get(x => x.CustomerId == CustomerId)
+                var CustomerNotificationss = from enttity in _CustomerNotificationsRepositroy.Get(x => x.CustomerId == CustomerId).OrderByDescending(y=>y.CreationDate)
                                              select new
                                              {
                                               enttity.Content,
@@ -265,7 +265,7 @@ namespace BackEnd.Service.Services
                                              enttity.Title,
                                              };
                 
-                var count = _CustomerNotificationsRepositroy.Get(x => x.IsRead == false && x.CustomerId== CustomerId).Count();
+                
                 if (CustomerNotificationss == null )
                 {
                     _response.Data = new
@@ -273,9 +273,9 @@ namespace BackEnd.Service.Services
 
                     };
                 }
-
                 else
                 {
+                    var count = _CustomerNotificationsRepositroy.Get(x => x.IsRead == false && x.CustomerId == CustomerId).Count();
                     _response.Data = new
                     {
                         Notifications = CustomerNotificationss,

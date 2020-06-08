@@ -256,7 +256,7 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var WorkshopNotificationss = _WorkshopNotificationsRepositroy.Get(x => x.WorkshopId == WorkshopId).ToList();
+                var WorkshopNotificationss = _WorkshopNotificationsRepositroy.Get(x => x.WorkshopId == WorkshopId).OrderByDescending(y => y.CreationDate).ToList();
                 if(WorkshopNotificationss == null || WorkshopNotificationss.Count == 0)
                 {
                     //var WorkshopNotificationssList = _mapper.Map<WorkshopNotificationsVM>(WorkshopNotificationss);
