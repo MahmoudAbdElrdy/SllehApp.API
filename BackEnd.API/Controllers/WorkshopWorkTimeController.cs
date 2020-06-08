@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BackEnd.Service.IServices;
 using BackEnd.Service.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,13 @@ namespace BackEnd.API.Controllers
             var depart = _WorkshopWorkTimeServices.EditWorkshopWorkTime(WorkshopWorkTimeVM);
             return depart;
         }
+        [HttpPut]
+        [Route("UpdateWorkshopWorkTimeList")]
+        public IResponseDTO UpdateWorkshopWorkTimeList(List<WorkshopWorkTimeVM> WorkshopWorkTimeVM)
+        {
+            var depart = _WorkshopWorkTimeServices.EditWorkshopWorkTime(WorkshopWorkTimeVM);
+            return depart;
+        }
         #endregion
 
         #region Get: api/WorkshopWorkTime/GetAllWorkshopWorkTime
@@ -43,6 +51,13 @@ namespace BackEnd.API.Controllers
         public IResponseDTO GetAllWorkshopWorkTime()
         {
             var depart = _WorkshopWorkTimeServices.GetAllWorkshopWorkTime();
+            return depart;
+        }
+        [HttpGet]
+        [Route("GetAllByWorkshopId")]
+        public IResponseDTO GetAllByWorkshopId(Guid id)
+        {
+            var depart = _WorkshopWorkTimeServices.GetAllWorkshopWorkTime(id);
             return depart;
         }
         #endregion

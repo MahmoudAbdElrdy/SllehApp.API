@@ -106,6 +106,44 @@ namespace BackEnd.Service.Services
             return _response;
 
         }
+        public IResponseDTO EditWorkshopMalfunction(List<WorkshopMalfunctionVM> model)
+        {
+            try
+            {
+                var DbWorkshopMalfunction = _mapper.Map<List<WorkshopMalfunction>>(model);
+               
+                var workShopid = DbWorkshopMalfunction.FirstOrDefault().WorkshopId;
+                var List = _WorkshopMalfunctionRepositroy.GetAll(x => x.WorkshopId == workShopid);
+                _WorkshopMalfunctionRepositroy.RemoveRange(List);
+                _unitOfWork.Commit();
+                _WorkshopMalfunctionRepositroy.AddRange(DbWorkshopMalfunction);
+              
+
+                int save = _unitOfWork.Commit();
+
+                if (save == 200)
+                {
+                    _response.Data = model;
+                    _response.IsPassed = true;
+                    _response.Message = "Ok";
+                }
+                else
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+            return _response;
+
+        }
         #endregion
 
         #region GetAllWorkshopMalfunction()
@@ -114,6 +152,26 @@ namespace BackEnd.Service.Services
             try
             {
                 var WorkshopMalfunctions = _WorkshopMalfunctionRepositroy.GetAll();
+
+
+                var WorkshopMalfunctionsList = _mapper.Map<List<WorkshopMalfunctionVM>>(WorkshopMalfunctions);
+                _response.Data = WorkshopMalfunctionsList;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
+        public IResponseDTO GetAllWorkshopMalfunction(Guid id)
+        {
+            try
+            {
+                var WorkshopMalfunctions = _WorkshopMalfunctionRepositroy.GetAll(x=>x.WorkshopId==id);
 
 
                 var WorkshopMalfunctionsList = _mapper.Map<List<WorkshopMalfunctionVM>>(WorkshopMalfunctions);

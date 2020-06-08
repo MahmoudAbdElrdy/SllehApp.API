@@ -12,7 +12,9 @@ namespace BackEnd.Service.IServices
         IResponseDTO PostWorkshopTechnician(WorkshopTechnicianVM model);
         IResponseDTO PostWorkshopTechnician(List<WorkshopTechnicianVM> model);
         IResponseDTO GetAllWorkshopTechnician();
+        IResponseDTO GetAllWorkshopTechnician(Guid id);
         IResponseDTO EditWorkshopTechnician(WorkshopTechnicianVM model);
+        IResponseDTO EditWorkshopTechnician(List<WorkshopTechnicianVM> model);
         IResponseDTO DeleteWorkshopTechnician(WorkshopTechnicianVM model);
         IResponseDTO GetByIDWorkshopTechnician(object id);
     }

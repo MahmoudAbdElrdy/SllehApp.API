@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BackEnd.Service.IServices;
 using BackEnd.Service.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,13 @@ namespace BackEnd.API.Controllers
             var depart = _WorkshopMalfunctionServices.EditWorkshopMalfunction(WorkshopMalfunctionVM);
             return depart;
         }
+        [HttpPut]
+        [Route("UpdateWorkshopMalfunctionList")]
+        public IResponseDTO UpdateWorkshopMalfunctionList(List<WorkshopMalfunctionVM> WorkshopMalfunctionVM)
+        {
+            var depart = _WorkshopMalfunctionServices.EditWorkshopMalfunction(WorkshopMalfunctionVM);
+            return depart;
+        }
         #endregion
 
         #region Get: api/WorkshopMalfunction/GetAllWorkshopMalfunction
@@ -43,6 +51,13 @@ namespace BackEnd.API.Controllers
         public IResponseDTO GetAllWorkshopMalfunction()
         {
             var depart = _WorkshopMalfunctionServices.GetAllWorkshopMalfunction();
+            return depart;
+        }
+        [HttpGet]
+        [Route("GetAllByWorkshopId")]
+        public IResponseDTO GetAllByWorkshopId(Guid id)
+        {
+            var depart = _WorkshopMalfunctionServices.GetAllWorkshopMalfunction(id);
             return depart;
         }
         #endregion

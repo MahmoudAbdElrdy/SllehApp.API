@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BackEnd.Service.IServices;
 using BackEnd.Service.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,13 @@ namespace BackEnd.API.Controllers
 
         #region Put: api/WorkshopFeatures/UpdateWorkshopFeatures
         [HttpPut]
+        [Route("UpdateWorkshopFeaturesList")]
+        public IResponseDTO UpdateWorkshopFeaturesList(List<WorkshopFeaturesVM> WorkshopFeaturesVM)
+        {
+            var depart = _WorkshopFeaturesServices.EditWorkshopFeatures(WorkshopFeaturesVM);
+            return depart;
+        }
+        [HttpPut]
         [Route("UpdateWorkshopFeatures")]
         public IResponseDTO UpdateWorkshopFeatures(WorkshopFeaturesVM WorkshopFeaturesVM)
         {
@@ -43,6 +51,13 @@ namespace BackEnd.API.Controllers
         public IResponseDTO GetAllWorkshopFeatures()
         {
             var depart = _WorkshopFeaturesServices.GetAllWorkshopFeatures();
+            return depart;
+        }
+        [HttpGet]
+        [Route("GetAllByWorkShopId")]
+        public IResponseDTO GetAllByWorkShopId(Guid guid)
+        {
+            var depart = _WorkshopFeaturesServices.GetAllWorkshopFeatures(guid);
             return depart;
         }
         #endregion

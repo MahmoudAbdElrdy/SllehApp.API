@@ -106,6 +106,45 @@ namespace BackEnd.Service.Services
             return _response;
 
         }
+        public IResponseDTO EditWorkshopFeatures(List<WorkshopFeaturesVM> model)
+        {
+            try
+            {
+                var DbWorkshopFeatures = _mapper.Map<List<WorkshopFeatures>>(model);
+            
+                var workShopid = DbWorkshopFeatures.FirstOrDefault().WorkshopId;
+                var List = _WorkshopFeaturesRepositroy.GetAll(x => x.WorkshopId == workShopid);
+                _WorkshopFeaturesRepositroy.RemoveRange(List);
+                _unitOfWork.Commit();
+                _WorkshopFeaturesRepositroy.AddRange(DbWorkshopFeatures);
+
+
+
+                int save = _unitOfWork.Commit();
+
+                if (save == 200)
+                {
+                    _response.Data = model;
+                    _response.IsPassed = true;
+                    _response.Message = "Ok";
+                }
+                else
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+            return _response;
+
+        }
         #endregion
 
         #region GetAllWorkshopFeatures()
@@ -114,6 +153,27 @@ namespace BackEnd.Service.Services
             try
             {
                 var WorkshopFeaturess = _WorkshopFeaturesRepositroy.GetAll();
+
+
+                var WorkshopFeaturessList = _mapper.Map<List<WorkshopFeaturesVM>>(WorkshopFeaturess);
+                _response.Data = WorkshopFeaturessList;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
+        public IResponseDTO GetAllWorkshopFeatures(Guid id)
+        {
+            try
+            {
+                var WorkshopFeaturess = _WorkshopFeaturesRepositroy.GetAll(x=>x.WorkshopId==id);
+
 
 
                 var WorkshopFeaturessList = _mapper.Map<List<WorkshopFeaturesVM>>(WorkshopFeaturess);

@@ -73,14 +73,16 @@ namespace BackEnd.Service.Services
         #endregion
 
         #region EditWorkshopCar(WorkshopCarVM model)
-        public IResponseDTO EditWorkshopCar(WorkshopCarVM model)
+        public IResponseDTO EditWorkshopCar(List<WorkshopCarVM> model)
         {
             try
             {
-                var DbWorkshopCar = _mapper.Map<WorkshopCar>(model);
-                var entityEntry = _WorkshopCarRepositroy.Update(DbWorkshopCar);
-
-
+                var DbWorkshopCar = _mapper.Map<List<WorkshopCar>>(model);
+                var workShopid = DbWorkshopCar.FirstOrDefault().WorkshopId;
+                var List = _WorkshopCarRepositroy.GetAll(x => x.WorkshopId == workShopid);
+                _WorkshopCarRepositroy.RemoveRange(List);
+               _unitOfWork.Commit();
+                _WorkshopCarRepositroy.AddRange(DbWorkshopCar);
                 int save = _unitOfWork.Commit();
 
                 if (save == 200)
@@ -96,6 +98,40 @@ namespace BackEnd.Service.Services
                     _response.Message = "Not saved";
                 }
             }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+            return _response;
+
+        }
+        public IResponseDTO EditWorkshopCar(WorkshopCarVM model)
+        {
+            try
+            {
+                var DbWorkshopCar = _mapper.Map<WorkshopCar>(model);
+                var entityEntry = _WorkshopCarRepositroy.Update(DbWorkshopCar);
+                
+
+
+                    int save = _unitOfWork.Commit();
+
+                    if (save == 200)
+                    {
+                        _response.Data = model;
+                        _response.IsPassed = true;
+                        _response.Message = "Ok";
+                    }
+                    else
+                    {
+                        _response.Data = null;
+                        _response.IsPassed = false;
+                        _response.Message = "Not saved";
+                    }
+                }
             catch (Exception ex)
             {
                 _response.Data = null;
@@ -129,6 +165,27 @@ namespace BackEnd.Service.Services
             }
             return _response;
         }
+        public IResponseDTO GetAllWorkshopCar(Guid WorkShopId)
+        {
+            try
+            {
+                var WorkshopCars = _WorkshopCarRepositroy.GetAll(x=>x.WorkshopId== WorkShopId);
+
+
+                var WorkshopCarsList = _mapper.Map<List<WorkshopCarVM>>(WorkshopCars);
+                _response.Data = WorkshopCarsList;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
+
         #endregion
 
         #region GetByIDWorkshopCar(object id)

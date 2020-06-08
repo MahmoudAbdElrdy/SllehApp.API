@@ -106,6 +106,42 @@ namespace BackEnd.Service.Services
             return _response;
 
         }
+        public IResponseDTO EditWorkshopWorkTime(List<WorkshopWorkTimeVM> model)
+        {
+            try
+            {
+                var DbWorkshopWorkTime = _mapper.Map<List<WorkshopWorkTime>>(model);
+
+                var workShopid = DbWorkshopWorkTime.FirstOrDefault().WorkshopId;
+                var List = _WorkshopWorkTimeRepositroy.GetAll(x => x.WorkshopId == workShopid);
+                _WorkshopWorkTimeRepositroy.RemoveRange(List);
+                _unitOfWork.Commit();
+                _WorkshopWorkTimeRepositroy.AddRange(DbWorkshopWorkTime);
+                int save = _unitOfWork.Commit();
+
+                if (save == 200)
+                {
+                    _response.Data = model;
+                    _response.IsPassed = true;
+                    _response.Message = "Ok";
+                }
+                else
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+            return _response;
+
+        }
         #endregion
 
         #region GetAllWorkshopWorkTime()
@@ -114,6 +150,26 @@ namespace BackEnd.Service.Services
             try
             {
                 var WorkshopWorkTimes = _WorkshopWorkTimeRepositroy.GetAll();
+
+
+                var WorkshopWorkTimesList = _mapper.Map<List<WorkshopWorkTimeVM>>(WorkshopWorkTimes);
+                _response.Data = WorkshopWorkTimesList;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
+        public IResponseDTO GetAllWorkshopWorkTime(Guid guid)
+        {
+            try
+            {
+                var WorkshopWorkTimes = _WorkshopWorkTimeRepositroy.GetAll(x=>x.WorkshopId==guid);
 
 
                 var WorkshopWorkTimesList = _mapper.Map<List<WorkshopWorkTimeVM>>(WorkshopWorkTimes);

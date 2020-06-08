@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BackEnd.Service.IServices;
 using BackEnd.Service.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,13 @@ namespace BackEnd.API.Controllers
 
         #region Put: api/WorkshopCar/UpdateWorkshopCar
         [HttpPut]
+        [Route("UpdateWorkshopCarList")]
+        public IResponseDTO UpdateWorkshopCarList(List<WorkshopCarVM> WorkshopCarVM)
+        {
+            var depart = _WorkshopCarServices.EditWorkshopCar(WorkshopCarVM);
+            return depart;
+        }
+        [HttpPut]
         [Route("UpdateWorkshopCar")]
         public IResponseDTO UpdateWorkshopCar(WorkshopCarVM WorkshopCarVM)
         {
@@ -45,12 +53,19 @@ namespace BackEnd.API.Controllers
             var depart = _WorkshopCarServices.GetAllWorkshopCar();
             return depart;
         }
+        [HttpGet]
+        [Route("GetAllByWorkShopId")]
+        public IResponseDTO GetAllByWorkShopId(Guid guid)
+        {
+            var depart = _WorkshopCarServices.GetAllWorkshopCar(guid);
+            return depart;
+        }
         #endregion
 
         #region Get: api/WorkshopCar/GetWorkshopCarById
         [HttpGet]
         [Route("GetWorkshopCarById")]
-        public IResponseDTO GetById(object id)
+        public IResponseDTO GetById(Guid id)
         {
             var depart = _WorkshopCarServices.GetByIDWorkshopCar(id);
             return depart;

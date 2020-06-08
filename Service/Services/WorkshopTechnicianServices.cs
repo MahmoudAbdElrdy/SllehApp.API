@@ -106,6 +106,44 @@ namespace BackEnd.Service.Services
             return _response;
 
         }
+
+        public IResponseDTO EditWorkshopTechnician(List<WorkshopTechnicianVM> model)
+        {
+            try
+            {
+                var DbWorkshopTechnician = _mapper.Map<List<WorkshopTechnician>>(model);
+            
+                var workShopid = DbWorkshopTechnician.FirstOrDefault().WorkshopId;
+                var List = _WorkshopTechnicianRepositroy.GetAll(x => x.WorkshopId == workShopid);
+                _WorkshopTechnicianRepositroy.RemoveRange(List);
+                _unitOfWork.Commit();
+                _WorkshopTechnicianRepositroy.AddRange(DbWorkshopTechnician);
+
+                int save = _unitOfWork.Commit();
+
+                if (save == 200)
+                {
+                    _response.Data = model;
+                    _response.IsPassed = true;
+                    _response.Message = "Ok";
+                }
+                else
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+
+            return _response;
+
+        }
         #endregion
 
         #region GetAllWorkshopTechnician()
@@ -114,6 +152,26 @@ namespace BackEnd.Service.Services
             try
             {
                 var WorkshopTechnicians = _WorkshopTechnicianRepositroy.GetAll();
+
+
+                var WorkshopTechniciansList = _mapper.Map<List<WorkshopTechnicianVM>>(WorkshopTechnicians);
+                _response.Data = WorkshopTechniciansList;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + ex.Message;
+            }
+            return _response;
+        }
+        public IResponseDTO GetAllWorkshopTechnician(Guid id)
+        {
+            try
+            {
+                var WorkshopTechnicians = _WorkshopTechnicianRepositroy.GetAll(x=>x.WorkshopId==id);
 
 
                 var WorkshopTechniciansList = _mapper.Map<List<WorkshopTechnicianVM>>(WorkshopTechnicians);

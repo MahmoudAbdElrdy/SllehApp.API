@@ -245,7 +245,7 @@ namespace BackEnd.Service.Services
         {
             try
             {//GetCustomerByWorkShopId
-                var Chats = _ChatRepositroy.Filter(x => x.CustomerId == id &&x.WorkShopId==id2).ToList();
+                var Chats = _ChatRepositroy.Filter(x => x.CustomerId == id &&x.WorkShopId==id2).ToList().OrderByDescending(m => m.CreationDate);
                
                var Wrokshopsist = _mapper.Map<List<ChatVM>>(Chats);
                 _response.Data = Wrokshopsist;
