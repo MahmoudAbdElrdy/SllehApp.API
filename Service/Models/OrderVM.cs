@@ -13,7 +13,8 @@ namespace BackEnd.Service.Models
         public string Address { get; set; }
         public string Phone { get; set; }
         public DateTime? CreationDate { get; set; } = DateTime.UtcNow.AddHours(3);
-        public int? Status { get; set; }
+        public int? Status { get; set; } = 1;
+        public bool? IsCustomer { get; set; }
 
         public virtual CustomerVM Customer { get; set; }
         public virtual WorkshopVM Workshop { get; set; }

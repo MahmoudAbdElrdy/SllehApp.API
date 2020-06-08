@@ -16,24 +16,35 @@ namespace BackEnd.Service.Services
 {
     public class ChatServices : IServicesChat
     {
+        #region PrivateField
         private readonly IGRepository<Chat> _ChatRepositroy;
-      
         private readonly IGRepository<Workshop> _WorkshopRepositroy;
+        private readonly IGRepository<CustomerNotifications> _CustomerNotificationsRepositroy;
+        private readonly IGRepository<WorkshopNotifications> _WorkshopNotificationsRepositroy;
         private readonly IGRepository<Customer> _CustomerRepositroy;
         private readonly IUnitOfWork<DB_A57576_SllehAppContext> _unitOfWork;
         private readonly IResponseDTO _response;
         private readonly IMapper _mapper;
+        #endregion
+
+        #region Constructor
         public ChatServices(IGRepository<Chat> Chat, IGRepository<Customer> customer, IGRepository<Workshop> Workshop,
+            IGRepository<CustomerNotifications> CustomerNotifications, IGRepository<WorkshopNotifications> WorkshopNotifications,
             IUnitOfWork<DB_A57576_SllehAppContext> unitOfWork, IResponseDTO responseDTO, IMapper mapper)
         {
             _ChatRepositroy = Chat;
             _CustomerRepositroy = customer;
             _WorkshopRepositroy = Workshop;
+            _CustomerNotificationsRepositroy = CustomerNotifications;
+            _WorkshopNotificationsRepositroy = WorkshopNotifications;
             _unitOfWork = unitOfWork;
             _response = responseDTO;
             _mapper = mapper;
 
         }
+        #endregion
+
+        #region DeleteChat(ChatVM model)
         public IResponseDTO DeleteChat(ChatVM model)
         {
             try
@@ -59,10 +70,13 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response;
         }
+        #endregion
+
+        #region EditChat(ChatVM model)
         public IResponseDTO EditChat(ChatVM model)
         {
             try
@@ -88,10 +102,13 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response;
         }
+        #endregion
+
+        #region GetAllChat()
         public IResponseDTO GetAllChat()
         {
             try
@@ -107,10 +124,13 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response;
         }
+        #endregion
+
+        #region GetCustomerByWorkShopId(Guid id)
         public IResponseDTO GetCustomerByWorkShopId(Guid id)
         {
             try
@@ -157,16 +177,20 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response;
         }
+        #endregion
+
+        #region PostChat(ChatVM model)
         public IResponseDTO PostChat(ChatVM model)
         {
             try
             {
                 var DbChat = _mapper.Map<Chat>(model);
                 var Chat = _mapper.Map<ChatVM>(_ChatRepositroy.Add(DbChat));
+                bool _notification = SendNotification(model);
                 int save = _unitOfWork.Commit();
 
                 if (save == 200)
@@ -186,11 +210,63 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response;
         }
+        #endregion
 
+        #region SendNotification(ChatVM model)
+        public bool SendNotification(ChatVM model)
+        {
+            try
+            {
+                
+                var customer = _CustomerRepositroy.GetFirst(x => x.CustomerId == model.CustomerId);
+                var workshop = _WorkshopRepositroy.GetFirst(x => x.WorkshopId == model.WorkShopId);
+                string _title = "",_message = "",_token="";
+                Dictionary<string, object> AdditionalData= new Dictionary<string, object>()
+                {
+                    { "IsOrder" , false},
+                    { "CustomerId" , model.CustomerId},
+                    { "WorkshopId" , model.WorkShopId},
+                };
+                if(model.IsCustomer == true)
+                {
+                    _title = customer.Name;
+                    _message = $"لقد وصلتك رسالة جديدة من  {customer.Name}";
+                    _token = workshop.Token;
+                    _WorkshopNotificationsRepositroy.Add(_mapper.Map<WorkshopNotifications>(new WorkshopNotificationsVM()
+                    {
+                        WorkshopId = model.WorkShopId,
+                        Content = _message,
+                        Title = _title,
+                    }));
+                }
+                else
+                {
+                    _title = workshop.Name;
+                    _token = customer.Token;
+                    _message = $"لقد وصلتك رسالة جديدة من  {workshop.Name}";
+                    _CustomerNotificationsRepositroy.Add(_mapper.Map <CustomerNotifications>(new CustomerNotificationsVM()
+                    {
+                        CustomerId = model.CustomerId,
+                        Content = _message,
+                        Title = _title,
+                    }));
+                }
+                Helper.NotificationHelper.PushNotificationByFirebase(_message, _title, new List<string>() { _token }, AdditionalData);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : ""));
+                return false;
+            }
+        }
+        #endregion
+
+        #region GetWorkshopByCustomerId(Guid id)
         public IResponseDTO GetWorkshopByCustomerId(Guid id)
         {
             try
@@ -235,12 +311,13 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response; 
         }
+        #endregion
 
-        //GetChatByCustomerAndWorkshop
+        #region GetChatByCustomerAndWorkshop(Guid id,Guid id2)
         public IResponseDTO GetChatByCustomerAndWorkshop(Guid id,Guid id2)
         {
             try
@@ -256,10 +333,13 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response;
         }
+        #endregion
+
+        #region GetByOrderId(Guid OrderId)
         public IResponseDTO GetByOrderId(Guid OrderId)
         {
             try
@@ -275,10 +355,11 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response;
         }
+        #endregion
     }
 
 }

@@ -58,7 +58,7 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response;
         }
@@ -87,7 +87,7 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response;
         }
@@ -106,7 +106,7 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response;
         }
@@ -125,7 +125,7 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response;
         }
@@ -154,7 +154,7 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response;
         }
@@ -181,7 +181,7 @@ namespace BackEnd.Service.Services
             {
                 _response.Data = null;
                 _response.IsPassed = false;
-                _response.Message = "Error " + ex.Message;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
             }
             return _response;
         }
