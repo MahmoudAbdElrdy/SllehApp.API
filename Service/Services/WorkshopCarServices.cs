@@ -169,11 +169,19 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var WorkshopCars = _WorkshopCarRepositroy.GetAll(x=>x.WorkshopId== WorkShopId);
+                var WorkshopCars = _WorkshopCarRepositroy.GetAll(x => x.WorkshopId == WorkShopId)
+                    .Select(WorkshopCar => new
+                    {
+                        WorkshopCarId = WorkshopCar.WorkshopCarId,
+                        CarId = WorkshopCar.CarId,
+                        WorkshopId = WorkshopCar.WorkshopId,
+                        Notes = WorkshopCar.Notes,
+                        CreationDate = WorkshopCar.CreationDate,
+                        CarName = WorkshopCar.Car != null ? WorkshopCar.Car.Name : "",
+                    }).ToList();
 
-
-                var WorkshopCarsList = _mapper.Map<List<WorkshopCarVM>>(WorkshopCars);
-                _response.Data = WorkshopCarsList;
+               // var WorkshopCarsList = _mapper.Map<List<WorkshopCarVM>>(WorkshopCars);
+                _response.Data = WorkshopCars;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }

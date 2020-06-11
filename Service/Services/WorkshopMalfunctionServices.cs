@@ -171,11 +171,18 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var WorkshopMalfunctions = _WorkshopMalfunctionRepositroy.GetAll(x=>x.WorkshopId==id);
+                var WorkshopMalfunctions = _WorkshopMalfunctionRepositroy.GetAll(x => x.WorkshopId == id).Select(WorkshopMalfunction => new
+                {
+                    WorkshopMalfunctionId = WorkshopMalfunction.WorkshopMalfunctionId,
+                    MalfunctionId = WorkshopMalfunction.MalfunctionId,
+                    WorkshopId = WorkshopMalfunction.WorkshopId,
+                    Notes = WorkshopMalfunction.Notes,
+                    CreationDate = WorkshopMalfunction.CreationDate,
+                    Name = WorkshopMalfunction.Malfunction != null ? WorkshopMalfunction.Malfunction.Name : "",
+                }).ToList();
 
-
-                var WorkshopMalfunctionsList = _mapper.Map<List<WorkshopMalfunctionVM>>(WorkshopMalfunctions);
-                _response.Data = WorkshopMalfunctionsList;
+               // var WorkshopMalfunctionsList = _mapper.Map<List<WorkshopMalfunctionVM>>(WorkshopMalfunctions);
+                _response.Data = WorkshopMalfunctions;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }

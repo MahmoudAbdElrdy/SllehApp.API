@@ -172,12 +172,19 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var WorkshopFeaturess = _WorkshopFeaturesRepositroy.GetAll(x=>x.WorkshopId==id);
+                var WorkshopFeaturess = _WorkshopFeaturesRepositroy.GetAll(x => x.WorkshopId == id).Select(WorkshopFeatures => new
+                {
+                    FeatureWorkeshopId = WorkshopFeatures.FeatureWorkeshopId,
+                    WorkshopId = WorkshopFeatures.WorkshopId,
+                    Notes = WorkshopFeatures.Notes,
+                    CreationDate = WorkshopFeatures.CreationDate,
+                    FeatureId = WorkshopFeatures.FeatureId,
+                    Name = WorkshopFeatures.Feature != null ? WorkshopFeatures.Feature.Name : "",
+                }).ToList();
 
 
-
-                var WorkshopFeaturessList = _mapper.Map<List<WorkshopFeaturesVM>>(WorkshopFeaturess);
-                _response.Data = WorkshopFeaturessList;
+              //  var WorkshopFeaturessList = _mapper.Map<List<WorkshopFeaturesVM>>(WorkshopFeaturess);
+                _response.Data = WorkshopFeaturess;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
