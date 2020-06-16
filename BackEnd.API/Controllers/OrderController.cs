@@ -45,6 +45,13 @@ namespace BackEnd.API.Controllers
             var depart = _OrderServices.GetAllOrder();
             return depart;
         }
+        [HttpGet]
+        [Route("GetAllOrderAdmin")]
+        public IResponseDTO GetAllOrderAdmin()
+        {
+            var depart = _OrderServices.GetAllOrderAdmin();
+            return depart;
+        }
         #endregion
 
         #region Get: api/Order/GetOrderById

@@ -17,5 +17,6 @@ namespace BackEnd.Service.IServices
         IResponseDTO GetByCustomerId(Guid? id);
         IResponseDTO GetRunningByWorkshopId(Guid? id);
         IResponseDTO GetByWorkshopId(Guid? id);
+        IResponseDTO GetAllOrderAdmin();
     }
 }

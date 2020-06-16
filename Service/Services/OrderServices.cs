@@ -196,6 +196,39 @@ namespace BackEnd.Service.Services
         #endregion
 
         #region GetAllOrder()
+        public IResponseDTO GetAllOrderAdmin()
+        {
+            try
+            {
+                var Orders = _OrderRepositroy.GetAll().Select(x => new {
+                    OrderId=x.OrderId,
+                    Address = x.Address,
+                    CreationDate = x.CreationDate,
+                    CustomerName = x.Customer.Name,
+                    CustomerId = x.CustomerId,
+                    MapLangitude = x.MapLangitude,
+                    MapLatitude = x.MapLatitude,
+                    Phone = x.Phone,
+                    Status = x.Status,
+                    WorkshopName = x.Workshop.Name,
+                    WorkshopId = x.WorkshopId,
+
+                }).ToList();
+
+
+                //var OrdersList = Orders;
+                _response.Data = Orders;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
+            }
+            return _response;
+        }
         public IResponseDTO GetAllOrder()
         {
             try
