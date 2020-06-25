@@ -157,7 +157,8 @@ namespace BackEnd.Service.Services
 
 
                 }
-                var result = Wrokshops.GroupBy(x => x.WorkShopId)
+
+                var result = Wrokshops.GroupBy(x => x.CustomerId)
                       .Select(x => x.OrderByDescending(y => y.CreationDate).First());
 
                 _response.Data = result.Select(x => new
