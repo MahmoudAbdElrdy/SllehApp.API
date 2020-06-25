@@ -11,6 +11,7 @@ namespace BackEnd.Service.IServices
     {
         IResponseDTO PostWorkshopCar(WorkshopCarVM model);
         IResponseDTO GetAllWorkshopCar();
+        IResponseDTO GetAllWorkshopCarById();
         IResponseDTO GetAllWorkshopCar(Guid WorkShopId);
         IResponseDTO EditWorkshopCar(WorkshopCarVM model);
         IResponseDTO EditWorkshopCar(List<WorkshopCarVM> model);

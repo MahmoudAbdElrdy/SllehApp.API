@@ -196,6 +196,35 @@ namespace BackEnd.Service.Services
             }
             return _response;
         }
+
+        public IResponseDTO GetAllWorkshopFeature()
+        {
+            try
+            {
+                var WorkshopFeaturess = _WorkshopFeaturesRepositroy.GetAll().Select(WorkshopFeatures => new
+                {
+                    FeatureWorkeshopId = WorkshopFeatures.FeatureWorkeshopId,
+                    WorkshopId = WorkshopFeatures.WorkshopId,
+                    Notes = WorkshopFeatures.Notes,
+                    CreationDate = WorkshopFeatures.CreationDate,
+                    FeatureId = WorkshopFeatures.FeatureId,
+                    Name = WorkshopFeatures.Feature != null ? WorkshopFeatures.Feature.Name : "",
+                }).ToList();
+
+
+                //  var WorkshopFeaturessList = _mapper.Map<List<WorkshopFeaturesVM>>(WorkshopFeaturess);
+                _response.Data = WorkshopFeaturess;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
+            }
+            return _response;
+        }
         #endregion
 
         #region GetByIDWorkshopFeatures(object id)

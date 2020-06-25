@@ -55,10 +55,20 @@ namespace BackEnd.API.Controllers
         }
         [HttpGet]
         [Route("GetAllByWorkShopId")]
-        public IResponseDTO GetAllByWorkShopId(Guid guid)
+        public IResponseDTO GetAllByWorkShopId(Guid? guid)
         {
-            var depart = _WorkshopFeaturesServices.GetAllWorkshopFeatures(guid);
-            return depart;
+            if (guid == null)
+            {
+                var depart = _WorkshopFeaturesServices.GetAllWorkshopFeature();
+                return depart;
+            }
+            else
+            {
+                var depart = _WorkshopFeaturesServices.GetAllWorkshopFeatures((Guid)guid);
+                return depart;
+
+            }
+          
         }
         #endregion
 

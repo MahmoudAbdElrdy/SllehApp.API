@@ -12,6 +12,7 @@ namespace BackEnd.Service.IServices
         IResponseDTO PostWorkshopFeatures(WorkshopFeaturesVM model);
         IResponseDTO GetAllWorkshopFeatures();
         IResponseDTO GetAllWorkshopFeatures(Guid guid);
+        IResponseDTO GetAllWorkshopFeature();
         IResponseDTO EditWorkshopFeatures(WorkshopFeaturesVM model);
         IResponseDTO EditWorkshopFeatures(List<WorkshopFeaturesVM> model);
         IResponseDTO DeleteWorkshopFeatures(WorkshopFeaturesVM model);

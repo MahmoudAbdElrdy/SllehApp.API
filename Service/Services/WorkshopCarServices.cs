@@ -165,6 +165,8 @@ namespace BackEnd.Service.Services
             }
             return _response;
         }
+      
+
         public IResponseDTO GetAllWorkshopCar(Guid WorkShopId)
         {
             try
@@ -180,8 +182,38 @@ namespace BackEnd.Service.Services
                         CarName = WorkshopCar.Car != null ? WorkshopCar.Car.Name : "",
                     }).ToList();
 
-               // var WorkshopCarsList = _mapper.Map<List<WorkshopCarVM>>(WorkshopCars);
+                // var WorkshopCarsList = _mapper.Map<List<WorkshopCarVM>>(WorkshopCars);
                 _response.Data = WorkshopCars;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
+            }
+            return _response;
+        }
+
+        public IResponseDTO GetAllWorkshopCarById()
+        {
+            try
+            {
+                var WorkshopCars = _WorkshopCarRepositroy.GetAll()
+                    .Select(WorkshopCar => new
+                    {
+                        WorkshopCarId = WorkshopCar.WorkshopCarId,
+                        CarId = WorkshopCar.CarId,
+                        WorkshopId = WorkshopCar.WorkshopId,
+                        Notes = WorkshopCar.Notes,
+                        CreationDate = WorkshopCar.CreationDate,
+                        CarName = WorkshopCar.Car != null ? WorkshopCar.Car.Name : "",
+                    }).ToList();
+                var result = WorkshopCars.GroupBy(x => x.CarId)
+                      .Select(x => x.OrderByDescending(y => y.CreationDate).First()).ToList();
+                // var WorkshopCarsList = _mapper.Map<List<WorkshopCarVM>>(WorkshopCars);
+                _response.Data = result;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }

@@ -194,6 +194,33 @@ namespace BackEnd.Service.Services
             }
             return _response;
         }
+        public IResponseDTO GetAllWorkshopMalfunctions()
+        {
+            try
+            {
+                var WorkshopMalfunctions = _WorkshopMalfunctionRepositroy.GetAll().Select(WorkshopMalfunction => new
+                {
+                    WorkshopMalfunctionId = WorkshopMalfunction.WorkshopMalfunctionId,
+                    MalfunctionId = WorkshopMalfunction.MalfunctionId,
+                    WorkshopId = WorkshopMalfunction.WorkshopId,
+                    Notes = WorkshopMalfunction.Notes,
+                    CreationDate = WorkshopMalfunction.CreationDate,
+                    Name = WorkshopMalfunction.Malfunction != null ? WorkshopMalfunction.Malfunction.Name : "",
+                }).ToList();
+
+                // var WorkshopMalfunctionsList = _mapper.Map<List<WorkshopMalfunctionVM>>(WorkshopMalfunctions);
+                _response.Data = WorkshopMalfunctions;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
+            }
+            return _response;
+        }
         #endregion
 
         #region GetByIDWorkshopMalfunction(object id)

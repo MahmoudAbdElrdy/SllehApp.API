@@ -20,6 +20,7 @@ namespace BackEnd.Service.Services
     {
         #region PrivateField
         private readonly IGRepository<WorkshopCar> _CarWorkshopRepositroy;
+        private readonly IGRepository<City> _CityWorkshopRepositroy;
         private readonly IGRepository<WorkshopMalfunction> _MalfunctionWorkshopRepositroy;
         private readonly IGRepository<WorkshopFeatures> _FeaturesWorkshopRepositroy;
         private readonly IGRepository<WorkshopWorkTime> _WorkTimeWorkshopRepositroy;
@@ -31,6 +32,7 @@ namespace BackEnd.Service.Services
 
         #region Constructor
         public WorkshopServices(IGRepository<Workshop> Workshop,IGRepository<WorkshopCar> Car,
+            IGRepository<City> CityWorkshopRepositroy,
              IGRepository<WorkshopMalfunction> Malfunction, IGRepository<WorkshopFeatures> Features,
              IGRepository<WorkshopWorkTime> WorkTimes,
 
@@ -44,6 +46,7 @@ namespace BackEnd.Service.Services
             _unitOfWork = unitOfWork;
             _response = responseDTO;
             _mapper = mapper;
+            _CityWorkshopRepositroy = CityWorkshopRepositroy;
 
         }
         #endregion
@@ -204,7 +207,7 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var Workshops = _WorkshopRepositroy.Get(includeProperties: "WorkshopRate");
+                var Workshops = _WorkshopRepositroy.Get(includeProperties: "WorkshopRate,City");
 
 
                 var WorkshopsList = Workshops.Select(x => new
@@ -216,6 +219,9 @@ namespace BackEnd.Service.Services
                     IsTrust = x.IsTrust,
                     ImageUrl = x.ImageUrl,
                     Token = x.Token,
+                    CityId = x.CityId,
+                    CityName = x.City == null ? "" : x.City.CityName,
+    
                     MapLatitude = x.MapLatitude,
                     MapLangitude = x.MapLangitude,
                     Email = x.Email,
@@ -229,6 +235,7 @@ namespace BackEnd.Service.Services
                     HasWarranty = x.HasWarranty,
                     RateCount = x.WorkshopRate.Count,
                     RateAVG = x.WorkshopRate.Count > 0 ? x.WorkshopRate.Average(y => y.Rate) : 0.0m,
+                   
                 }).ToList();
                 _response.Data = WorkshopsList;
                 _response.IsPassed = true;
@@ -243,7 +250,39 @@ namespace BackEnd.Service.Services
             return _response;
         }
         #endregion
-
+        #region GetAllWorkshop()
+        public IResponseDTO GetAllWorkshopCity()
+        {
+            try
+            {
+                List<CityWorkShop> cityWorkShops = new List<CityWorkShop>();
+                var Workshops = _WorkshopRepositroy.Get(x=>x.CityId!=null);
+                List<Guid> CityIds = null;
+               CityIds = Workshops.Select(c => (Guid)c.CityId).ToList();
+                var WrokshopCity = _CityWorkshopRepositroy.Get(w => CityIds.Contains((Guid)w.CityId)).ToList();
+                   foreach(var Model in WrokshopCity)
+                {
+                    var count = Workshops.Count(x => x.CityId == Model.CityId);
+                    var city = new CityWorkShop();
+                    city.CityName = Model.CityName;
+                    city.CityId = Model.CityId;
+                    city.WorshopCount = count;
+                    cityWorkShops.Add(city);
+                }
+               
+                _response.Data = cityWorkShops;
+                _response.IsPassed = true;
+                _response.Message = "Done";
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
+            }
+            return _response;
+        }
+        #endregion
         #region WorkshopLogin(WorkshopVM model)
         public IResponseDTO WorkshopLogin(WorkshopVM model)
         {
@@ -704,6 +743,13 @@ namespace BackEnd.Service.Services
             return Expression.Lambda<Func<T, bool>>
                   (Expression.AndAlso(expr1.Body, invokedExpr), expr1.Parameters);
         }
+
     }
     #endregion
+   public class CityWorkShop
+    {
+        public string CityName { get; set; }
+        public int WorshopCount { get; set; }
+        public Guid CityId { get; set; }
+    }
 }

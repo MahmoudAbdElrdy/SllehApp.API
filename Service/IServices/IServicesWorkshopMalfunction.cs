@@ -12,6 +12,7 @@ namespace BackEnd.Service.IServices
         IResponseDTO PostWorkshopMalfunction(WorkshopMalfunctionVM model);
         IResponseDTO GetAllWorkshopMalfunction();
         IResponseDTO GetAllWorkshopMalfunction(Guid id);
+        IResponseDTO GetAllWorkshopMalfunctions();
         IResponseDTO EditWorkshopMalfunction(WorkshopMalfunctionVM model);
         IResponseDTO EditWorkshopMalfunction(List<WorkshopMalfunctionVM> model);
         IResponseDTO DeleteWorkshopMalfunction(WorkshopMalfunctionVM model);
