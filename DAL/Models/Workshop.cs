@@ -37,6 +37,7 @@ namespace BackEnd.DAL.Models
         public decimal? MapLatitude { get; set; }
         public decimal? MapLangitude { get; set; }
         public Guid? CityId { get; set; }
+        public bool? Prefer { get; set; }
 
         public virtual City City { get; set; }
         public virtual ICollection<Chat> Chat { get; set; }

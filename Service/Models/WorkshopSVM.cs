@@ -24,6 +24,7 @@ namespace BackEnd.Service.Models
         public bool? HasWarranty { get; set; } = false;
         public DateTime? CreationDate { get; set; } = DateTime.UtcNow.AddHours(3);
         public Guid? CityId { get; set; }
+        public bool? Prefer { get; set; } = false;
 
         public virtual ICollection<WorkshopCarVM> WorkshopCar { get; set; }
         public virtual ICollection<WorkshopFeaturesVM> WorkshopFeatures { get; set; }

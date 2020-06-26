@@ -210,10 +210,11 @@ namespace BackEnd.Service.Services
                     FeatureId = WorkshopFeatures.FeatureId,
                     Name = WorkshopFeatures.Feature != null ? WorkshopFeatures.Feature.Name : "",
                 }).ToList();
-
+                var result = WorkshopFeaturess.GroupBy(x => x.FeatureId)
+                      .Select(x => x.OrderByDescending(y => y.CreationDate).First()).ToList();
 
                 //  var WorkshopFeaturessList = _mapper.Map<List<WorkshopFeaturesVM>>(WorkshopFeaturess);
-                _response.Data = WorkshopFeaturess;
+                _response.Data = result;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }

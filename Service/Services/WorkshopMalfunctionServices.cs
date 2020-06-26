@@ -207,9 +207,11 @@ namespace BackEnd.Service.Services
                     CreationDate = WorkshopMalfunction.CreationDate,
                     Name = WorkshopMalfunction.Malfunction != null ? WorkshopMalfunction.Malfunction.Name : "",
                 }).ToList();
+                var result = WorkshopMalfunctions.GroupBy(x => x.MalfunctionId)
+                      .Select(x => x.OrderByDescending(y => y.CreationDate).First()).ToList();
 
                 // var WorkshopMalfunctionsList = _mapper.Map<List<WorkshopMalfunctionVM>>(WorkshopMalfunctions);
-                _response.Data = WorkshopMalfunctions;
+                _response.Data = result;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }

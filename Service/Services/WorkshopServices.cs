@@ -218,6 +218,7 @@ namespace BackEnd.Service.Services
                     Name = x.Name,
                     IsTrust = x.IsTrust,
                     ImageUrl = x.ImageUrl,
+                    Prefer = x.Prefer,
                     Token = x.Token,
                     CityId = x.CityId,
                     CityName = x.City == null ? "" : x.City.CityName,

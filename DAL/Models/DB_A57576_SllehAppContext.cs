@@ -203,6 +203,8 @@ namespace BackEnd.DAL.Models
 
                 entity.Property(e => e.Phone).HasMaxLength(50);
 
+                entity.Property(e => e.Prefer).HasColumnName("prefer");
+
                 entity.Property(e => e.Token).HasDefaultValueSql("('')");
 
                 entity.HasOne(d => d.City)
