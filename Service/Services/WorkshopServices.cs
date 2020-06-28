@@ -31,7 +31,7 @@ namespace BackEnd.Service.Services
         #endregion
 
         #region Constructor
-        public WorkshopServices(IGRepository<Workshop> Workshop,IGRepository<WorkshopCar> Car,
+        public WorkshopServices(IGRepository<Workshop> Workshop, IGRepository<WorkshopCar> Car,
             IGRepository<City> CityWorkshopRepositroy,
              IGRepository<WorkshopMalfunction> Malfunction, IGRepository<WorkshopFeatures> Features,
              IGRepository<WorkshopWorkTime> WorkTimes,
@@ -163,7 +163,7 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var DbWorkshop = _WorkshopRepositroy.Get(x=>x.WorkshopId == WorkshopId).FirstOrDefault();
+                var DbWorkshop = _WorkshopRepositroy.Get(x => x.WorkshopId == WorkshopId).FirstOrDefault();
                 if (DbWorkshop.IsAvailable != null)
                 {
                     DbWorkshop.IsAvailable = !DbWorkshop.IsAvailable;
@@ -218,11 +218,11 @@ namespace BackEnd.Service.Services
                     Name = x.Name,
                     IsTrust = x.IsTrust,
                     ImageUrl = x.ImageUrl,
-                    Prefer = x.Prefer,
                     Token = x.Token,
                     CityId = x.CityId,
                     CityName = x.City == null ? "" : x.City.CityName,
-    
+                    Prefer = x.Prefer ,
+
                     MapLatitude = x.MapLatitude,
                     MapLangitude = x.MapLangitude,
                     Email = x.Email,
@@ -236,7 +236,7 @@ namespace BackEnd.Service.Services
                     HasWarranty = x.HasWarranty,
                     RateCount = x.WorkshopRate.Count,
                     RateAVG = x.WorkshopRate.Count > 0 ? x.WorkshopRate.Average(y => y.Rate) : 0.0m,
-                   
+
                 }).ToList();
                 _response.Data = WorkshopsList;
                 _response.IsPassed = true;
@@ -257,11 +257,11 @@ namespace BackEnd.Service.Services
             try
             {
                 List<CityWorkShop> cityWorkShops = new List<CityWorkShop>();
-                var Workshops = _WorkshopRepositroy.Get(x=>x.CityId!=null);
+                var Workshops = _WorkshopRepositroy.Get(x => x.CityId != null);
                 List<Guid> CityIds = null;
-               CityIds = Workshops.Select(c => (Guid)c.CityId).ToList();
+                CityIds = Workshops.Select(c => (Guid)c.CityId).ToList();
                 var WrokshopCity = _CityWorkshopRepositroy.Get(w => CityIds.Contains((Guid)w.CityId)).ToList();
-                   foreach(var Model in WrokshopCity)
+                foreach (var Model in WrokshopCity)
                 {
                     var count = Workshops.Count(x => x.CityId == Model.CityId);
                     var city = new CityWorkShop();
@@ -270,7 +270,7 @@ namespace BackEnd.Service.Services
                     city.WorshopCount = count;
                     cityWorkShops.Add(city);
                 }
-               
+
                 _response.Data = cityWorkShops;
                 _response.IsPassed = true;
                 _response.Message = "Done";
@@ -290,7 +290,7 @@ namespace BackEnd.Service.Services
             try
             {
                 var res = _WorkshopRepositroy.GetFirst(X => X.Email == model.Email && X.Password == model.Password);
-                if(res == null)
+                if (res == null)
                 {
                     _response.Data = null;
                     _response.IsPassed = false;
@@ -325,6 +325,7 @@ namespace BackEnd.Service.Services
 
 
                 var WorkshopsList = _mapper.Map<WorkshopVM>(Workshops);
+
                 _response.Data = WorkshopsList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
@@ -388,7 +389,7 @@ namespace BackEnd.Service.Services
             {
                 //var DbWorkshop = _mapper.Map<WorkshopVM>(model);
                 //DbWorkshop.WorkshopId = Guid.NewGuid();
-                
+
 
                 foreach (var WorkshopCar in model.WorkshopCar)
                 {
@@ -453,7 +454,7 @@ namespace BackEnd.Service.Services
 
                 workshops = WorkshopsList.ToList();
                 //var WorkshopsList = _mapper.Map<List<WorkshopVM>>(Workshops);
-                for (int i=0;i< WorkshopsList.Count;i++)
+                for (int i = 0; i < WorkshopsList.Count; i++)
                 {
                     //if(WorkshopsList[i].MapLangitude!=null || WorkshopsList[i].MapLatitude != null)
                     {
@@ -475,7 +476,7 @@ namespace BackEnd.Service.Services
                             workshops.Remove(WorkshopsList[i]);
                         }
                     }
-                  
+
                 }
                 _response.Data = workshops.Select(x => new
                 {
@@ -528,61 +529,61 @@ namespace BackEnd.Service.Services
                 //var Workshops = from WorkShop in _WorkshopRepositroy.Get(m => m.WorkshopId == workshopid, includeProperties: "WorkshopCar,WorkshopCar.Car,WorkshopFeatures,WorkshopFeatures.Feature,WorkshopMalfunction,WorkshopMalfunction.Malfunction,WorkshopTechnician,WorkshopWorkTime,WorkshopRate")
                 //                select new
                 var Workshops = _WorkshopRepositroy.Get(m => m.WorkshopId == workshopid, includeProperties: "WorkshopCar,WorkshopCar.Car,WorkshopFeatures,WorkshopFeatures.Feature,WorkshopMalfunction,WorkshopMalfunction.Malfunction,WorkshopTechnician,WorkshopWorkTime,WorkshopRate").Select(WorkShop => new
-                                {
-                                    WorkshopId = WorkShop.WorkshopId,
-                                    Address = WorkShop.Address,
-                                    CreationDate = WorkShop.CreationDate,
-                                    Email = WorkShop.Email,
-                                    HasSparePart = WorkShop.HasSparePart,
-                                    HasWarranty = WorkShop.HasWarranty,
-                                    ImageUrl = WorkShop.ImageUrl,
-                                    Info = WorkShop.Info,
-                                    CityId = WorkShop.CityId,
-                                    IsAvailable = WorkShop.IsAvailable,
-                                    IsTrust = WorkShop.IsTrust,
-                                    MapLangitude = WorkShop.MapLangitude,
-                                    MapLatitude = WorkShop.MapLatitude,
-                                    Name = WorkShop.Name,
-                                    OwnerImage = WorkShop.OwnerImage,
-                                    OwnerName = WorkShop.OwnerName,
-                                    Password = "",
-                                    Phone = WorkShop.Phone,
-                                    Token = WorkShop.Token,
-                                    RateCount = WorkShop.WorkshopRate.Where(x=>x.WorkshopId==workshopid).ToList().Count,
-                                    RateAVG = WorkShop.WorkshopRate.ToList().Count > 0 ? WorkShop.WorkshopRate.Average(y => y.Rate) : 0.0m,
-                                    //WorkshopCar = _mapper.Map<List<WorkshopCarVM>>(WorkShop.WorkshopCar.Where(x => x.WorkshopId == workshopid).ToList()),
-                                    WorkshopCar = WorkShop.WorkshopCar.Select(WorkshopCar => new
-                                    {
-                                        WorkshopCarId = WorkshopCar.WorkshopCarId,
-                                        CarId = WorkshopCar.CarId,
-                                        WorkshopId = WorkshopCar.WorkshopId,
-                                        Notes = WorkshopCar.Notes,
-                                        CreationDate = WorkshopCar.CreationDate,
-                                        CarName = WorkshopCar.Car!= null? WorkshopCar.Car.Name:"",
-                                    }).ToList(),
-                                    //WorkshopFeatures = _mapper.Map<List<WorkshopFeaturesVM>>(WorkShop.WorkshopFeatures.Where(x => x.WorkshopId == workshopid).ToList()),
-                                    WorkshopFeatures = WorkShop.WorkshopFeatures.Select(WorkshopFeatures => new
-                                    {
-                                        FeatureWorkeshopId = WorkshopFeatures.FeatureWorkeshopId,
-                                        WorkshopId = WorkshopFeatures.WorkshopId,
-                                        Notes = WorkshopFeatures.Notes,
-                                        CreationDate = WorkshopFeatures.CreationDate,
-                                        FeatureId = WorkshopFeatures.FeatureId,
-                                        Name = WorkshopFeatures.Feature != null? WorkshopFeatures.Feature.Name:"",
-                                    }).ToList(),
-                                    //WorkshopMalfunction = _mapper.Map<List<WorkshopMalfunctionVM>>(WorkShop.WorkshopMalfunction.Where(x => x.WorkshopId == workshopid).ToList()),
-                                    WorkshopMalfunction = WorkShop.WorkshopMalfunction.Select(WorkshopMalfunction=> new
-                                    {
-                                        WorkshopMalfunctionId = WorkshopMalfunction.WorkshopMalfunctionId,
-                                        MalfunctionId = WorkshopMalfunction.MalfunctionId,
-                                        WorkshopId = WorkshopMalfunction.WorkshopId,
-                                        Notes = WorkshopMalfunction.Notes,
-                                        CreationDate = WorkshopMalfunction.CreationDate,
-                                        Name = WorkshopMalfunction.Malfunction != null ? WorkshopMalfunction.Malfunction.Name : "",
-                                    }).ToList(),
-                                    WorkshopTechnician = _mapper.Map<List<WorkshopTechnicianVM>>(WorkShop.WorkshopTechnician),
-                                    WorkshopWorkTime = _mapper.Map<List<WorkshopWorkTimeVM>>(WorkShop.WorkshopWorkTime),
-                                }).FirstOrDefault();
+                {
+                    WorkshopId = WorkShop.WorkshopId,
+                    Address = WorkShop.Address,
+                    CreationDate = WorkShop.CreationDate,
+                    Email = WorkShop.Email,
+                    HasSparePart = WorkShop.HasSparePart,
+                    HasWarranty = WorkShop.HasWarranty,
+                    ImageUrl = WorkShop.ImageUrl,
+                    Info = WorkShop.Info,
+                    CityId = WorkShop.CityId,
+                    IsAvailable = WorkShop.IsAvailable,
+                    IsTrust = WorkShop.IsTrust,
+                    MapLangitude = WorkShop.MapLangitude,
+                    MapLatitude = WorkShop.MapLatitude,
+                    Name = WorkShop.Name,
+                    OwnerImage = WorkShop.OwnerImage,
+                    OwnerName = WorkShop.OwnerName,
+                    Password = "",
+                    Phone = WorkShop.Phone,
+                    Token = WorkShop.Token,
+                    RateCount = WorkShop.WorkshopRate.Where(x => x.WorkshopId == workshopid).ToList().Count,
+                    RateAVG = WorkShop.WorkshopRate.ToList().Count > 0 ? WorkShop.WorkshopRate.Average(y => y.Rate) : 0.0m,
+                    //WorkshopCar = _mapper.Map<List<WorkshopCarVM>>(WorkShop.WorkshopCar.Where(x => x.WorkshopId == workshopid).ToList()),
+                    WorkshopCar = WorkShop.WorkshopCar.Select(WorkshopCar => new
+                    {
+                        WorkshopCarId = WorkshopCar.WorkshopCarId,
+                        CarId = WorkshopCar.CarId,
+                        WorkshopId = WorkshopCar.WorkshopId,
+                        Notes = WorkshopCar.Notes,
+                        CreationDate = WorkshopCar.CreationDate,
+                        CarName = WorkshopCar.Car != null ? WorkshopCar.Car.Name : "",
+                    }).ToList(),
+                    //WorkshopFeatures = _mapper.Map<List<WorkshopFeaturesVM>>(WorkShop.WorkshopFeatures.Where(x => x.WorkshopId == workshopid).ToList()),
+                    WorkshopFeatures = WorkShop.WorkshopFeatures.Select(WorkshopFeatures => new
+                    {
+                        FeatureWorkeshopId = WorkshopFeatures.FeatureWorkeshopId,
+                        WorkshopId = WorkshopFeatures.WorkshopId,
+                        Notes = WorkshopFeatures.Notes,
+                        CreationDate = WorkshopFeatures.CreationDate,
+                        FeatureId = WorkshopFeatures.FeatureId,
+                        Name = WorkshopFeatures.Feature != null ? WorkshopFeatures.Feature.Name : "",
+                    }).ToList(),
+                    //WorkshopMalfunction = _mapper.Map<List<WorkshopMalfunctionVM>>(WorkShop.WorkshopMalfunction.Where(x => x.WorkshopId == workshopid).ToList()),
+                    WorkshopMalfunction = WorkShop.WorkshopMalfunction.Select(WorkshopMalfunction => new
+                    {
+                        WorkshopMalfunctionId = WorkshopMalfunction.WorkshopMalfunctionId,
+                        MalfunctionId = WorkshopMalfunction.MalfunctionId,
+                        WorkshopId = WorkshopMalfunction.WorkshopId,
+                        Notes = WorkshopMalfunction.Notes,
+                        CreationDate = WorkshopMalfunction.CreationDate,
+                        Name = WorkshopMalfunction.Malfunction != null ? WorkshopMalfunction.Malfunction.Name : "",
+                    }).ToList(),
+                    WorkshopTechnician = _mapper.Map<List<WorkshopTechnicianVM>>(WorkShop.WorkshopTechnician),
+                    WorkshopWorkTime = _mapper.Map<List<WorkshopWorkTimeVM>>(WorkShop.WorkshopWorkTime),
+                }).FirstOrDefault();
 
 
                 //var WorkshopsList = _mapper.Map<List<WorkshopVM>>(Workshops);
@@ -618,46 +619,46 @@ namespace BackEnd.Service.Services
                 {
                     carIds = data.cars.Select(c => c.CarId).ToList();
                     var WrokshopCar = _CarWorkshopRepositroy.GetAll().Where(w => carIds.Contains((Guid)w.CarId));
-                     workshopCarIds = WrokshopCar.Select(c =>c.WorkshopId).ToList();
+                    workshopCarIds = WrokshopCar.Select(c => c.WorkshopId).ToList();
 
                 }
-                if(data.malfunctions!=null)
+                if (data.malfunctions != null)
                 {
-                     MalfunctionIds = data.malfunctions.Select(c => c.MalfunctionId).ToList();
+                    MalfunctionIds = data.malfunctions.Select(c => c.MalfunctionId).ToList();
                     var Wrokshopmalfunction = _MalfunctionWorkshopRepositroy.GetAll().Where(w => MalfunctionIds.Contains((Guid)w.MalfunctionId));
-                     workshopmalfunctionIds = Wrokshopmalfunction.Select(c => c.WorkshopId).ToList();
+                    workshopmalfunctionIds = Wrokshopmalfunction.Select(c => c.WorkshopId).ToList();
 
                 }
                 if (data.Features != null)
                 {
-                     FeatureIds = data.Features.Select(c => c.FeaturesId).ToList();
+                    FeatureIds = data.Features.Select(c => c.FeaturesId).ToList();
                     var WrokshopFeature = _FeaturesWorkshopRepositroy.GetAll().Where(w => FeatureIds.Contains((Guid)w.FeatureId));
-                     workshopFeatureIds = WrokshopFeature.Select(c => c.WorkshopId).ToList();
+                    workshopFeatureIds = WrokshopFeature.Select(c => c.WorkshopId).ToList();
 
                 }
 
                 var predicate = PredicateBuilder.True<Workshop>();
                 var oldPredicate = predicate;
-                if (carIds!=null )
+                if (carIds != null)
                 {
-                    if(carIds.Count != 0)
-                    predicate = predicate.And(w =>
-                                 workshopCarIds.Contains((Guid)w.WorkshopId));
+                    if (carIds.Count != 0)
+                        predicate = predicate.And(w =>
+                                     workshopCarIds.Contains((Guid)w.WorkshopId));
                 }
-                if (MalfunctionIds!=null)
+                if (MalfunctionIds != null)
                 {
                     if (MalfunctionIds.Count != 0)
                         predicate = predicate.And(w =>
                                  workshopmalfunctionIds.Contains((Guid)w.WorkshopId));
                 }
-                if (FeatureIds!=null)
+                if (FeatureIds != null)
                 {
                     if (FeatureIds.Count != 0)
                         predicate = predicate.And(w =>
                                  workshopFeatureIds.Contains((Guid)w.WorkshopId));
                 }
-             
-                
+
+
                 var result = new List<Workshop>();
                 //if (oldPredicate == predicate)
                 //{
@@ -665,14 +666,14 @@ namespace BackEnd.Service.Services
                 //}
                 //else
                 {
-                    predicate = predicate.And(w=>w.HasSparePart.Equals(HasSparePart) && w.HasWarranty.Equals(HasWarranty));
+                    predicate = predicate.And(w => w.HasSparePart.Equals(HasSparePart) && w.HasWarranty.Equals(HasWarranty));
 
 
                     result = _WorkshopRepositroy.Get(predicate, includeProperties: "WorkshopRate,City").ToList();
-                   // result = result.Where(x => x.HasSparePart.Equals(HasSparePart)&&x.HasWarranty.Equals(HasWarranty)).ToList();
+                    // result = result.Where(x => x.HasSparePart.Equals(HasSparePart)&&x.HasWarranty.Equals(HasWarranty)).ToList();
 
                 }
-            
+
 
                 if (result == null)
                 {
@@ -747,7 +748,7 @@ namespace BackEnd.Service.Services
 
     }
     #endregion
-   public class CityWorkShop
+    public class CityWorkShop
     {
         public string CityName { get; set; }
         public int WorshopCount { get; set; }
