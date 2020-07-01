@@ -37,6 +37,7 @@ namespace BackEnd.Service.Mapper
             CreateMap<WorkshopWorkTimeVM, WorkshopWorkTime>().ReverseMap();
             CreateMap<FeaturesVM, Features>().ReverseMap();
             CreateMap<ChatVM, Chat>().ReverseMap();
+            CreateMap<WorkShopPreferVM, WorkShopPrefer>().ReverseMap();
             //CreateMap<ReportSetting, ReportSettingModel>();
             //CreateMap<ReportSettingModel, ReportSetting>()
             //     .ForMember(t => t.CurrentDate, opt => opt.MapFrom(s => DateTime.ParseExact(s.CurrentDate, "d/M/yyyy", CultureInfo.InvariantCulture)));

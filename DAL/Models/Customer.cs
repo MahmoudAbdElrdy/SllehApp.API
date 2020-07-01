@@ -10,6 +10,7 @@ namespace BackEnd.DAL.Models
             Chat = new HashSet<Chat>();
             CustomerNotifications = new HashSet<CustomerNotifications>();
             Order = new HashSet<Order>();
+            WorkShopPrefer = new HashSet<WorkShopPrefer>();
             WorkshopRate = new HashSet<WorkshopRate>();
         }
 
@@ -25,6 +26,7 @@ namespace BackEnd.DAL.Models
         public virtual ICollection<Chat> Chat { get; set; }
         public virtual ICollection<CustomerNotifications> CustomerNotifications { get; set; }
         public virtual ICollection<Order> Order { get; set; }
+        public virtual ICollection<WorkShopPrefer> WorkShopPrefer { get; set; }
         public virtual ICollection<WorkshopRate> WorkshopRate { get; set; }
     }
 }

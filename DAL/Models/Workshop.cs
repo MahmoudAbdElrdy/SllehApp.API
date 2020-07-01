@@ -9,6 +9,7 @@ namespace BackEnd.DAL.Models
         {
             Chat = new HashSet<Chat>();
             Order = new HashSet<Order>();
+            WorkShopPrefer = new HashSet<WorkShopPrefer>();
             WorkshopCar = new HashSet<WorkshopCar>();
             WorkshopFeatures = new HashSet<WorkshopFeatures>();
             WorkshopMalfunction = new HashSet<WorkshopMalfunction>();
@@ -37,11 +38,12 @@ namespace BackEnd.DAL.Models
         public decimal? MapLatitude { get; set; }
         public decimal? MapLangitude { get; set; }
         public Guid? CityId { get; set; }
-        public bool? Prefer { get; set; }
+        public bool Prefer { get; set; }
 
         public virtual City City { get; set; }
         public virtual ICollection<Chat> Chat { get; set; }
         public virtual ICollection<Order> Order { get; set; }
+        public virtual ICollection<WorkShopPrefer> WorkShopPrefer { get; set; }
         public virtual ICollection<WorkshopCar> WorkshopCar { get; set; }
         public virtual ICollection<WorkshopFeatures> WorkshopFeatures { get; set; }
         public virtual ICollection<WorkshopMalfunction> WorkshopMalfunction { get; set; }

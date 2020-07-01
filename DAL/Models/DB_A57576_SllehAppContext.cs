@@ -25,6 +25,7 @@ namespace BackEnd.DAL.Models
         public virtual DbSet<Features> Features { get; set; }
         public virtual DbSet<Malfunction> Malfunction { get; set; }
         public virtual DbSet<Order> Order { get; set; }
+        public virtual DbSet<WorkShopPrefer> WorkShopPrefer { get; set; }
         public virtual DbSet<Workshop> Workshop { get; set; }
         public virtual DbSet<WorkshopCar> WorkshopCar { get; set; }
         public virtual DbSet<WorkshopFeatures> WorkshopFeatures { get; set; }
@@ -189,6 +190,23 @@ namespace BackEnd.DAL.Models
                     .WithMany(p => p.Order)
                     .HasForeignKey(d => d.WorkshopId)
                     .HasConstraintName("FK_Order_Workshop");
+            });
+
+            modelBuilder.Entity<WorkShopPrefer>(entity =>
+            {
+                entity.Property(e => e.WorkShopPreferId).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.WorkShopPrefer)
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_WorkShopPrefer_Customer");
+
+                entity.HasOne(d => d.WorkShop)
+                    .WithMany(p => p.WorkShopPrefer)
+                    .HasForeignKey(d => d.WorkShopId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_WorkShopPrefer_Workshop");
             });
 
             modelBuilder.Entity<Workshop>(entity =>
