@@ -232,11 +232,44 @@ namespace BackEnd.Service.Services
         {
             try
             {
-                var WorkShopPrefers = _WorkShopPreferRepositroy.Get(x => x.CustomerId == id,includeProperties: "Workshop");
+               // List<CityWorkShop> cityWorkShops = new List<CityWorkShop>();
+                var WorkShopPrefer = _WorkShopPreferRepositroy.Get(x => x.CustomerId==id && x.Prefer==true);
+                List<Guid> WorkShopIds = null;
+                WorkShopIds = WorkShopPrefer.Select(c => (Guid)c.WorkShopId).ToList();
+                var Wrokshop = _WorkshopRepositroy.Get(w => WorkShopIds.Contains((Guid)w.WorkshopId)).ToList();
+
+              
 
 
-                var WorkShopPrefersList = _mapper.Map<List<WorkShopPreferVM>>(WorkShopPrefers);
-                _response.Data = WorkShopPrefersList;
+                var WorkshopsList = Wrokshop.Select(x => new
+                {
+                    Address = x.Address,
+                    CreationDate = x.CreationDate,
+                    WorkshopId = x.WorkshopId,
+                    Name = x.Name,
+                    IsTrust = x.IsTrust,
+                    ImageUrl = x.ImageUrl,
+                    Token = x.Token,
+                    CityId = x.CityId,
+                    CityName = x.City == null ? "" : x.City.CityName,
+                    Prefer = x.Prefer,
+
+                    MapLatitude = x.MapLatitude,
+                    MapLangitude = x.MapLangitude,
+                    Email = x.Email,
+                    Password = "",
+                    Phone = x.Phone,
+                    Info = x.Info,
+                    OwnerName = x.OwnerName,
+                    OwnerImage = x.OwnerImage,
+                    IsAvailable = x.IsAvailable,
+                    HasSparePart = x.HasSparePart,
+                    HasWarranty = x.HasWarranty,
+                    RateCount = x.WorkshopRate.Count,
+                    RateAVG = x.WorkshopRate.Count > 0 ? x.WorkshopRate.Average(y => y.Rate) : 0.0m,
+
+                }).ToList();
+                _response.Data = WorkshopsList;
                 _response.IsPassed = true;
                 _response.Message = "Done";
             }
