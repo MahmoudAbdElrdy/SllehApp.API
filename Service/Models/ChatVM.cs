@@ -25,6 +25,7 @@ namespace BackEnd.Service.Models
         public int CountUnRead { get; set; }
         public string WorkShopName { get; set; }
         public string ImageUrl { get; set; }
+        public int Type { get; set; }
 
     }
 }

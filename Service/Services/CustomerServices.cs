@@ -224,5 +224,33 @@ namespace BackEnd.Service.Services
 
         }
         #endregion
+        #region updateWorkshopToken(WorkshopVM model)
+        public IResponseDTO UpdateCustomerToken(Guid CustomerId, string Token)
+        {
+            try
+            {
+                var res = _CustomerRepositroy.GetFirst(x => x.CustomerId == CustomerId);
+                if (res == null)
+                {
+                    _response.Data = null;
+                    _response.IsPassed = false;
+                    _response.Message = "Not saved";
+                }
+                else
+                {
+
+                    res.Token = Token;
+                    return EditCustomer(_mapper.Map<CustomerVM>(res));
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.Data = null;
+                _response.IsPassed = false;
+                _response.Message = "Error " + string.Format("{0} - {1} ", ex.Message, ex.InnerException != null ? ex.InnerException.FullMessage() : "");
+            }
+            return _response;
+        }
+        #endregion
     }
 }

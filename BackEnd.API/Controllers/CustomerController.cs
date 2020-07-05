@@ -76,5 +76,15 @@ namespace BackEnd.API.Controllers
             return depart;
         }
         #endregion
+
+        #region Get: api/Workshop/UpdateWorkshopToken
+        [HttpGet]
+        [Route("UpdateCustomerToken")]
+        public IResponseDTO UpdateCustomerToken(Guid id, string Token)
+        {
+            var depart = _CustomerServices.UpdateCustomerToken(id, Token);
+            return depart;
+        }
+        #endregion
     }
 }
