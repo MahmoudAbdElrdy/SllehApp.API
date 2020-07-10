@@ -26,9 +26,9 @@ namespace BackEnd.Service.Models
         public Guid? CityId { get; set; }
         public bool? Prefer { get; set; } = false;
 
-        public virtual ICollection<WorkshopCarVM> WorkshopCar { get; set; }
-        public virtual ICollection<WorkshopFeaturesVM> WorkshopFeatures { get; set; }
-        public virtual ICollection<WorkshopMalfunctionVM> WorkshopMalfunction { get; set; }
-        public virtual ICollection<WorkshopWorkTimeVM> WorkshopWorkTime { get; set; }
+        public  List<WorkshopCarVM> WorkshopCar { get; set; }
+        public  List<WorkshopFeaturesVM> WorkshopFeatures { get; set; }
+        public  List<WorkshopMalfunctionVM> WorkshopMalfunction { get; set; }
+        public  List<WorkshopWorkTimeVM> WorkshopWorkTime { get; set; }
     }
 }
