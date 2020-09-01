@@ -16,7 +16,10 @@ namespace Chat.Hubs
         {
             return Clients.All.SendAsync("ReceiveMessage", message);
         }
-
+        public async Task NewMessage(Message msg)
+        {
+            await Clients.All.SendAsync("MessageReceived", msg);
+        }
         public Task SendMessageToCaller(string message)
         {
             return Clients.Caller.SendAsync("ReceiveMessage", message);

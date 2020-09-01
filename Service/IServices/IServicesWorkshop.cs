@@ -23,6 +23,7 @@ namespace BackEnd.Service.IServices
         IResponseDTO GetAllWorkshopDeatalis(Guid workshopid);
         IResponseDTO SearchWorkShop(Data data);
         IResponseDTO GetAllWorkshopCity();
+        IResponseDTO UpdateWorkshopToken(Guid WorkshopId, string Token);
 
 
     }

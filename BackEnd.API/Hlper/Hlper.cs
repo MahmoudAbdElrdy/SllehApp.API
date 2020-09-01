@@ -72,7 +72,7 @@ namespace BackEnd.API.Hlper
                         file.CopyTo(stream);
                     }
                     //string dbPath = "http://localhost:52023/UploadFiles/" + _imgname + extension;
-                        string dbPath = "http://zaljarba-001-site1.btempurl.com/UploadFiles/" +  _imgname+extension;
+                        string dbPath = "http://localhost:52025/UploadFiles/" +  _imgname+extension;
                     temp.Add("dbPath", dbPath);
                     temp.Add("_ext", _ext);
                     temp.Add("stat", "done");

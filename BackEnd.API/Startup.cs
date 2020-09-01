@@ -139,14 +139,25 @@ namespace BackEnd.API
             // services.AddScoped<IDepartmentServices,DepartmentServices>().Reverse();
 
             // Add service and create Policy with options
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("CorsPolicy",
+            //        builder => builder.AllowAnyOrigin()
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader()
+            //        .AllowCredentials()
+            //        .SetIsOriginAllowed((host) => true));
+            //});
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
+              //  options.AddPolicy("CorsPolicy", builder => builder.WithOrigins("http://localhost:2710")
+                options.AddPolicy("CorsPolicy", builder => builder.WithOrigins("http://zaljarba-001-site2.btempurl.com")
                     .AllowAnyHeader()
-                    .AllowCredentials());
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .SetIsOriginAllowed((host) => true));
             });
+
             // JWT Authentication 
 
             var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());

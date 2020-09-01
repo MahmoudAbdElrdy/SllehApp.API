@@ -17,6 +17,13 @@ namespace BackEnd.Service.Models
         public Guid? WorkShopId { get; set; }
         public bool? IsCustomer { get; set; }
     }
+    public class Message
+    {
+        public string clientuniqueid { get; set; }
+        public string type { get; set; }
+        public string message { get; set; }
+        public DateTime date { get; set; }
+    }
     public class ResponseChat{
         public Guid? CustomerId { get; set; }
         public string Content { get; set; }
@@ -26,6 +33,7 @@ namespace BackEnd.Service.Models
         public int CountUnRead { get; set; }
         public string WorkShopName { get; set; }
         public string ImageUrl { get; set; }
+        public int Type { get; set; }
 
     }
 }
