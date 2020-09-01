@@ -18,6 +18,34 @@ namespace BackEnd.API.Controllers
         }
         #endregion
 
+        #region Post: api/WorkshopTechnician/NewSaveWorkshopTechnician
+        [HttpPost]
+        [Route("NewSaveWorkshopTechnician")]
+        public IResponseDTO NewSaveWorkshopTechnician([FromForm]WorkshopTechnicianVM WorkshopTechnicianVM)
+        {
+            ResponseDTO res;
+            try
+            {
+                if (WorkshopTechnicianVM.DataFile != null)
+                {
+                    var logoUrl = BackEnd.API.Hlper.UploadHelper.SaveFile(WorkshopTechnicianVM.DataFile, "File");
+                    WorkshopTechnicianVM.ImageUrl = logoUrl;
+                }
+                return _WorkshopTechnicianServices.PostWorkshopTechnician(WorkshopTechnicianVM);
+            }
+            catch (Exception ex)
+            {
+                res = new ResponseDTO()
+                {
+                    IsPassed = false,
+                    Message = "Error in Upload File " + ex.Message,
+                    Data = null,
+                };
+            }
+            return res;
+        }
+        #endregion
+
         #region Post: api/WorkshopTechnician/SaveWorkshopTechnician
         [HttpPost]
         [Route("SaveWorkshopTechnician")]
@@ -35,6 +63,38 @@ namespace BackEnd.API.Controllers
         {
             var depart = _WorkshopTechnicianServices.PostWorkshopTechnician(WorkshopTechnicianVM);
             return depart;
+        }
+        #endregion
+
+        #region Post: api/WorkshopTechnician/NewSaveListOfTechnician
+        [HttpPost]
+        [Route("NewSaveListOfTechnician")]
+        public IResponseDTO NewSaveListOfTechnician([FromForm]System.Collections.Generic.List<WorkshopTechnicianVM> WorkshopTechnicianVM)
+        {
+            ResponseDTO res;
+            try
+            {
+                foreach (var t in WorkshopTechnicianVM)
+                {
+                    if (t.DataFile != null)
+                    {
+                        var logoUrl = BackEnd.API.Hlper.UploadHelper.SaveFile(t.DataFile, "File");
+                        t.ImageUrl = logoUrl;
+                    }
+                }
+                var depart = _WorkshopTechnicianServices.PostWorkshopTechnician(WorkshopTechnicianVM);
+                return depart;
+            }
+            catch (Exception ex)
+            {
+                res = new ResponseDTO()
+                {
+                    IsPassed = false,
+                    Message = "Error in Upload File " + ex.Message,
+                    Data = null,
+                };
+            }
+            return res;
         }
         #endregion
 

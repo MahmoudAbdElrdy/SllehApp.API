@@ -30,6 +30,35 @@ namespace Chat.Controllers
             _ChatServices = ChatServices;
         }
 
+        #region Post: api/Chat/SaveNewMessage
+        [HttpPost]
+        [Route("SaveNewMessage")]
+        public IResponseDTO SignupMarket([FromForm]ChatVM Message)
+        {
+            ResponseDTO res;
+            try
+            {
+                if (Message.DataFile != null)
+                {
+                    var logoUrl = BackEnd.API.Hlper.UploadHelper.SaveFile(Message.DataFile, "File");
+                    Message.DataUrl = logoUrl;
+                }
+                return _ChatServices.PostChat(Message);
+            }
+            catch (Exception ex)
+            {
+                res = new ResponseDTO()
+                {
+                    IsPassed = false,
+                    Message = "Error in Upload File " + ex.Message,
+                    Data = null,
+                };
+            }
+            return res;
+        }
+        #endregion
+
+
         [HttpPost]
         [Route("PostChat")]
         public IResponseDTO PostChat(ChatVM message)
@@ -38,6 +67,7 @@ namespace Chat.Controllers
           //  _ChatHubContext.Clients.User(message.OrderId.ToString()).SendAsync("ReceiveMessage", message);
             return depart;
         }
+
         #region Put: api/Chat/UpdateChat
 
         #region Get: api/Chat/GetAllChat

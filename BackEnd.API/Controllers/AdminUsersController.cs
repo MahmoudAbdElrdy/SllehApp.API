@@ -33,13 +33,13 @@ namespace BackEnd.API.Controllers
         //[Route("~/api/Upload/UploadAdminUsersLog")]
         //public IActionResult Upload()
         //{
-        //    //var xx = UploadHelper.SaveFile(Request.Form.Files[0], "logo");
+        //    //var xx = UploadHelper.SaveFile(Request.Form.Files[0], "File");
         //    ////string path = xx[0];
         //    //return Ok(xx);
         //    ResponseDTO res;
         //    try
         //    {
-        //        var xx = UploadHelper.SaveFile(Request.Form.Files[0], "logo");
+        //        var xx = UploadHelper.SaveFile(Request.Form.Files[0], "File");
         //        //string path = xx[0];
         //        res = new ResponseDTO()
         //        {

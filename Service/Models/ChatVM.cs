@@ -10,6 +10,7 @@ namespace BackEnd.Service.Models
         public Guid? CustomerId { get; set; }
         public string Content { get; set; }
         public string DataUrl { get; set; }
+        public Microsoft.AspNetCore.Http.IFormFile DataFile { get; set; }
         public int Type { get; set; }
         public bool? IsRead { get; set; } = false;
         public DateTime? CreationDate { get; set; } = DateTime.UtcNow.AddHours(3);

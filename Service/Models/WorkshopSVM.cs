@@ -9,6 +9,7 @@ namespace BackEnd.Service.Models
         public string Name { get; set; } = "";
         public bool? IsTrust { get; set; } = false;
         public string ImageUrl { get; set; } = "";
+        public Microsoft.AspNetCore.Http.IFormFile DataFile { get; set; }
         public string Token { get; set; } = "";
         public decimal? MapLatitude { get; set; } = 0.0m;
         public decimal? MapLangitude { get; set; } = 0.0m;

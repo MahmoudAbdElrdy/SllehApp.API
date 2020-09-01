@@ -9,6 +9,7 @@ namespace BackEnd.Service.Models
         public Guid? WorkshopId { get; set; }
         public string Name { get; set; }
         public string ImageUrl { get; set; } = "";
+        public Microsoft.AspNetCore.Http.IFormFile DataFile { get; set; }
         public DateTime? CreationDate { get; set; } = DateTime.UtcNow.AddHours(3);
 
         //public virtual WorkshopVM Workshop { get; set; }

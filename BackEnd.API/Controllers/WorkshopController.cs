@@ -36,7 +36,7 @@ namespace BackEnd.API.Controllers
         [Route("~/api/Upload/UploadWorkshop")]
         public IActionResult Upload()
         {
-            //var xx = UploadHelper.SaveFile(Request.Form.Files[0], "logo");
+            //var xx = UploadHelper.SaveFile(Request.Form.Files[0], "File");
             ////string path = xx[0];
             //return Ok(xx);
             ResponseDTO res;
@@ -61,6 +61,34 @@ namespace BackEnd.API.Controllers
                 };
             }
             return Ok(res);
+        }
+        #endregion
+
+        #region Post: api/Workshop/NewSignup
+        [HttpPost]
+        [Route("NewSignup")]
+        public IResponseDTO NewSignup([FromForm]WorkshopSVM Workshop)
+        {
+            ResponseDTO res;
+            try
+            {
+                if (Workshop.DataFile != null)
+                {
+                    var logoUrl = BackEnd.API.Hlper.UploadHelper.SaveFile(Workshop.DataFile, "File");
+                    Workshop.ImageUrl = logoUrl;
+                }
+                return _WorkshopServices.Signup(Workshop);
+            }
+            catch (Exception ex)
+            {
+                res = new ResponseDTO()
+                {
+                    IsPassed = false,
+                    Message = "Error in Upload File " + ex.Message,
+                    Data = null,
+                };
+            }
+            return res;
         }
         #endregion
 
@@ -113,7 +141,8 @@ namespace BackEnd.API.Controllers
             return depart;
         }
         #endregion
-        #region Get: api/Workshop/GetAllWorkshop
+
+        #region Get: api/Workshop/GetAllWorkshopCity
         [HttpGet]
         [Route("GetAllWorkshopCity")]
         public IResponseDTO GetAllWorkshopCity()
