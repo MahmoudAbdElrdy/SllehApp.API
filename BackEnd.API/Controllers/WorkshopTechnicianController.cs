@@ -30,6 +30,7 @@ namespace BackEnd.API.Controllers
                 {
                     var logoUrl = BackEnd.API.Hlper.UploadHelper.SaveFile(WorkshopTechnicianVM.DataFile, "File");
                     WorkshopTechnicianVM.ImageUrl = logoUrl;
+                    WorkshopTechnicianVM.DataFile = null;
                 }
                 return _WorkshopTechnicianServices.PostWorkshopTechnician(WorkshopTechnicianVM);
             }
@@ -69,20 +70,21 @@ namespace BackEnd.API.Controllers
         #region Post: api/WorkshopTechnician/NewSaveListOfTechnician
         [HttpPost]
         [Route("NewSaveListOfTechnician")]
-        public IResponseDTO NewSaveListOfTechnician([FromForm]System.Collections.Generic.List<WorkshopTechnicianVM> WorkshopTechnicianVM)
+        public IResponseDTO NewSaveListOfTechnician([FromForm]TechnicianListVM TechnicianList)
         {
             ResponseDTO res;
             try
             {
-                foreach (var t in WorkshopTechnicianVM)
+                foreach (var t in TechnicianList.Technician)
                 {
                     if (t.DataFile != null)
                     {
                         var logoUrl = BackEnd.API.Hlper.UploadHelper.SaveFile(t.DataFile, "File");
                         t.ImageUrl = logoUrl;
+                        t.DataFile = null;
                     }
                 }
-                var depart = _WorkshopTechnicianServices.PostWorkshopTechnician(WorkshopTechnicianVM);
+                var depart = _WorkshopTechnicianServices.PostWorkshopTechnician(TechnicianList.Technician);
                 return depart;
             }
             catch (Exception ex)
@@ -91,6 +93,39 @@ namespace BackEnd.API.Controllers
                 {
                     IsPassed = false,
                     Message = "Error in Upload File " + ex.Message,
+                    Data = null,
+                };
+            }
+            return res;
+        }
+        #endregion
+
+        #region Post: api/WorkshopTechnician/NewSaveTechnicianList
+        [HttpPost]
+        [Route("NewSaveTechnicianList")]
+        public IResponseDTO NewSaveTechnicianList([FromForm]TechnicianListVM TechnicianList)
+        {
+            ResponseDTO res;
+            try
+            {
+                for (int i = 0;i< TechnicianList.Technician.Count;i++)
+                {
+                    if (Request.Form.Files[i] != null)
+                    {
+                        var logoUrl = BackEnd.API.Hlper.UploadHelper.SaveFile(Request.Form.Files[i], "File");
+                        TechnicianList.Technician[i].ImageUrl = logoUrl;
+                    }
+                    TechnicianList.Technician[i] = null;
+                }
+                var depart = _WorkshopTechnicianServices.PostWorkshopTechnician(TechnicianList.Technician);
+                return depart;
+            }
+            catch (Exception ex)
+            {
+                res = new ResponseDTO()
+                {
+                    IsPassed = false,
+                    Message = "Error in Upload File ::::  " + ex.Message,
                     Data = null,
                 };
             }

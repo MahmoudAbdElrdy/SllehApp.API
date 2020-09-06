@@ -251,6 +251,7 @@ namespace BackEnd.Service.Services
             return _response;
         }
         #endregion
+      
         #region GetAllWorkshop()
         public IResponseDTO GetAllWorkshopCity()
         {
@@ -284,6 +285,7 @@ namespace BackEnd.Service.Services
             return _response;
         }
         #endregion
+
         #region WorkshopLogin(WorkshopVM model)
         public IResponseDTO WorkshopLogin(WorkshopVM model)
         {
@@ -315,6 +317,7 @@ namespace BackEnd.Service.Services
             return _response;
         }
         #endregion
+
         #region updateWorkshopToken(WorkshopVM model)
         public IResponseDTO UpdateWorkshopToken(Guid WorkshopId ,string Token)
         {
@@ -418,30 +421,42 @@ namespace BackEnd.Service.Services
                 //var DbWorkshop = _mapper.Map<WorkshopVM>(model);
                 //DbWorkshop.WorkshopId = Guid.NewGuid();
 
-
-                foreach (var WorkshopCar in model.WorkshopCar)
+                if (model.WorkshopCar != null && model.WorkshopCar.Count > 0)
                 {
-                    WorkshopCar.WorkshopId = model.WorkshopId;
-                    WorkshopCar.WorkshopCarId = Guid.NewGuid();
+                    foreach (var WorkshopCar in model.WorkshopCar)
+                    {
+                        WorkshopCar.WorkshopId = model.WorkshopId;
+                        WorkshopCar.WorkshopCarId = Guid.NewGuid();
+                    }
                 }
 
-                foreach (var WorkshopMalfunction in model.WorkshopMalfunction)
+                if (model.WorkshopMalfunction != null && model.WorkshopMalfunction.Count > 0)
                 {
-                    WorkshopMalfunction.WorkshopId = model.WorkshopId;
-                    WorkshopMalfunction.WorkshopMalfunctionId = Guid.NewGuid();
+                    foreach (var WorkshopMalfunction in model.WorkshopMalfunction)
+                    {
+                        WorkshopMalfunction.WorkshopId = model.WorkshopId;
+                        WorkshopMalfunction.WorkshopMalfunctionId = Guid.NewGuid();
+                    }
                 }
 
-                foreach (var WorkshopFeatures in model.WorkshopFeatures)
+                if (model.WorkshopFeatures != null && model.WorkshopFeatures.Count > 0)
                 {
-                    WorkshopFeatures.WorkshopId = model.WorkshopId;
-                    WorkshopFeatures.FeatureWorkeshopId = Guid.NewGuid();
+                    foreach (var WorkshopFeatures in model.WorkshopFeatures)
+                    {
+                        WorkshopFeatures.WorkshopId = model.WorkshopId;
+                        WorkshopFeatures.FeatureWorkeshopId = Guid.NewGuid();
+                    }
                 }
 
-                foreach (var WorkshopWorkTime in model.WorkshopWorkTime)
+                if (model.WorkshopWorkTime != null && model.WorkshopWorkTime.Count > 0)
                 {
-                    WorkshopWorkTime.WorkshopId = model.WorkshopId;
-                    WorkshopWorkTime.WorkTimeId = Guid.NewGuid();
+                    foreach (var WorkshopWorkTime in model.WorkshopWorkTime)
+                    {
+                        WorkshopWorkTime.WorkshopId = model.WorkshopId;
+                        WorkshopWorkTime.WorkTimeId = Guid.NewGuid();
+                    }
                 }
+
                 _WorkshopRepositroy.Add(_mapper.Map<Workshop>(model));
                 int save = _unitOfWork.Commit();
 

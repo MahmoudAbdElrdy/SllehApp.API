@@ -42,6 +42,7 @@ namespace Chat.Controllers
                 {
                     var logoUrl = BackEnd.API.Hlper.UploadHelper.SaveFile(Message.DataFile, "File");
                     Message.DataUrl = logoUrl;
+                    Message.DataFile = null;
                 }
                 return _ChatServices.PostChat(Message);
             }

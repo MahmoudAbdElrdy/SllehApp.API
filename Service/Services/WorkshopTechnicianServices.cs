@@ -251,7 +251,7 @@ namespace BackEnd.Service.Services
         }
         #endregion
 
-        #region PostWorkshopTechnician(WorkshopTechnicianVM model)
+        #region PostWorkshopTechnician(List<WorkshopTechnicianVM> model)
         public IResponseDTO PostWorkshopTechnician(List<WorkshopTechnicianVM> model)
         {
 
@@ -266,7 +266,7 @@ namespace BackEnd.Service.Services
 
                 if (save == 200)
                 {
-                    _response.Data = null;
+                    _response.Data = model;
                     _response.IsPassed = true;
                     _response.Message = "Ok";
                 }

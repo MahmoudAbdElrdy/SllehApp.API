@@ -72,10 +72,17 @@ namespace BackEnd.API.Controllers
             ResponseDTO res;
             try
             {
-                if (Workshop.DataFile != null)
+                if (Workshop.ShopFile != null)
                 {
-                    var logoUrl = BackEnd.API.Hlper.UploadHelper.SaveFile(Workshop.DataFile, "File");
+                    var logoUrl = BackEnd.API.Hlper.UploadHelper.SaveFile(Workshop.ShopFile, "File");
                     Workshop.ImageUrl = logoUrl;
+                    Workshop.ShopFile = null;
+                }
+                if (Workshop.OwnerFile != null)
+                {
+                    var logoUrl = BackEnd.API.Hlper.UploadHelper.SaveFile(Workshop.OwnerFile, "File");
+                    Workshop.OwnerImage = logoUrl;
+                    Workshop.OwnerFile = null;
                 }
                 return _WorkshopServices.Signup(Workshop);
             }
@@ -109,6 +116,41 @@ namespace BackEnd.API.Controllers
         {
             var depart = _WorkshopServices.WorkshopLogin(Workshop);
             return depart;
+        }
+        #endregion
+
+        #region Post: api/Workshop/NewUpdateWorkshop
+        [HttpPost]
+        [Route("NewUpdateWorkshop")]
+        public IResponseDTO NewUpdateWorkshop([FromForm]WorkshopVM Workshop)
+        {
+            ResponseDTO res;
+            try
+            {
+                if (Workshop.ShopFile != null)
+                {
+                    var logoUrl = BackEnd.API.Hlper.UploadHelper.SaveFile(Workshop.ShopFile, "File");
+                    Workshop.ImageUrl = logoUrl;
+                    Workshop.ShopFile = null;
+                }
+                if (Workshop.OwnerFile != null)
+                {
+                    var logoUrl = BackEnd.API.Hlper.UploadHelper.SaveFile(Workshop.OwnerFile, "File");
+                    Workshop.OwnerImage = logoUrl;
+                    Workshop.OwnerFile = null;
+                }
+                return _WorkshopServices.EditWorkshop(Workshop);
+            }
+            catch (Exception ex)
+            {
+                res = new ResponseDTO()
+                {
+                    IsPassed = false,
+                    Message = "Error in Upload File " + ex.Message,
+                    Data = null,
+                };
+            }
+            return res;
         }
         #endregion
 
@@ -213,6 +255,7 @@ namespace BackEnd.API.Controllers
             return depart;
         }
         #endregion
+
         #region Get: api/Workshop/UpdateWorkshopToken
         [HttpGet]
         [Route("UpdateWorkshopToken")]
